@@ -1,0 +1,99 @@
+---
+sidebar_position: 3
+title: "Docker Compose Quickstarts"
+description: "Instant one-click local infrastructure stacks for pgvector, Redis, Kafka CDC Outbox, and Neo4j GraphRAG."
+---
+
+# 🐳 Docker Compose Infrastructure Quickstarts
+
+Production software architectures often require local backing services (vector databases, Redis caches, event brokers, graph stores). 
+
+We provide **copy-paste, pre-configured `docker-compose.yml` stacks** in the `docker/` directory to spin up any infrastructure locally in under 10 seconds.
+
+---
+
+## 1. 🧠 PostgreSQL 16 + pgvector (Hybrid RAG Stack)
+
+Spins up PostgreSQL 16 with the official `pgvector` extension pre-installed, pre-configured HNSW indices, BM25 text search, and 256MB shared buffers.
+
+```bash
+cd docker/postgres-pgvector
+docker compose up -d
+```
+
+- **Port:** `localhost:5432`
+- **Database:** `blueprints_db`
+- **User:** `blueprint_user` / `blueprint_password`
+- **Pre-loaded:** `CREATE EXTENSION IF NOT EXISTS vector;`
+
+---
+
+## 2. 🛡️ Redis 7.2 + RedisInsight GUI (Rate Limiter & Cache)
+
+Spins up Redis with `noeviction` memory policies, Lua script execution capabilities, and the RedisInsight browser GUI.
+
+```bash
+cd docker/redis-cluster-ratelimit
+docker compose up -d
+```
+
+- **Redis Port:** `localhost:6379`
+- **RedisInsight UI:** `http://localhost:5540` (Inspect live sorted sets, keys, and memory)
+
+---
+
+## 3. ⚡ Transactional Outbox CDC (Postgres + Kafka + Debezium)
+
+The complete end-to-end Change Data Capture (CDC) infrastructure stack: Apache Kafka broker, Zookeeper, Debezium Postgres connector, and Kafka UI.
+
+```bash
+cd docker/kafka-debezium-outbox
+docker compose up -d
+```
+
+- **Kafka Broker:** `localhost:9092`
+- **Debezium Connect REST API:** `http://localhost:8083`
+- **Kafka UI Console:** `http://localhost:8080` (Inspect topics, messages, and consumer lag)
+
+---
+
+## 4. 🕸️ Neo4j 5 Community with APOC (GraphRAG)
+
+Spins up Neo4j with APOC plugins enabled for entity-relationship knowledge graph traversals.
+
+```bash
+cd docker/neo4j-graphrag
+docker compose up -d
+```
+
+- **Neo4j Browser:** `http://localhost:7474`
+- **Bolt Protocol:** `bolt://localhost:7687`
+- **Auth:** `neo4j` / `blueprint_graph_password`
+
+---
+
+## 5. 🚀 Unified Full-Stack Local Harness
+
+Spins up PostgreSQL (with pgvector), Redis, and MinIO (local S3 object storage) in a single unified network for full-stack blueprints:
+
+```bash
+cd docker/full-stack-harness
+docker compose up -d
+```
+
+| Service | Port | Credentials |
+| :--- | :--- | :--- |
+| **PostgreSQL (pgvector)** | `5432` | `blueprint_dev` / `blueprint_password` |
+| **Redis** | `6379` | *None* |
+| **MinIO S3 Console** | `9001` | `minioadmin` / `minioadminpassword` |
+| **MinIO S3 API** | `9000` | S3 Endpoint |
+
+---
+
+## 🛑 Tear Down
+
+To stop any stack and release memory:
+
+```bash
+docker compose down -v
+```

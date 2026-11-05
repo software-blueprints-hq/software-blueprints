@@ -23,6 +23,140 @@ export interface ConceptExplanation {
   targetBlueprintId: string;
 }
 
+export interface ComparisonDimension {
+  dimension: string;
+  optionA: string;
+  optionB: string;
+}
+
+export interface ArchitecturalComparison {
+  id: string;
+  keywords: string[];
+  title: string;
+  summary: string;
+  optionAName: string;
+  optionBName: string;
+  dimensions: ComparisonDimension[];
+  verdict: string;
+  relatedBlueprintIds: string[];
+}
+
+export const ARCHITECTURAL_COMPARISONS: ArchitecturalComparison[] = [
+  {
+    id: 'dpo-vs-ppo',
+    keywords: ['dpo vs ppo', 'ppo vs dpo', 'compare dpo and ppo', 'dpo or ppo', 'rlhf vs dpo', 'preference learning vs rlhf'],
+    title: 'Direct Preference Optimization (DPO) vs PPO (RLHF)',
+    summary: 'DPO trains directly on pairwise (chosen, rejected) completions without training a separate reward model or running actor-critic policy loops.',
+    optionAName: 'DPO (Direct Preference Opt)',
+    optionBName: 'PPO (Proximal Policy Opt / RLHF)',
+    dimensions: [
+      { dimension: 'Reward Model', optionA: 'Not required (implicit in loss function)', optionB: 'Mandatory dedicated Bradley-Terry model' },
+      { dimension: 'Training Stability', optionA: 'High (Standard supervised cross-entropy)', optionB: 'Fragile (RL hyperparameter sensitivity)' },
+      { dimension: 'VRAM & Compute', optionA: 'Low (1x model + reference model)', optionB: 'Very High (Actor, Critic, Reward, Reference)' },
+      { dimension: 'Iteration Speed', optionA: '3x-5x faster wall-clock convergence', optionB: 'Slow multi-stage training pipeline' },
+      { dimension: 'Online Exploration', optionA: 'Offline pairwise dataset only', optionB: 'Can generate new samples online' },
+    ],
+    verdict: 'Use DPO for 95% of fine-tuning and safety alignment. Only use PPO if you require dynamic online exploration with live environment feedback.',
+    relatedBlueprintIds: ['ml-dpo', 'ml-qlora'],
+  },
+  {
+    id: 'sliding-vs-token-bucket',
+    keywords: ['sliding window vs token bucket', 'token bucket vs sliding window', 'rate limit algorithm comparison', 'sliding window counter vs token bucket'],
+    title: 'Sliding Window Counter vs Token Bucket',
+    summary: 'Sliding window prevents 2x traffic bursts at minute boundaries; Token Bucket permits bursty traffic up to bucket capacity with steady refill.',
+    optionAName: 'Sliding Window Counter (Lua)',
+    optionBName: 'Token Bucket',
+    dimensions: [
+      { dimension: 'Boundary Bursting', optionA: '100% prevented (smooth rolling window)', optionB: 'Allows configurable burst up to bucket capacity' },
+      { dimension: 'Redis Memory', optionA: '~120-400 bytes per active user', optionB: '~64 bytes per user (timestamp + count)' },
+      { dimension: 'Atomic Implementation', optionA: 'Redis Sorted Set (ZADD / ZREMRANGE)', optionB: 'Redis Hash + Lua delta refill' },
+      { dimension: 'Latency Impact', optionA: '0.8 - 1.8ms (Sorted Set ops)', optionB: '< 0.5ms (O(1) Hash ops)' },
+    ],
+    verdict: 'Use Sliding Window for security-critical endpoints (logins, payment APIs). Use Token Bucket for high-throughput public read APIs where bursts are acceptable.',
+    relatedBlueprintIds: ['sys-rate-limiter'],
+  },
+  {
+    id: 'kafka-vs-redis-streams',
+    keywords: ['kafka vs redis streams', 'redis streams vs kafka', 'event broker comparison', 'redis stream or kafka'],
+    title: 'Apache Kafka vs Redis Streams',
+    summary: 'Kafka is built for multi-terabyte log retention and massive consumer groups; Redis Streams is built for ultra-low latency sub-millisecond in-memory pipelines.',
+    optionAName: 'Redis Streams',
+    optionBName: 'Apache Kafka',
+    dimensions: [
+      { dimension: 'Latency', optionA: 'Sub-millisecond (< 1ms)', optionB: 'Low latency (5 - 15ms)' },
+      { dimension: 'Data Retention', optionA: 'Bounded memory (XTRIM MAXLEN)', optionB: 'Multi-terabyte disk / tiered storage' },
+      { dimension: 'Operational Overhead', optionA: 'Minimal (Shared Redis cluster)', optionB: 'High (KRaft, topic partitions, rebalancing)' },
+      { dimension: 'Replayability', optionA: 'Limited by available RAM', optionB: 'Long-term immutable event log' },
+    ],
+    verdict: 'Use Redis Streams for fast internal microservice messaging and task fleets. Use Kafka for enterprise event backbones, audit logs, and analytics pipelines.',
+    relatedBlueprintIds: ['backend-go-fiber', 'sys-outbox-cdc'],
+  },
+  {
+    id: 'outbox-vs-2pc',
+    keywords: ['outbox vs 2pc', 'transactional outbox vs two phase commit', 'dual write solutions', 'outbox pattern vs distributed transactions'],
+    title: 'Transactional Outbox (CDC) vs 2-Phase Commit (2PC)',
+    summary: 'Transactional Outbox ensures zero data loss between databases and message brokers without the blocking latency bottlenecks of distributed 2PC.',
+    optionAName: 'Transactional Outbox + CDC',
+    optionBName: 'Two-Phase Commit (2PC / XA)',
+    dimensions: [
+      { dimension: 'ACID Guarantees', optionA: 'Local ACID + Eventual Consistency', optionB: 'Global Strict Atomicity' },
+      { dimension: 'Lock Contention', optionA: 'Zero distributed locks', optionB: 'Holds database row locks across network' },
+      { dimension: 'Failure Mode', optionA: 'Resilient at-least-once streaming', optionB: 'Cascading coordinator blocking on timeout' },
+      { dimension: 'Throughput Capacity', optionA: 'Tens of thousands msg/s via WAL', optionB: 'Severely degraded at high concurrency' },
+    ],
+    verdict: 'Never use 2PC in modern microservices. Use Transactional Outbox with PostgreSQL WAL Change Data Capture (Debezium) for guaranteed zero dual-write bugs.',
+    relatedBlueprintIds: ['sys-outbox-cdc', 'sys-payment-ledger'],
+  },
+  {
+    id: 'go-vs-rust',
+    keywords: ['go vs rust', 'rust vs go', 'golang vs rust microservices', 'go fiber vs rust axum'],
+    title: 'Go Fiber vs Rust Axum Microservices',
+    summary: 'Go provides ultra-fast development velocity with goroutine concurrency; Rust provides deterministic sub-millisecond p99 latency with zero GC pauses.',
+    optionAName: 'Go (Fiber / Gin)',
+    optionBName: 'Rust (Axum / Tokio)',
+    dimensions: [
+      { dimension: 'P99 Latency', optionA: '1.5 - 4ms (Minor GC pauses)', optionB: '< 0.8ms (Zero GC pauses)' },
+      { dimension: 'Memory Footprint', optionA: '40 - 120 MB RAM', optionB: '12 - 25 MB RAM (Ultra lean)' },
+      { dimension: 'Development Speed', optionA: 'Very High (Simple standard library)', optionB: 'Moderate (Borrow checker, async types)' },
+      { dimension: 'Compile Times', optionA: 'Instant (< 2 seconds)', optionB: 'Longer (Monomorphization, macro expansion)' },
+    ],
+    verdict: 'Choose Go for standard B2B SaaS microservices and rapid team iteration. Choose Rust for core hot-path proxies, financial matching engines, and edge gateways.',
+    relatedBlueprintIds: ['backend-go-fiber', 'backend-rust-axum'],
+  },
+  {
+    id: 'vector-vs-hybrid',
+    keywords: ['vector vs hybrid search', 'hybrid search vs vector', 'bm25 vs vector', 'rrf vs vector search'],
+    title: 'Pure Vector Search vs Hybrid Search (BM25 + pgvector)',
+    summary: 'Vector search captures semantic intent but fails on exact codes and acronyms; Hybrid Search fuses keyword BM25 and dense vectors via RRF.',
+    optionAName: 'Hybrid Search (pgvector + BM25)',
+    optionBName: 'Pure Dense Vector Search',
+    dimensions: [
+      { dimension: 'Exact Code / SKU Matching', optionA: '100% precision via tsvector BM25', optionB: 'Frequent hallucinations on exact keywords' },
+      { dimension: 'Semantic Synonyms', optionA: 'Captured via dense cosine embeddings', optionB: 'Captured via dense cosine embeddings' },
+      { dimension: 'Recall @ K', optionA: '88% - 94% Top-5 Recall', optionB: '71% - 79% Top-5 Recall' },
+      { dimension: 'Database Overhead', optionA: 'HNSW index + GIN tsvector index', optionB: 'HNSW index only' },
+    ],
+    verdict: 'Hybrid Search with Reciprocal Rank Fusion (RRF) is mandatory for enterprise production RAG. Pure vector search should only be used for abstract semantic similarity.',
+    relatedBlueprintIds: ['rag-hybrid', 'rag-chunking'],
+  },
+  {
+    id: 'rls-vs-schema',
+    keywords: ['rls vs schema per tenant', 'multi tenant rls vs separate schema', 'database per tenant vs rls', 'multi-tenancy models'],
+    title: 'PostgreSQL Row-Level Security (RLS) vs Schema-per-Tenant',
+    summary: 'Row-Level Security enforces data isolation at the database kernel level with a single shared connection pool and zero migration nightmare.',
+    optionAName: 'Row-Level Security (RLS)',
+    optionBName: 'Schema-per-Tenant',
+    dimensions: [
+      { dimension: 'Max Tenant Scale', optionA: 'Millions of tenants', optionB: 'Degrades past ~2,000 schemas (lock contention)' },
+      { dimension: 'Database Migrations', optionA: '1 single standard migration', optionB: 'Run 1,000+ DDL migrations per deploy' },
+      { dimension: 'Connection Pooling', optionA: 'High efficiency single shared pool', optionB: 'High idle connection exhaustion' },
+      { dimension: 'Data Isolation', optionA: 'Enforced by Postgres engine kernel', optionB: 'Separate PostgreSQL namespace' },
+    ],
+    verdict: 'Use PostgreSQL Row-Level Security (RLS) for modern SaaS. It scales to millions of tenants with effortless CI/CD migrations and minimal cloud infrastructure cost.',
+    relatedBlueprintIds: ['fullstack-multi-tenant'],
+  },
+];
+
 export const ARCHITECTURAL_EXPLANATIONS: ConceptExplanation[] = [
   // --- Frontend React Blueprints ---
   {

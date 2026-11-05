@@ -1,5 +1,6 @@
 import React from 'react';
 import ChatbotLauncher from '../components/Chatbot/ChatbotLauncher';
+import ExportPdfButton from '../components/ExportPdfButton';
 import { selection } from 'd3-selection';
 import 'd3-transition';
 
@@ -37,6 +38,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
   return (
     <>
       {children}
+      <ExportPdfButton />
       <ChatbotLauncher />
     </>
   );

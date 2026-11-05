@@ -156,6 +156,40 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
                   className={`${styles.bubble} ${msg.sender === 'user' ? styles.bubbleUser : styles.bubbleBot}`}>
                   {msg.text}
 
+                  {/* Side-by-Side Architectural Tradeoff Matrix */}
+                  {msg.comparison && (
+                    <div className={styles.comparisonCard}>
+                      <div className={styles.compHeader}>
+                        <span className={styles.compBadge}>⚖️ Architectural Tradeoff</span>
+                        <div className={styles.compTitle}>{msg.comparison.title}</div>
+                      </div>
+                      <div className={styles.compTableWrapper}>
+                        <table className={styles.compTable}>
+                          <thead>
+                            <tr>
+                              <th>Metric</th>
+                              <th>{msg.comparison.optionAName}</th>
+                              <th>{msg.comparison.optionBName}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {msg.comparison.dimensions.map((dim, idx) => (
+                              <tr key={idx}>
+                                <td className={styles.dimName}>{dim.dimension}</td>
+                                <td className={styles.optionACell}>{dim.optionA}</td>
+                                <td className={styles.optionBCell}>{dim.optionB}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      <div className={styles.verdictBox}>
+                        <span className={styles.verdictLabel}>🎯 Engineering Verdict</span>
+                        <p className={styles.verdictText}>{msg.comparison.verdict}</p>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Recommendation Blueprint Cards */}
                   {msg.recommendations && msg.recommendations.length > 0 && (
                     <div className={styles.recContainer}>
@@ -236,6 +270,18 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
 
             {/* Quick Action Chips */}
             <div className={styles.quickChips}>
+              <button
+                type="button"
+                className={styles.chipBtn}
+                onClick={() => handleQuickChip('Compare DPO vs PPO')}>
+                ⚖️ DPO vs PPO
+              </button>
+              <button
+                type="button"
+                className={styles.chipBtn}
+                onClick={() => handleQuickChip('Kafka vs Redis Streams')}>
+                ⚖️ Kafka vs Redis
+              </button>
               <button
                 type="button"
                 className={styles.chipBtn}

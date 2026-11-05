@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: blueprints-postgres-pgvector
+    environment:
+      POSTGRES_USER: blueprint_user
+      POSTGRES_PASSWORD: blueprint_password
+      POSTGRES_DB: blueprints_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: >
+      postgres -c shared_buffers=256MB
+               -c work_mem=16MB
+               -c maintenance_work_mem=128MB
+               -c wal_level=logical
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U blueprint_user -d blueprints_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:

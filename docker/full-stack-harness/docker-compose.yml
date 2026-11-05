@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: harness-postgres
+    environment:
+      POSTGRES_USER: blueprint_dev
+      POSTGRES_PASSWORD: blueprint_password
+      POSTGRES_DB: blueprints_local
+    ports:
+      - "5432:5432"
+    volumes:
+      - harness_pgdata:/var/lib/postgresql/data
+      - ../postgres-pgvector/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: >
+      postgres -c shared_buffers=256MB
+               -c wal_level=logical
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: harness-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - harness_redisdata:/data
+
+  minio:
+    image: minio/minio:latest
+    container_name: harness-minio-s3
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadminpassword
+    command: server /data --console-address ":9001"
+    volumes:
+      - harness_miniodata:/data
+
+volumes:
+  harness_pgdata:
+  harness_redisdata:
+  harness_miniodata:

@@ -304,3 +304,107 @@ tr:hover td {
   background: rgba(239, 68, 68, 0.07);
   border-left-color: #ef4444;
 }
+
+/* ==========================================================================
+   EXECUTIVE PDF & PRINT EXPORT STYLESHEET
+   ========================================================================== */
+@media print {
+  /* Hide interactive web chrome */
+  .navbar,
+  footer,
+  .theme-doc-sidebar-container,
+  .theme-doc-toc-desktop,
+  .theme-doc-toc-mobile,
+  .theme-doc-breadcrumbs,
+  .pagination-nav,
+  .theme-doc-footer-edit-meta-row,
+  .floatingLauncher,
+  .chatWindow,
+  [class*='floatingLauncher'],
+  [class*='chatWindow'] {
+    display: none !important;
+  }
+
+  /* Optimize layout for standard 8.5x11 / A4 paper */
+  @page {
+    margin: 1.5cm;
+    size: A4 portrait;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+  }
+
+  main, .main-wrapper, .col {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  h1, h2, h3 {
+    color: #0f172a !important;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  h2 {
+    page-break-before: auto;
+    border-bottom: 1px solid #cbd5e1 !important;
+    padding-bottom: 6px;
+    margin-top: 24pt !important;
+  }
+
+  /* Code blocks in print */
+  .theme-code-block {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin: 12pt 0 !important;
+  }
+
+  .theme-code-block pre,
+  .theme-code-block code {
+    color: #0f172a !important;
+    font-size: 9pt !important;
+  }
+
+  /* Diagrams in print */
+  .docusaurus-mermaid-container {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    padding: 12pt !important;
+    margin: 16pt 0 !important;
+  }
+
+  .docusaurus-mermaid-container::after {
+    color: #94a3b8 !important;
+  }
+
+  /* Tables in print */
+  table {
+    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  th {
+    background: #f1f5f9 !important;
+    color: #334155 !important;
+    border-bottom: 2px solid #cbd5e1 !important;
+  }
+
+  td {
+    color: #334155 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+  }
+}

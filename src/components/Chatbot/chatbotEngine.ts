@@ -3,6 +3,8 @@ import {
   BlueprintEntry,
   UserBlueprintRequest,
   ARCHITECTURAL_EXPLANATIONS,
+  ARCHITECTURAL_COMPARISONS,
+  ArchitecturalComparison,
 } from './knowledgeBase';
 
 const STORAGE_KEY = 'software_blueprints_user_requests';
@@ -12,6 +14,7 @@ export interface ChatMessage {
   sender: 'bot' | 'user';
   text: string;
   recommendations?: BlueprintEntry[];
+  comparison?: ArchitecturalComparison;
   isRequestPrompt?: boolean;
   timestamp: string;
 }
@@ -78,6 +81,25 @@ export class ChatbotEngine {
           return { explanation: concept.explanation, entry };
         }
       }
+    }
+
+    return null;
+  }
+
+  /**
+   * Checks for matches against architectural tradeoffs (e.g. DPO vs PPO, Kafka vs Redis).
+   */
+  static findComparisonMatch(query: string): ArchitecturalComparison | null {
+    const lower = query.toLowerCase();
+
+    for (const comp of ARCHITECTURAL_COMPARISONS) {
+      const isMatch = comp.keywords.some((kw) => {
+        if (kw.includes(' ') && lower.includes(kw)) return true;
+        const regex = new RegExp(`\\b${kw}\\b`, 'i');
+        return regex.test(lower);
+      });
+
+      if (isMatch) return comp;
     }
 
     return null;
@@ -216,7 +238,24 @@ export class ChatbotEngine {
     const hasGreetingPrefix = /^(hi|hello|hey|greetings|good\s+(?:morning|afternoon|evening))\b/i.test(trimmed);
     const greetingIntro = hasGreetingPrefix ? 'Hello! ' : '';
 
-    // 3. Exact Concept Explanation Match (Delivers real architectural answer!)
+    // 3. Architectural Comparison Match (Side-by-Side Tradeoff Matrix!)
+    const comparisonMatch = this.findComparisonMatch(trimmed);
+    if (comparisonMatch) {
+      const related = comparisonMatch.relatedBlueprintIds
+        .map((id) => BLUEPRINT_CATALOG.find((b) => b.id === id))
+        .filter(Boolean) as BlueprintEntry[];
+
+      return {
+        id: `bot-${Date.now()}`,
+        sender: 'bot',
+        text: `${greetingIntro}${comparisonMatch.summary}`,
+        comparison: comparisonMatch,
+        recommendations: related,
+        timestamp: timeStr,
+      };
+    }
+
+    // 4. Exact Concept Explanation Match (Delivers real architectural answer!)
     const conceptMatch = this.findConceptMatch(trimmed);
     if (conceptMatch) {
       return {
