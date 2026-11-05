@@ -1,0 +1,8 @@
+{
+  "label": "Spring Boot 3 Microservices",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Production Java 21 & Spring Boot 3 enterprise microservices: Spring Cloud Gateway, Kafka event streaming, Resilience4j circuit breakers, and Virtual Threads."
+  }
+}

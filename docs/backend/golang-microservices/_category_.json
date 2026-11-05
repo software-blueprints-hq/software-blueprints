@@ -1,0 +1,8 @@
+{
+  "label": "Go Fiber & Redis Streams",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "High-throughput event-driven microservices using Go Fiber v3, Redis Streams consumer groups, PostgreSQL, and transactional outbox."
+  }
+}

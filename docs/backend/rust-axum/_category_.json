@@ -1,0 +1,8 @@
+{
+  "label": "Rust & Axum High-Performance",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Sub-millisecond high-concurrency microservices: Rust 2024, Axum web framework, Tokio async runtime, SQLx compile-time queries, and Tower middleware."
+  }
+}

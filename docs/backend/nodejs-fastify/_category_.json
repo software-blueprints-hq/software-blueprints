@@ -1,0 +1,8 @@
+{
+  "label": "Node.js & Fastify Enterprise",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "High-throughput TypeScript backend: Fastify (low overhead HTTP), Prisma ORM, BullMQ Redis distributed worker queues, and PostgreSQL."
+  }
+}

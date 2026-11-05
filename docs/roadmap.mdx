@@ -31,12 +31,14 @@ Enterprise-grade React component library with strict accessibility (WCAG 2.1 AA)
 ## 2. ⚙️ Backend & Distributed Services
 High-concurrency backend services, messaging architectures, and containerized API gateways.
 
-| Blueprint | Tech Stack | Status |
+| Blueprint | Tech Stack / Architecture | Status |
 | :--- | :--- | :--- |
 | **Event-Driven Microservices** | Go (Fiber v3) + Redis Streams + PostgreSQL (Outbox Pattern) | 🟢 Production |
-| **Django Enterprise Architecture** | Python + Django Rest Framework + Celery + PostgreSQL | 🟡 Reference |
-| **Spring Boot Microservices** | Java 21 + Spring Cloud + Kafka + PostgreSQL | 🟡 Reference |
-| **MERN Architecture** | Node.js + Express + MongoDB | 🟡 Reference |
+| **Django Enterprise Architecture** | Django 5 + DRF + Celery Distributed Tasks + PgBouncer | 🟢 Production |
+| **Spring Boot 3 Microservices** | Java 21 Virtual Threads + Spring Cloud + Kafka + Resilience4j | 🟢 Production |
+| **Node.js & Fastify Enterprise** | TypeScript + Fastify + Prisma ORM + BullMQ Redis Workers | 🟢 Production |
+| **Rust & Axum High-Performance** | Rust 2024 + Axum + Tokio Async + SQLx Compile-Time Checked | 🟢 Production |
+| **gRPC & Protocol Buffers IPC** | Proto3 + HTTP/2 Multiplexing + Interceptors + Deadlines | 🟢 Production |
 
 ---
 

@@ -1,0 +1,8 @@
+{
+  "label": "Django Enterprise Architecture",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Enterprise Django 5 architecture: DRF API design, Celery asynchronous distributed task queue, Redis caching, PgBouncer pooling, and Gunicorn."
+  }
+}
