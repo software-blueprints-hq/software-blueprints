@@ -35,7 +35,11 @@ const config: Config = {
     locales: ['en'],
   },
 
-  themes: ['@docusaurus/theme-live-codeblock'],
+  markdown: {
+    mermaid: true,
+  },
+
+  themes: ['@docusaurus/theme-live-codeblock', '@docusaurus/theme-mermaid'],
 
   presets: [
     [
@@ -57,6 +61,9 @@ const config: Config = {
   ],
 
   themeConfig: {
+    mermaid: {
+      theme: {light: 'neutral', dark: 'dark'},
+    },
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     colorMode: {
