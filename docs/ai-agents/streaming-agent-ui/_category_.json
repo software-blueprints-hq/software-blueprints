@@ -1,0 +1,8 @@
+{
+  "label": "Real-Time Streaming Agent UI",
+  "position": 8,
+  "link": {
+    "type": "generated-index",
+    "description": "Server-Sent Events (SSE) streaming protocols, tool call state visualization, step-by-step progress cards, and custom React client hooks."
+  }
+}

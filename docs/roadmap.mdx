@@ -50,13 +50,19 @@ Pure web application architectures with end-to-end type safety, modern ORMs, and
 ---
 
 ## 4. 🤖 AI Agents & Autonomous Loops
-Multi-step reasoning engines, tool-use harnesses, and multi-tenant agent executors.
+Multi-step reasoning engines, tool-use harnesses, agent memory, and multi-tenant agent executors.
 
-| Blueprint | Core Frameworks | Status |
+| Blueprint | Core Frameworks / Patterns | Status |
 | :--- | :--- | :--- |
 | **Agent & RAG Streaming Harness** | Next.js + FastAPI + pgvector + Vercel AI SDK | 🟢 Production |
-| **Hierarchical Multi-Agent Teams** | LangGraph + Supervisor Agent + Subagents | 🟡 Backlog |
-| **Human-in-the-Loop Approval State** | Python + State Graphs + Redis Checkpointers | 🟡 Backlog |
+| **Multi-Agent Supervisor Pattern** | LangGraph + Supervisor Agent + Subagents + Circuit Breakers | 🟢 Production |
+| **ReAct Tool-Calling Engine** | Typed Function Calling + Step Budgets + Error Feedback Loops | 🟢 Production |
+| **Human-in-the-Loop Approval State** | State Graphs + Interrupt Checkpoints + Approval Gateways | 🟢 Production |
+| **Agent Memory Architecture** | Three-Tier (Sliding Window + pgvector Long-Term + Session Store) | 🟢 Production |
+| **Observability & Distributed Tracing** | OpenTelemetry + Langfuse + Token & Latency Metrics | 🟢 Production |
+| **Agent Evaluation & Testing Framework** | Golden Datasets + Trajectory Asserts + LLM-as-a-Judge | 🟢 Production |
+| **Real-Time Streaming Agent UI & Protocol** | Server-Sent Events (SSE) + Tool Status Cards + React Hook | 🟢 Production |
+| **Agent Security & Guardrails** | Prompt Injection Defense + RBAC Tool Sandboxing + Secret Filters | 🟢 Production |
 
 ---
 

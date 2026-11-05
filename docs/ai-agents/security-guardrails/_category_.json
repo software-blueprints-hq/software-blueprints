@@ -1,0 +1,8 @@
+{
+  "label": "Agent Security & Guardrails",
+  "position": 9,
+  "link": {
+    "type": "generated-index",
+    "description": "Prompt injection defense, tool permission sandboxing, PII masking, and deterministic input/output validation guardrails."
+  }
+}
