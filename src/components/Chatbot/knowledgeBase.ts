@@ -24,6 +24,91 @@ export interface ConceptExplanation {
 }
 
 export const ARCHITECTURAL_EXPLANATIONS: ConceptExplanation[] = [
+  // --- Frontend React Blueprints ---
+  {
+    keywords: ['modal', 'modals', 'dialog', 'dialogs', 'drawer', 'drawers', 'popup', 'alertdialog'],
+    explanation: 'Modals and slide-out drawers require WAI-ARIA 1.2 compliance, focus trapping to keep keyboard tabbing within the active layer, ESC key dismissal, backdrop click-to-close, and React portal mounting outside the root DOM hierarchy to avoid CSS z-index stacking bugs.',
+    targetBlueprintId: 'ui-modals',
+  },
+  {
+    keywords: ['table', 'tables', 'data table', 'datatable', 'pagination', 'sorting', 'sortable table'],
+    explanation: 'Production data tables require accessible column headers, multi-key sorting, client-side pagination with window bounds, row selection checkboxes, and responsive horizontal scrolling with fixed column pin capabilities.',
+    targetBlueprintId: 'ui-tables',
+  },
+  {
+    keywords: ['form', 'forms', 'form validation', 'zod form', 'react hook form', 'input validation'],
+    explanation: 'Robust form architecture uses controlled state combined with schema-driven validation (Zod). Accessible forms bind htmlFor and aria-describedby to error messages, handle async server submission states, and auto-focus the first invalid field on submit.',
+    targetBlueprintId: 'ui-forms',
+  },
+  {
+    keywords: ['button', 'buttons', 'cta', 'loading button', 'icon button'],
+    explanation: 'Design system buttons feature distinct semantic variants (primary, secondary, danger, ghost), accessible focus-visible rings, icon wrappers, and built-in SVG loading spinners that disable pointer interactions while operations are pending.',
+    targetBlueprintId: 'ui-buttons',
+  },
+  {
+    keywords: ['dropdown', 'dropdowns', 'select menu', 'combobox', 'menu popup'],
+    explanation: 'Accessible dropdowns implement keyboard arrow navigation (roving tabindex), type-ahead search matching, ESC dismiss, and click-outside listeners to safely unmount floating action menus.',
+    targetBlueprintId: 'ui-dropdowns',
+  },
+  {
+    keywords: ['accordion', 'accordions', 'collapse', 'collapsible', 'faq'],
+    explanation: 'Accordion components use aria-expanded and aria-controls attributes for screen readers, provide smooth CSS grid/height transitions, and support both single-panel exclusive open and multi-panel accordion modes.',
+    targetBlueprintId: 'ui-accordions',
+  },
+  {
+    keywords: ['tab', 'tabs', 'tabbed', 'tablist'],
+    explanation: 'Tabs adhere to the WAI-ARIA Tabs pattern: Left/Right arrow keys navigate tabs, Home/End jump to ends, and panels mount lazily or preserve state with zero layout cumulative shift (CLS).',
+    targetBlueprintId: 'ui-tabs',
+  },
+  {
+    keywords: ['alert', 'alerts', 'toast', 'banner', 'notification'],
+    explanation: 'Alert components deliver contextual status feedback (info, success, warning, error) with accessible role="alert" or role="status" announcements, dismiss buttons, and optional auto-dismiss timers.',
+    targetBlueprintId: 'ui-alerts',
+  },
+  {
+    keywords: ['tooltip', 'tooltips', 'popover', 'hover tip'],
+    explanation: 'Tooltips display contextual helper text triggered on hover and keyboard focus with smart viewport edge detection, arrow alignment, and role="tooltip" accessibility binding.',
+    targetBlueprintId: 'ui-tooltips',
+  },
+  {
+    keywords: ['stats', 'stat cards', 'metrics card', 'kpi card'],
+    explanation: 'Stat cards present enterprise KPIs with positive/negative trend delta badges, numeric formatters, icon wrappers, and optional sparkline SVG visualizers.',
+    targetBlueprintId: 'ui-stats',
+  },
+
+  // --- Backend Blueprints ---
+  {
+    keywords: ['golang', 'go microservices', 'go fiber', 'goroutine', 'fasthttp'],
+    explanation: 'Go Fiber leverages fasthttp for zero-allocation routing, paired with Redis Streams consumer groups for resilient at-least-once asynchronous message delivery and isolated PostgreSQL database-per-service.',
+    targetBlueprintId: 'backend-go-fiber',
+  },
+  {
+    keywords: ['django', 'celery', 'drf', 'pgbouncer', 'gunicorn', 'django rest'],
+    explanation: 'Scaling Django requires offloading synchronous I/O to Celery background task workers (dispatched safely via transaction.on_commit()) and multiplexing connection spikes through PgBouncer in transaction pooling mode.',
+    targetBlueprintId: 'backend-django',
+  },
+  {
+    keywords: ['spring boot', 'virtual threads', 'project loom', 'kafka', 'resilience4j', 'java microservice'],
+    explanation: 'Java 21 Virtual Threads (Project Loom) allow Tomcat to serve tens of thousands of concurrent I/O requests on minimal memory with standard imperative code, protected by Resilience4j circuit breakers and Kafka streaming.',
+    targetBlueprintId: 'backend-spring-boot',
+  },
+  {
+    keywords: ['fastify', 'prisma', 'bullmq', 'nodejs backend', 'node microservices', 'express alternative'],
+    explanation: 'Fastify delivers 4x higher throughput than Express using compiled Ajv JSON schema serialization and radix tree routers, integrated with Prisma ORM and BullMQ Redis distributed worker fleets.',
+    targetBlueprintId: 'backend-nodejs-fastify',
+  },
+  {
+    keywords: ['rust', 'axum', 'tokio', 'sqlx', 'jemalloc', 'rust backend', 'rust microservice'],
+    explanation: 'When deterministic sub-millisecond p99 latencies and zero garbage collection pauses are mandatory, Rust with Axum 0.7, Tokio, and compile-time validated SQLx queries delivers unmatched performance on under 25MB RAM.',
+    targetBlueprintId: 'backend-rust-axum',
+  },
+  {
+    keywords: ['grpc', 'protobuf', 'proto3', 'http2', 'ipc', 'deadlines', 'rpc'],
+    explanation: 'Internal East-West microservice traffic achieves 7x higher serialization speeds using binary Protocol Buffers (proto3) multiplexed over persistent HTTP/2 TCP streams with strict deadline propagation.',
+    targetBlueprintId: 'backend-grpc',
+  },
+
+  // --- System Design Blueprints ---
   {
     keywords: ['rate limit', 'rate limiting', 'token bucket', 'sliding window', 'throttle', 'ddos', 'api quota', '429'],
     explanation: 'Distributed rate limiting prevents API abuse and cascading downstream failures. Simple fixed-window counters allow 2x bursts at minute boundaries; production systems use a Sliding Window Counter implemented via atomic Redis Lua scripts with an in-memory L1 cache filter to achieve sub-2ms latency.',

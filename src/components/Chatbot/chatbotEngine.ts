@@ -16,7 +16,7 @@ export interface ChatMessage {
   timestamp: string;
 }
 
-// Common English stop-words that pollute search relevance
+// Common English stop-words and conversational noise that pollute search relevance
 const STOP_WORDS = new Set([
   'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 'and', 'any', 'are', 'as', 'at',
   'be', 'because', 'been', 'before', 'being', 'below', 'between', 'both', 'but', 'by', 'can', 'could',
@@ -27,8 +27,10 @@ const STOP_WORDS = new Set([
   'over', 'own', 'same', 'she', 'should', 'so', 'some', 'such', 'than', 'that', 'the', 'their', 'theirs',
   'them', 'themselves', 'then', 'there', 'these', 'they', 'this', 'those', 'through', 'to', 'too',
   'under', 'until', 'up', 'very', 'was', 'we', 'were', 'what', 'when', 'where', 'which', 'while', 'who',
-  'whom', 'why', 'with', 'would', 'you', 'your', 'yours', 'yourself', 'yourselves', 'show', 'give',
-  'tell', 'want', 'need', 'implement', 'build', 'create', 'make', 'use', 'using', 'please', 'help',
+  'whom', 'why', 'with', 'would', 'you', 'your', 'yours', 'yourself', 'yourselves',
+  'show', 'give', 'tell', 'want', 'need', 'implement', 'build', 'create', 'make', 'use', 'using',
+  'please', 'pls', 'help', 'u', 'ur', 'got', 'get', 'see', 'look', 'looking', 'find', 'finding',
+  'hello', 'hi', 'hey', 'sup', 'yo', 'greetings', 'there', 'good', 'morning', 'evening', 'afternoon'
 ]);
 
 export class ChatbotEngine {
@@ -92,6 +94,7 @@ export class ChatbotEngine {
 
     const scored = BLUEPRINT_CATALOG.map((entry) => {
       let score = 0;
+      let matchedTokenCount = 0;
       const titleLower = entry.title.toLowerCase();
       const descLower = entry.description.toLowerCase();
       const pillarLower = entry.pillar.toLowerCase();
@@ -99,25 +102,55 @@ export class ChatbotEngine {
       for (let i = 0; i < meaningfulTokens.length; i++) {
         const rawToken = meaningfulTokens[i];
         const stemmed = stemmedTokens[i];
+        let tokenMatched = false;
 
         // 1. Direct title matches (highest confidence)
-        if (titleLower.includes(rawToken)) score += 25;
-        else if (titleLower.includes(stemmed)) score += 15;
+        if (titleLower.includes(rawToken)) {
+          score += 30;
+          tokenMatched = true;
+        } else if (titleLower.includes(stemmed)) {
+          score += 20;
+          tokenMatched = true;
+        }
 
         // 2. Tag matches
         for (const tag of entry.tags) {
           const tagStem = this.stemWord(tag);
-          if (tag === rawToken) score += 20;
-          else if (tagStem === stemmed) score += 14;
-          else if (tag.includes(rawToken) || rawToken.includes(tag)) score += 8;
+          if (tag === rawToken) {
+            score += 25;
+            tokenMatched = true;
+          } else if (tagStem === stemmed) {
+            score += 18;
+            tokenMatched = true;
+          } else if (tag.includes(rawToken) || rawToken.includes(tag)) {
+            score += 8;
+            tokenMatched = true;
+          }
         }
 
         // 3. Pillar matches
-        if (pillarLower.includes(rawToken)) score += 6;
+        if (pillarLower.includes(rawToken)) {
+          score += 6;
+          tokenMatched = true;
+        }
 
         // 4. Description matches
-        if (descLower.includes(rawToken)) score += 4;
-        else if (descLower.includes(stemmed)) score += 2;
+        if (descLower.includes(rawToken)) {
+          score += 5;
+          tokenMatched = true;
+        } else if (descLower.includes(stemmed)) {
+          score += 3;
+          tokenMatched = true;
+        }
+
+        if (tokenMatched) {
+          matchedTokenCount++;
+        }
+      }
+
+      // Strong bonus for matching multiple distinct user query terms!
+      if (matchedTokenCount > 1) {
+        score += matchedTokenCount * 30;
       }
 
       return { entry, score };
@@ -158,8 +191,14 @@ export class ChatbotEngine {
       };
     }
 
-    // 2. Greetings
-    if (['hi', 'hello', 'hey', 'start', 'help'].some((g) => lower === g || lower.startsWith(g + ' '))) {
+    // 2. Pure Greetings (ONLY triggers if the user didn't ask an actual question!)
+    const meaningfulTokens = this.extractMeaningfulTokens(trimmed);
+    const greetingWords = ['hi', 'hello', 'hey', 'start', 'help', 'hey there', 'hello there', 'sup', 'yo', 'greetings'];
+    const isPureGreeting =
+      greetingWords.includes(lower) ||
+      (meaningfulTokens.length === 0 && greetingWords.some((g) => lower.startsWith(g)));
+
+    if (isPureGreeting) {
       return {
         id: `bot-${Date.now()}`,
         sender: 'bot',
@@ -173,13 +212,17 @@ export class ChatbotEngine {
       };
     }
 
+    // Check if user included a friendly greeting prefix like "hello", "hi", "hey"
+    const hasGreetingPrefix = /^(hi|hello|hey|greetings|good\s+(?:morning|afternoon|evening))\b/i.test(trimmed);
+    const greetingIntro = hasGreetingPrefix ? 'Hello! ' : '';
+
     // 3. Exact Concept Explanation Match (Delivers real architectural answer!)
     const conceptMatch = this.findConceptMatch(trimmed);
     if (conceptMatch) {
       return {
         id: `bot-${Date.now()}`,
         sender: 'bot',
-        text: `${conceptMatch.explanation}\n\nHere is the complete blueprint with architecture diagrams, working code, and hardening checklists:`,
+        text: `${greetingIntro}${conceptMatch.explanation}\n\nHere is the complete blueprint with architecture diagrams, working code, and hardening checklists:`,
         recommendations: [conceptMatch.entry],
         timestamp: timeStr,
       };
@@ -192,7 +235,7 @@ export class ChatbotEngine {
       return {
         id: `bot-${Date.now()}`,
         sender: 'bot',
-        text: `Here are the matching production blueprints from our catalog:`,
+        text: `${greetingIntro}Here are the matching production blueprints from our catalog:`,
         recommendations: matches,
         timestamp: timeStr,
       };
