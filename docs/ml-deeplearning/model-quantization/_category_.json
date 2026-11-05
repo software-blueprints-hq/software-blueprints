@@ -1,0 +1,8 @@
+{
+  "label": "Model Quantization & Compression",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Post-training quantization: AWQ, GPTQ, native FP8 on NVIDIA Hopper/Ada, and GGUF quantization for edge inference."
+  }
+}

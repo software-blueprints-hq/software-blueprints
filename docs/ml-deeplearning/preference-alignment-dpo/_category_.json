@@ -1,0 +1,8 @@
+{
+  "label": "Alignment & Preference Optimization (DPO)",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "RLHF without reward models: Direct Preference Optimization (DPO), Odds Ratio Preference Optimization (ORPO), pairwise datasets, and alignment scoring."
+  }
+}

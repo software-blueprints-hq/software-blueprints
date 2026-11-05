@@ -1,0 +1,8 @@
+{
+  "label": "High-Throughput Inference (vLLM)",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Production LLM serving clusters: vLLM PagedAttention, Continuous Batching, Tensor Parallelism, and low-latency Envoy routing."
+  }
+}

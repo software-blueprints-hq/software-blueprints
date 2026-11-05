@@ -1,0 +1,8 @@
+{
+  "label": "Embedding & Reranker Fine-Tuning",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Domain adaptation for vector search: Matryoshka Representation Learning (MRL), MultipleNegativesRankingLoss, hard negative mining, and MTEB evaluation."
+  }
+}

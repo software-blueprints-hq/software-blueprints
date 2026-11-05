@@ -1,0 +1,8 @@
+{
+  "label": "LoRA & QLoRA Fine-Tuning",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Production fine-tuning pipelines: 4-bit NF4 QLoRA, rank and alpha selection, Unsloth / PEFT optimization, and weight merging."
+  }
+}

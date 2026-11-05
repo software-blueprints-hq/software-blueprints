@@ -81,12 +81,16 @@ Advanced document ingestion, semantic chunking, graph modeling, and low-latency 
 ---
 
 ## 6. 🔬 ML, Inference & Fine-Tuning
-Cost-effective, high-throughput model serving and parameter-efficient fine-tuning.
+Cost-effective, high-throughput model serving, parameter-efficient fine-tuning, and alignment.
 
-| Blueprint | Technologies | Status |
+| Blueprint | Technologies / Frameworks | Status |
 | :--- | :--- | :--- |
-| **vLLM Inference Serving Cluster** | vLLM + PagedAttention + Continuous Batching + FP8/AWQ | 🟢 Production |
-| **LoRA / QLoRA Fine-Tuning** | Unsloth + Hugging Face + PyTorch Distributed | 🟡 Backlog |
+| **High-Throughput Inference (vLLM)** | vLLM + PagedAttention + Continuous Batching + FP8/AWQ | 🟢 Production |
+| **LoRA & QLoRA Fine-Tuning** | 4-bit NF4 Quantization + BitsAndBytes + PEFT + SFTTrainer | 🟢 Production |
+| **Preference Alignment & DPO** | Direct Preference Optimization + Pairwise Datasets + ORPO | 🟢 Production |
+| **Model Quantization & Compression** | AWQ + FP8 (Hopper/Ada) + GPTQ + GGUF (llama.cpp) | 🟢 Production |
+| **Embedding & Reranker Fine-Tuning** | Matryoshka Representation Learning (MRL) + Hard Negative Mining | 🟢 Production |
+| **Model Evaluation & Red-Teaming** | MMLU + GSM8K + HumanEval + lm-eval + Adversarial Probes | 🟢 Production |
 
 ---
 
