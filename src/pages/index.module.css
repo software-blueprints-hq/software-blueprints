@@ -1,23 +1,397 @@
 /**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
+ * Linear / Vercel Cyber-Glass Homepage Styles
  */
 
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
+.homeContainer {
+  background-color: #06080d;
+  color: #f8fafc;
+  min-height: 100vh;
   position: relative;
   overflow: hidden;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+/* Ambient Radial Glows */
+.ambientAuraTop {
+  position: absolute;
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, rgba(139, 92, 246, 0.08) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-.buttons {
+.ambientAuraBottom {
+  position: absolute;
+  bottom: 0;
+  right: -200px;
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hero Section */
+.heroSection {
+  position: relative;
+  z-index: 1;
+  padding: 5rem 1rem 3rem 1rem;
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.pillBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #38bdf8;
+  margin-bottom: 2rem;
+  transition: all 0.2s ease;
+}
+
+.pillBadge:hover {
+  border-color: #00f0ff;
+  box-shadow: 0 0 28px rgba(6, 182, 212, 0.3);
+}
+
+.heroTitle {
+  font-size: clamp(2.5rem, 6vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  margin-bottom: 1.5rem;
+}
+
+.gradientText {
+  background: linear-gradient(135deg, #ffffff 30%, #38bdf8 70%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.heroSubtitle {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  color: #94a3b8;
+  max-width: 720px;
+  margin: 0 auto 2.5rem auto;
+}
+
+.heroCtaGroup {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  gap: 14px;
+}
+
+.primaryCta {
+  background: linear-gradient(135deg, #00f0ff, #0284c7);
+  color: #06080d !important;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 12px 26px;
+  border-radius: 12px;
+  border: none;
+  text-decoration: none !important;
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.35);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.primaryCta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(6, 182, 212, 0.55);
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+}
+
+.aiCta {
+  background: rgba(15, 23, 42, 0.85);
+  color: #f1f5f9 !important;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  text-decoration: none !important;
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aiCta:hover {
+  background: rgba(6, 182, 212, 0.12);
+  border-color: #00f0ff;
+  color: #00f0ff !important;
+  transform: translateY(-2px);
+}
+
+.secondaryCta {
+  background: rgba(255, 255, 255, 0.04);
+  color: #cbd5e1 !important;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 12px 22px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-decoration: none !important;
+  backdrop-filter: blur(12px);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.secondaryCta:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff !important;
+}
+
+/* Stats Bento Grid */
+.statsContainer {
+  position: relative;
+  z-index: 1;
+  max-width: 1140px;
+  margin: 3.5rem auto 4rem auto;
+  padding: 0 1rem;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.statCard {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 22px;
+  backdrop-filter: blur(16px);
+  transition: all 0.25s ease;
+}
+
+.statCard:hover {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(6, 182, 212, 0.3);
+  transform: translateY(-2px);
+}
+
+.statNumber {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #00f0ff;
+  margin-bottom: 4px;
+}
+
+.statLabel {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 4px;
+}
+
+.statSub {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Filter Controls */
+.filterSection {
+  position: relative;
+  z-index: 1;
+  max-width: 1140px;
+  margin: 0 auto 2.5rem auto;
+  padding: 0 1rem;
+}
+
+.filterHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.filterHeader h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.filterHeader p {
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+.pillTabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 2.5rem;
+}
+
+.filterPill {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 9999px;
+  padding: 8px 16px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filterPill:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.filterPillActive {
+  background: rgba(6, 182, 212, 0.15) !important;
+  border-color: #00f0ff !important;
+  color: #00f0ff !important;
+  box-shadow: 0 0 16px rgba(6, 182, 212, 0.2);
+}
+
+/* Pillar Showcase Cards */
+.pillarBentoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.bentoCard {
+  background: rgba(11, 15, 25, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none !important;
+  color: inherit;
+  backdrop-filter: blur(16px);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bentoCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.6), transparent);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.bentoCard:hover {
+  transform: translateY(-4px);
+  background: rgba(15, 23, 42, 0.95);
+  border-color: rgba(6, 182, 212, 0.35);
+  box-shadow: 
+    0 16px 35px -10px rgba(0, 0, 0, 0.8),
+    0 0 30px -5px rgba(6, 182, 212, 0.15);
+}
+
+.bentoCard:hover::before {
+  opacity: 1;
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.cardIcon {
+  font-size: 2rem;
+}
+
+.badgePill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  color: #c084fc;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.cardDesc {
+  font-size: 0.88rem;
+  color: #94a3b8;
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+
+.highlightList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 22px;
+}
+
+.highlightPill {
+  font-size: 0.74rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 3px 8px;
+  color: #cbd5e1;
+}
+
+.cardAction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #00f0ff;
+}
+
+.arrowIcon {
+  transition: transform 0.2s ease;
+}
+
+.bentoCard:hover .arrowIcon {
+  transform: translateX(4px);
 }

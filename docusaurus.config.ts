@@ -80,11 +80,21 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Blueprints',
+          label: 'Architecture Vault',
+        },
+        {
+          to: '/docs/roadmap',
+          label: 'Roadmap (55)',
+          position: 'left',
+        },
+        {
+          to: '/docs/getting-started',
+          label: 'Getting Started',
+          position: 'left',
         },
         {
           href: 'https://github.com/software-blueprints-hq/software-blueprints',
-          label: 'GitHub',
+          label: 'GitHub ⭐',
           position: 'right',
         },
       ],
