@@ -1,0 +1,220 @@
+---
+sidebar_position: 12
+title: "Inputs & Textareas"
+description: "Accessible, high-contrast form text inputs, floating labels, validation states, and auto-sizing textareas"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Inputs & Textareas
+
+Essential form controls designed with semantic markup, explicit labels (`<label htmlFor>`), helper text with `aria-describedby`, error state handling (`aria-invalid="true"`), and focus rings.
+
+---
+
+## 1. Text Inputs with Validation States
+
+<Tabs>
+  <TabItem value="preview" label="Preview" default>
+    <div style={{ padding: '30px', background: '#111827', borderRadius: '8px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
+        {/* Normal Input */}
+        <div>
+          <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#e5e7eb', marginBottom: '6px' }}>
+            Username
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. alex_developer"
+            style={{
+              width: '100%',
+              padding: '10px 14px',
+              borderRadius: '6px',
+              border: '1px solid #4b5563',
+              background: '#1f2937',
+              color: '#fff',
+              fontSize: '14px',
+              boxSizing: 'border-box'
+            }}
+          />
+          <span style={{ display: 'block', fontSize: '12px', color: '#9ca3af', marginTop: '4px' }}>
+            Visible across public organization profiles.
+          </span>
+        </div>
+
+        {/* Error Input */}
+        <div>
+          <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#f87171', marginBottom: '6px' }}>
+            Database URL
+          </label>
+          <input
+            type="text"
+            defaultValue="postgres://localhost"
+            aria-invalid="true"
+            style={{
+              width: '100%',
+              padding: '10px 14px',
+              borderRadius: '6px',
+              border: '1px solid #ef4444',
+              background: '#1f2937',
+              color: '#fff',
+              fontSize: '14px',
+              boxSizing: 'border-box'
+            }}
+          />
+          <span style={{ display: 'block', fontSize: '12px', color: '#ef4444', marginTop: '4px' }}>
+            Connection timed out. Check password or SSL mode.
+          </span>
+        </div>
+      </div>
+    </div>
+  </TabItem>
+  <TabItem value="code" label="Code">
+
+```jsx
+import React from 'react';
+
+export default function FormInputs({ username, dbUrl, error }) {
+  return (
+    <div className="input-grid">
+      {/* Standard Input */}
+      <div className="input-group">
+        <label htmlFor="username">Username</label>
+        <input 
+          id="username" 
+          type="text" 
+          placeholder="e.g. alex_developer" 
+          aria-describedby="username-hint"
+        />
+        <span id="username-hint" className="input-hint">Visible across public organization profiles.</span>
+      </div>
+
+      {/* Error State Input */}
+      <div className="input-group has-error">
+        <label htmlFor="db-url">Database URL</label>
+        <input 
+          id="db-url" 
+          type="text" 
+          defaultValue={dbUrl} 
+          aria-invalid={!!error}
+          aria-describedby="db-error"
+        />
+        {error && <span id="db-error" className="input-error">{error}</span>}
+      </div>
+    </div>
+  );
+}
+```
+
+```css
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #e5e7eb;
+  margin-bottom: 6px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #4b5563;
+  background: #1f2937;
+  color: #fff;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.input-group input:focus-visible {
+  outline: 2px solid #6366f1;
+}
+
+.input-hint {
+  display: block;
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+.input-group.has-error label,
+.input-error {
+  color: #ef4444;
+}
+
+.input-group.has-error input {
+  border-color: #ef4444;
+}
+.input-group.has-error input:focus-visible {
+  outline: 2px solid #ef4444;
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 2. Textarea with Character Counter
+
+<Tabs>
+  <TabItem value="preview" label="Preview" default>
+    <div style={{ padding: '30px', background: '#111827', borderRadius: '8px' }}>
+      <div style={{ maxWidth: '480px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+          <label style={{ fontSize: '13px', fontWeight: '500', color: '#e5e7eb' }}>Architecture Summary</label>
+          <span style={{ fontSize: '12px', color: '#9ca3af' }}>112 / 300</span>
+        </div>
+        <textarea
+          rows={4}
+          defaultValue="A decoupled event-driven architecture using Go Fiber for ingest and Redis Streams for consumer broadcast."
+          style={{
+            width: '100%',
+            padding: '10px 14px',
+            borderRadius: '6px',
+            border: '1px solid #4b5563',
+            background: '#1f2937',
+            color: '#fff',
+            fontSize: '14px',
+            lineHeight: '1.5',
+            boxSizing: 'border-box',
+            resize: 'vertical'
+          }}
+        />
+      </div>
+    </div>
+  </TabItem>
+  <TabItem value="code" label="Code">
+
+```jsx
+import React, { useState } from 'react';
+
+export default function TextareaWithCount({ maxLength = 300 }) {
+  const [text, setText] = useState('A decoupled event-driven architecture...');
+
+  return (
+    <div className="textarea-wrapper">
+      <div className="textarea-header">
+        <label htmlFor="arch-summary">Architecture Summary</label>
+        <span className="char-count">{text.length} / {maxLength}</span>
+      </div>
+      <textarea
+        id="arch-summary"
+        rows={4}
+        maxLength={maxLength}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+    </div>
+  );
+}
+```
+
+  </TabItem>
+</Tabs>

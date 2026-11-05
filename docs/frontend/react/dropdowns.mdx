@@ -1,0 +1,241 @@
+---
+sidebar_position: 11
+title: "Dropdowns & Select Menus"
+description: "Accessible custom Select dropdowns, Action menus, and Filter multi-selects with keyboard navigation"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Dropdowns & Select Menus
+
+Accessible, customizable dropdown components supporting single selection, status indicators, and keyboard actions (`role="menu"`, `aria-haspopup="true"`, `aria-expanded`).
+
+---
+
+## 1. Action Dropdown Menu
+
+<Tabs>
+  <TabItem value="preview" label="Preview" default>
+    <div style={{ padding: '30px', background: '#111827', borderRadius: '8px', minHeight: '220px' }}>
+      <div style={{ position: 'relative', display: 'inline-block' }}>
+        <button
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="true"
+          style={{
+            padding: '9px 16px',
+            background: '#1f2937',
+            color: '#f9fafb',
+            border: '1px solid #374151',
+            borderRadius: '6px',
+            fontWeight: '500',
+            fontSize: '14px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          Options <span>▾</span>
+        </button>
+
+        <ul
+          role="menu"
+          style={{
+            position: 'absolute',
+            top: '110%',
+            left: 0,
+            width: '200px',
+            background: '#1f2937',
+            border: '1px solid #374151',
+            borderRadius: '8px',
+            padding: '6px 0',
+            margin: 0,
+            listStyle: 'none',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.4)',
+            zIndex: 10
+          }}
+        >
+          <li role="menuitem" style={{ padding: '8px 16px', fontSize: '14px', color: '#e5e7eb', cursor: 'pointer' }}>
+            Edit Blueprint
+          </li>
+          <li role="menuitem" style={{ padding: '8px 16px', fontSize: '14px', color: '#e5e7eb', cursor: 'pointer' }}>
+            Duplicate Schema
+          </li>
+          <li role="separator" style={{ height: '1px', background: '#374151', margin: '4px 0' }}></li>
+          <li role="menuitem" style={{ padding: '8px 16px', fontSize: '14px', color: '#ef4444', cursor: 'pointer' }}>
+            Delete Resource
+          </li>
+        </ul>
+      </div>
+    </div>
+  </TabItem>
+  <TabItem value="code" label="Code">
+
+```jsx
+import React, { useState, useRef, useEffect } from 'react';
+
+export default function ActionDropdown({ onEdit, onDuplicate, onDelete }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="dropdown-container" ref={menuRef}>
+      <button 
+        type="button" 
+        className="dropdown-trigger"
+        aria-haspopup="true"
+        aria-expanded={isOpen}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        Options <span>▾</span>
+      </button>
+
+      {isOpen && (
+        <ul className="dropdown-menu" role="menu">
+          <li role="menuitem" onClick={() => { onEdit(); setIsOpen(false); }}>Edit Blueprint</li>
+          <li role="menuitem" onClick={() => { onDuplicate(); setIsOpen(false); }}>Duplicate Schema</li>
+          <li className="dropdown-divider" role="separator"></li>
+          <li role="menuitem" className="danger" onClick={() => { onDelete(); setIsOpen(false); }}>Delete Resource</li>
+        </ul>
+      )}
+    </div>
+  );
+}
+```
+
+```css
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-trigger {
+  padding: 9px 16px;
+  background: #1f2937;
+  color: #f9fafb;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dropdown-trigger:focus-visible {
+  outline: 2px solid #6366f1;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 200px;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 6px 0;
+  margin: 0;
+  list-style: none;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.dropdown-menu li[role="menuitem"] {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #e5e7eb;
+  cursor: pointer;
+}
+.dropdown-menu li[role="menuitem"]:hover {
+  background: #374151;
+}
+
+.dropdown-menu .danger {
+  color: #ef4444 !important;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: #374151;
+  margin: 4px 0;
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 2. Status Select Dropdown
+
+<Tabs>
+  <TabItem value="preview" label="Preview" default>
+    <div style={{ padding: '30px', background: '#111827', borderRadius: '8px', minHeight: '180px' }}>
+      <div style={{ maxWidth: '280px' }}>
+        <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#9ca3af', marginBottom: '6px' }}>Deployment Status</label>
+        <div style={{ position: 'relative' }}>
+          <select
+            style={{
+              width: '100%',
+              padding: '10px 14px',
+              background: '#1f2937',
+              color: '#f9fafb',
+              border: '1px solid #374151',
+              borderRadius: '6px',
+              fontSize: '14px',
+              cursor: 'pointer',
+              appearance: 'none',
+              outline: 'none'
+            }}
+          >
+            <option>🟢 Live (Healthy)</option>
+            <option>🟡 Degraded (High Latency)</option>
+            <option>🔴 Outage (Down)</option>
+            <option>⚪ Maintenance Mode</option>
+          </select>
+          <span style={{ position: 'absolute', right: '14px', top: '12px', pointerEvents: 'none', color: '#9ca3af' }}>▾</span>
+        </div>
+      </div>
+    </div>
+  </TabItem>
+  <TabItem value="code" label="Code">
+
+```jsx
+import React from 'react';
+
+export default function StatusSelect({ value, onChange }) {
+  return (
+    <div className="select-wrapper">
+      <label htmlFor="status-select">Deployment Status</label>
+      <div className="select-container">
+        <select 
+          id="status-select" 
+          value={value} 
+          onChange={(e) => onChange(e.target.value)}
+        >
+          <option value="healthy">🟢 Live (Healthy)</option>
+          <option value="degraded">🟡 Degraded (High Latency)</option>
+          <option value="outage">🔴 Outage (Down)</option>
+          <option value="maintenance">⚪ Maintenance Mode</option>
+        </select>
+        <span className="select-arrow">▾</span>
+      </div>
+    </div>
+  );
+}
+```
+
+  </TabItem>
+</Tabs>
