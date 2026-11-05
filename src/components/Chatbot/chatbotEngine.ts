@@ -1,4 +1,9 @@
-import { BLUEPRINT_CATALOG, BlueprintEntry, UserBlueprintRequest } from './knowledgeBase';
+import {
+  BLUEPRINT_CATALOG,
+  BlueprintEntry,
+  UserBlueprintRequest,
+  ARCHITECTURAL_EXPLANATIONS,
+} from './knowledgeBase';
 
 const STORAGE_KEY = 'software_blueprints_user_requests';
 
@@ -11,13 +16,79 @@ export interface ChatMessage {
   timestamp: string;
 }
 
+// Common English stop-words that pollute search relevance
+const STOP_WORDS = new Set([
+  'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 'and', 'any', 'are', 'as', 'at',
+  'be', 'because', 'been', 'before', 'being', 'below', 'between', 'both', 'but', 'by', 'can', 'could',
+  'did', 'do', 'does', 'doing', 'down', 'during', 'each', 'few', 'for', 'from', 'further', 'had', 'has',
+  'have', 'having', 'he', 'her', 'here', 'hers', 'herself', 'him', 'himself', 'his', 'how', 'i', 'if',
+  'in', 'into', 'is', 'it', 'its', 'itself', 'just', 'me', 'more', 'most', 'my', 'myself', 'no', 'nor',
+  'not', 'now', 'of', 'off', 'on', 'once', 'only', 'or', 'other', 'our', 'ours', 'ourselves', 'out',
+  'over', 'own', 'same', 'she', 'should', 'so', 'some', 'such', 'than', 'that', 'the', 'their', 'theirs',
+  'them', 'themselves', 'then', 'there', 'these', 'they', 'this', 'those', 'through', 'to', 'too',
+  'under', 'until', 'up', 'very', 'was', 'we', 'were', 'what', 'when', 'where', 'which', 'while', 'who',
+  'whom', 'why', 'with', 'would', 'you', 'your', 'yours', 'yourself', 'yourselves', 'show', 'give',
+  'tell', 'want', 'need', 'implement', 'build', 'create', 'make', 'use', 'using', 'please', 'help',
+]);
+
 export class ChatbotEngine {
   /**
-   * Searches the catalog based on fuzzy word match and tags.
+   * Normalizes words: strips punctuation and applies simple English stemming.
+   */
+  static stemWord(word: string): string {
+    return word
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '')
+      .replace(/(?:ing|ers|er|ed|es|s)$/, '');
+  }
+
+  /**
+   * Tokenizes and strips filler stop words from user query.
+   */
+  static extractMeaningfulTokens(query: string): string[] {
+    const rawTokens = query
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, ' ')
+      .split(/\s+/)
+      .filter(Boolean);
+
+    return rawTokens.filter((token) => !STOP_WORDS.has(token) && token.length > 1);
+  }
+
+  /**
+   * Checks for matches against architectural explanations.
+   */
+  static findConceptMatch(query: string): { explanation: string; entry: BlueprintEntry } | null {
+    const lower = query.toLowerCase();
+
+    for (const concept of ARCHITECTURAL_EXPLANATIONS) {
+      const isMatch = concept.keywords.some((kw) => {
+        // Exact substring match for phrases like 'rate limit' or 'virtual threads'
+        if (kw.includes(' ') && lower.includes(kw)) return true;
+        // Exact word match
+        const regex = new RegExp(`\\b${kw}\\b`, 'i');
+        return regex.test(lower);
+      });
+
+      if (isMatch) {
+        const entry = BLUEPRINT_CATALOG.find((b) => b.id === concept.targetBlueprintId);
+        if (entry) {
+          return { explanation: concept.explanation, entry };
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Searches the catalog with stemming, tag weighting, and minimum match threshold.
    */
   static searchCatalog(query: string): BlueprintEntry[] {
-    const tokens = query.toLowerCase().replace(/[^a-z0-9\s-]/g, '').split(/\s+/).filter(Boolean);
-    if (tokens.length === 0) return [];
+    const meaningfulTokens = this.extractMeaningfulTokens(query);
+    if (meaningfulTokens.length === 0) return [];
+
+    const stemmedTokens = meaningfulTokens.map(this.stemWord);
 
     const scored = BLUEPRINT_CATALOG.map((entry) => {
       let score = 0;
@@ -25,90 +96,120 @@ export class ChatbotEngine {
       const descLower = entry.description.toLowerCase();
       const pillarLower = entry.pillar.toLowerCase();
 
-      for (const token of tokens) {
-        if (titleLower.includes(token)) score += 10;
-        if (entry.tags.some((t) => t.includes(token) || token.includes(t))) score += 7;
-        if (descLower.includes(token)) score += 4;
-        if (pillarLower.includes(token)) score += 3;
+      for (let i = 0; i < meaningfulTokens.length; i++) {
+        const rawToken = meaningfulTokens[i];
+        const stemmed = stemmedTokens[i];
+
+        // 1. Direct title matches (highest confidence)
+        if (titleLower.includes(rawToken)) score += 25;
+        else if (titleLower.includes(stemmed)) score += 15;
+
+        // 2. Tag matches
+        for (const tag of entry.tags) {
+          const tagStem = this.stemWord(tag);
+          if (tag === rawToken) score += 20;
+          else if (tagStem === stemmed) score += 14;
+          else if (tag.includes(rawToken) || rawToken.includes(tag)) score += 8;
+        }
+
+        // 3. Pillar matches
+        if (pillarLower.includes(rawToken)) score += 6;
+
+        // 4. Description matches
+        if (descLower.includes(rawToken)) score += 4;
+        else if (descLower.includes(stemmed)) score += 2;
       }
 
       return { entry, score };
     });
 
+    // Enforce minimum threshold (score >= 12) so random noise never surfaces!
     return scored
-      .filter((s) => s.score > 0)
+      .filter((s) => s.score >= 12)
       .sort((a, b) => b.score - a.score)
       .map((s) => s.entry)
-      .slice(0, 4);
+      .slice(0, 3);
   }
 
   /**
-   * Generates an intelligent bot response.
+   * Generates intelligent, accurate response.
    */
   static processUserMessage(input: string): ChatMessage {
     const trimmed = input.trim();
     const lower = trimmed.toLowerCase();
+    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    // Check if the user is asking to request something new
-    const isRequestIntent = 
-      lower.includes('request') || 
-      lower.includes('can you add') || 
-      lower.includes('add a blueprint') || 
-      lower.includes('new blueprint') || 
-      lower.includes('i need a blueprint for') || 
-      lower.includes('feature request');
+    // 1. Check if user is asking to request a new blueprint/feature
+    const isRequestIntent =
+      lower.includes('request') ||
+      lower.includes('can you add') ||
+      lower.includes('add a blueprint') ||
+      lower.includes('new blueprint') ||
+      lower.includes('feature request') ||
+      lower.includes('submit request');
 
-    // 1. Explicit request intake trigger
     if (isRequestIntent) {
       return {
         id: `bot-${Date.now()}`,
         sender: 'bot',
-        text: `I'd love to help add that to our roadmap! Please fill in the quick request form below so our team can architect and implement it.`,
+        text: `I'd love to help add that to our roadmap! Fill out the quick request card below and I'll log it directly to our implementation tracker:`,
         isRequestPrompt: true,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: timeStr,
       };
     }
 
-    // 2. Greeting / Help intent
-    if (['hi', 'hello', 'hey', 'help', 'what can you do'].some((g) => lower === g || lower.startsWith(g + ' '))) {
+    // 2. Greetings
+    if (['hi', 'hello', 'hey', 'start', 'help'].some((g) => lower === g || lower.startsWith(g + ' '))) {
       return {
         id: `bot-${Date.now()}`,
         sender: 'bot',
-        text: `Hello! I am your Software Blueprints Architecture Assistant. I can help you locate production blueprints across all 7 pillars, or submit a request for new architectures you'd like us to build. What are you looking to architect today?`,
+        text: `Hello! I am your Software Blueprints Architecture Assistant. I can explain any of our 55 production patterns across all 7 pillars, point you directly to working implementations, or record new blueprint requests. What architecture or component are you designing?`,
         recommendations: [
           BLUEPRINT_CATALOG.find((b) => b.id === 'agent-supervisor')!,
           BLUEPRINT_CATALOG.find((b) => b.id === 'sys-rate-limiter')!,
-          BLUEPRINT_CATALOG.find((b) => b.id === 'rag-hybrid')!,
+          BLUEPRINT_CATALOG.find((b) => b.id === 'fullstack-multi-tenant')!,
         ].filter(Boolean),
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: timeStr,
       };
     }
 
-    // 3. Search catalog
+    // 3. Exact Concept Explanation Match (Delivers real architectural answer!)
+    const conceptMatch = this.findConceptMatch(trimmed);
+    if (conceptMatch) {
+      return {
+        id: `bot-${Date.now()}`,
+        sender: 'bot',
+        text: `${conceptMatch.explanation}\n\nHere is the complete blueprint with architecture diagrams, working code, and hardening checklists:`,
+        recommendations: [conceptMatch.entry],
+        timestamp: timeStr,
+      };
+    }
+
+    // 4. Filtered Keyword Search across catalog
     const matches = this.searchCatalog(trimmed);
 
     if (matches.length > 0) {
       return {
         id: `bot-${Date.now()}`,
         sender: 'bot',
-        text: `Here are the best matching production blueprints from our catalog for "${trimmed}":`,
+        text: `Here are the matching production blueprints from our catalog:`,
         recommendations: matches,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: timeStr,
       };
     }
 
-    // 4. No match found -> Offer to record it as a feature request!
+    // 5. No match found -> Offer to record as new request!
     return {
       id: `bot-${Date.now()}`,
       sender: 'bot',
-      text: `I couldn't find an existing blueprint directly matching "${trimmed}" in our current 55-blueprint catalog. Would you like to submit this as a new architecture request so we can build it?`,
+      text: `We don't currently have a dedicated blueprint for "${trimmed}" in our 55-blueprint catalog. Would you like to submit this as an architecture request so we can build and add it?`,
       isRequestPrompt: true,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      timestamp: timeStr,
     };
   }
 
   // -------------------------------------------------------------------------
-  // LocalStorage Request Store
+  // LocalStorage Request Store (Client-Side, Zero Cost)
   // -------------------------------------------------------------------------
 
   static saveRequest(data: { topic: string; pillar: string; details: string; contactEmail?: string }): UserBlueprintRequest {
