@@ -93,6 +93,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/calculators',
+          label: 'Calculators 🧮',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/software-blueprints-hq/software-blueprints',
           label: 'GitHub ⭐',
           position: 'right',

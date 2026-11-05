@@ -1,8 +1,12 @@
 {
-  "name": "temp-docs",
-  "version": "0.0.0",
-  "private": true,
+  "name": "software-blueprints",
+  "version": "1.0.0",
+  "description": "Open-Source System Architecture Designs and Production Engineering Vault",
+  "bin": {
+    "software-blueprints": "./bin/cli.js"
+  },
   "scripts": {
+    "cli": "node ./bin/cli.js",
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",

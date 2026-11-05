@@ -26,6 +26,38 @@
 
 ---
 
+## ⚡ CLI Scaffolder (`npx software-blueprints`)
+
+Scaffold production-tested architectures, schemas, and components directly into your project:
+
+```bash
+# List all 55 available blueprints
+npx software-blueprints list
+
+# Scaffold Distributed Rate Limiter & Token Bucket
+npx software-blueprints add sys-rate-limiter
+
+# Scaffold Multi-Agent Supervisor Pattern
+npx software-blueprints add agent-supervisor
+
+# Scaffold Accessible React Modals & Dialogs
+npx software-blueprints add ui-modals
+
+# Scaffold Multi-Tenant PostgreSQL RLS
+npx software-blueprints add fullstack-multi-tenant
+```
+
+---
+
+## 🧮 Interactive Architecture Sizing Calculators
+
+Access the live capacity modeling tools at `/calculators`:
+1. **vLLM GPU VRAM & KV-Cache Sizer:** Model weights, PagedAttention KV cache per token, Tensor Parallelism (TP) recommendation.
+2. **Distributed Rate Limiter Sizer:** Redis memory footprints, network I/O bandwidth, and cluster sharding topology.
+3. **pgvector HNSW RAM Sizer:** Raw Float32 vectors, HNSW graph index memory requirement, and recommended PostgreSQL RDS instance.
+
+---
+
 ## 🏛️ The 7 Architecture Pillars
 
 ```
