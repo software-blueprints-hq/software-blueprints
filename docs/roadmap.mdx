@@ -1,105 +1,89 @@
 ---
-sidebar_position: 2
-title: "Project Roadmap & Tasks"
+sidebar_position: 1
+title: "Master Architecture Catalog"
 ---
 
-# 🗺️ Project Roadmap & Work Division
+# 🏛️ Master Architecture & Blueprint Catalog
 
-To build **Software Blueprints** efficiently as a team, we have divided the project into three major epics. 
-
-If you are a collaborator, please claim a task from the **"To Do"** lists below. Once you start working on it, update the status, and follow the guidelines in `CONTRIBUTING.md`.
-
----
-
-## EPIC 1: UI Component Library (Frontend)
-
-We use the **Atomic Design Methodology** to build the React component library. 
-
-### Phase 1: Atoms (The Basics)
-*Status: In Progress*
-
-| Component | Assignee | Status |
-| :--- | :--- | :--- |
-| **Buttons** | Unassigned | 🟢 Done |
-| **Inputs & Textareas** | Sumukh M S | 🟢 Done |
-| **Checkboxes & Radios** | Unassigned | 🔴 To Do |
-| **Badges & Tags** | Unassigned | 🔴 To Do |
-| **Tooltips & Popovers** | Unassigned | 🔴 To Do |
-| **Typography (Headings/Text)** | Unassigned | 🔴 To Do |
-| **Avatars & Profile Icons** | Unassigned | 🔴 To Do |
-| **Spinners & Loaders** | Unassigned | 🔴 To Do |
-| **Progress Bars** | Unassigned | 🔴 To Do |
-| **Dividers & Separators** | Unassigned | 🔴 To Do |
-
-### Phase 2: Molecules (Simple Groupings)
-*Status: In Progress*
-
-| Component | Assignee | Status |
-| :--- | :--- | :--- |
-| **Cards** | Unassigned | 🟢 Done |
-| **Alerts & Notifications** | Unassigned | 🟢 Done |
-| **Forms & Auth** | Unassigned | 🟢 Done |
-| **Search Bars** | Unassigned | 🔴 To Do |
-| **Dropdowns & Select Menus** | Sumukh M S | 🟢 Done |
-| **Accordions & Collapsibles** | Unassigned | 🔴 To Do |
-| **Tabs & Pills Navigation** | Unassigned | 🔴 To Do |
-| **Pagination** | Unassigned | 🔴 To Do |
-| **Breadcrumbs** | Unassigned | 🔴 To Do |
-| **Steps & Wizards** | Unassigned | 🔴 To Do |
-
-### Phase 3: Organisms (Complex Sections)
-*Status: In Progress*
-
-| Component | Assignee | Status |
-| :--- | :--- | :--- |
-| **Navbars** | Unassigned | 🟢 Done |
-| **Hero Sections** | Unassigned | 🟢 Done |
-| **Footers** | Unassigned | 🟢 Done |
-| **Data Tables** | Unassigned | 🟢 Done |
-| **Dashboards / Stats** | Unassigned | 🟢 Done |
-| **Modals & Dialogs** | Sumukh M S | 🟢 Done |
-| **Sidebars & Drawers** | Unassigned | 🔴 To Do |
-| **Carousels & Image Sliders** | Unassigned | 🔴 To Do |
-| **Advanced Data Grids** | Unassigned | 🔴 To Do |
-| **Calendars & Date Pickers** | Unassigned | 🔴 To Do |
+This catalog serves as the definitive index of production-ready software architectures, design systems, autonomous loops, and distributed system blueprints.
 
 ---
 
-## EPIC 2: Architecture Blueprints (Backend/DevOps)
+## 1. 🎨 Frontend & UI Design Systems
+Enterprise-grade React component library with strict accessibility (WCAG 2.1 AA), semantic markup, and zero unnecessary dependencies.
 
-Standardized architectural setups for various backend frameworks.
-
-| Blueprint | Assignee | Status |
+| Category | Reference Documentation | Status |
 | :--- | :--- | :--- |
-| **MERN Stack Masterclass** | Unassigned | 🟡 Planning |
-| **Django Enterprise Setup** | Unassigned | 🟡 Planning |
-| **Spring Boot Microservices** | Unassigned | 🔴 To Do |
-| **Golang API Gateway & Event Microservices** | Sumukh M S | 🟢 Done |
-| **Next.js Full Stack (App Router)** | Unassigned | 🔴 To Do |
-| **GraphQL API (Apollo/Node)** | Unassigned | 🔴 To Do |
-| **AWS Serverless (Lambda/DynamoDB)**| Unassigned | 🔴 To Do |
+| **Buttons & Triggers** | `docs/frontend/react/buttons.mdx` | 🟢 Production |
+| **Modals, Dialogs & Drawers** | `docs/frontend/react/modals.mdx` | 🟢 Production |
+| **Dropdowns & Select Menus** | `docs/frontend/react/dropdowns.mdx` | 🟢 Production |
+| **Inputs, Textareas & Validation** | `docs/frontend/react/inputs.mdx` | 🟢 Production |
+| **Data Tables & Sortable Grids** | `docs/frontend/react/tables.mdx` | 🟢 Production |
+| **Alerts & Dynamic Notifications** | `docs/frontend/react/alerts.mdx` | 🟢 Production |
+| **Navbars & Responsive Headers** | `docs/frontend/react/navbars.mdx` | 🟢 Production |
+| **Dashboards & Metric Cards** | `docs/frontend/react/stats.mdx` | 🟢 Production |
+| **Hero & Landing Sections** | `docs/frontend/react/hero.mdx` | 🟢 Production |
+| **Forms & Authentication Screens** | `docs/frontend/react/forms.mdx` | 🟢 Production |
+| **Footers & Legal Blocks** | `docs/frontend/react/footers.mdx` | 🟢 Production |
 
 ---
 
-## EPIC 3: Full-Stack Boilerplates
+## 2. ⚙️ Backend & Distributed Services
+High-concurrency backend services, messaging architectures, and containerized API gateways.
 
-Putting the UI and Backend architectures together into deployable templates.
-
-| Boilerplate | Assignee | Status |
+| Blueprint | Tech Stack | Status |
 | :--- | :--- | :--- |
-| **AI Agent & Production RAG** (Next.js + FastAPI + pgvector) | Sumukh M S | 🟢 Done |
-| **Next.js 15, Drizzle ORM & PostgreSQL** | Sumukh M S | 🟢 Done |
-| **AI SaaS Boilerplate** (React + Django + Stripe) | Unassigned | 🔴 To Do |
-| **E-Commerce Platform** (React + Node + PostgreSQL) | Unassigned | 🔴 To Do |
-| **Internal Admin Dashboard** (React + Firebase) | Unassigned | 🔴 To Do |
-| **Creator Portfolio/Blog** (Next.js + Sanity CMS) | Unassigned | 🔴 To Do |
-| **Real-time Chat App** (React + WebSockets + Redis) | Unassigned | 🔴 To Do |
+| **Event-Driven Microservices** | Go (Fiber v3) + Redis Streams + PostgreSQL (Outbox Pattern) | 🟢 Production |
+| **Django Enterprise Architecture** | Python + Django Rest Framework + Celery + PostgreSQL | 🟡 Reference |
+| **Spring Boot Microservices** | Java 21 + Spring Cloud + Kafka + PostgreSQL | 🟡 Reference |
+| **MERN Architecture** | Node.js + Express + MongoDB | 🟡 Reference |
 
 ---
 
-## 🚀 How to Contribute
+## 3. ⚡ Full-Stack Web Architectures
+Pure web application architectures with end-to-end type safety, modern ORMs, and direct server rendering.
 
-1. **Claim a Task:** Pick any component or blueprint that is marked as `🔴 To Do`. 
-2. **Assign Yourself:** Submit a PR updating this file with your name in the `Assignee` column and changing the status to `🟡 In Progress`.
-3. **Build:** Follow the strict rules in `CONTRIBUTING.md` (Semantic HTML, Accessibility, Mobile Responsiveness, Keyboard Navigation).
-4. **Submit PR:** Open a Pull Request for code review!
+| Blueprint | Tech Stack | Status |
+| :--- | :--- | :--- |
+| **Next.js 15 & Drizzle ORM** | Next.js 15 (App Router) + React Server Components + Drizzle + PostgreSQL | 🟢 Production |
+
+---
+
+## 4. 🤖 AI Agents & Autonomous Loops
+Multi-step reasoning engines, tool-use harnesses, and multi-tenant agent executors.
+
+| Blueprint | Core Frameworks | Status |
+| :--- | :--- | :--- |
+| **Agent & RAG Streaming Harness** | Next.js + FastAPI + pgvector + Vercel AI SDK | 🟢 Production |
+| **Hierarchical Multi-Agent Teams** | LangGraph + Supervisor Agent + Subagents | 🟡 Backlog |
+| **Human-in-the-Loop Approval State** | Python + State Graphs + Redis Checkpointers | 🟡 Backlog |
+
+---
+
+## 5. 🧠 RAG Systems & Vector Search
+Advanced document ingestion, semantic chunking, and low-latency hybrid retrieval.
+
+| Blueprint | Techniques / Technologies | Status |
+| :--- | :--- | :--- |
+| **Production RAG Pipeline** | Parent-Child Chunking + pgvector HNSW + BM25 + Cross-Encoder Reranker | 🟢 Production |
+| **GraphRAG & Knowledge Graphs** | Neo4j + Vector Indexing + Entity Extraction | 🟡 Backlog |
+
+---
+
+## 6. 🔬 ML, Inference & Fine-Tuning
+Cost-effective, high-throughput model serving and parameter-efficient fine-tuning.
+
+| Blueprint | Technologies | Status |
+| :--- | :--- | :--- |
+| **vLLM Inference Serving Cluster** | vLLM + PagedAttention + Continuous Batching + FP8/AWQ | 🟢 Production |
+| **LoRA / QLoRA Fine-Tuning** | Unsloth + Hugging Face + PyTorch Distributed | 🟡 Backlog |
+
+---
+
+## 7. 🛡️ System Design & Distributed Patterns
+Architectures for ultra-high availability, resilience, and multi-region scale.
+
+| Blueprint | Key Patterns | Status |
+| :--- | :--- | :--- |
+| **Distributed Rate Limiter** | Redis Cluster + Sliding Window Counter (Atomic Lua Script) | 🟢 Production |
+| **Idempotent Payment Ledger** | PostgreSQL + Double-Entry Bookkeeping + Distributed Locks | 🟡 Backlog |
