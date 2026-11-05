@@ -1,0 +1,8 @@
+{
+  "label": "Transactional Outbox & CDC",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Solving the distributed dual-write problem: Local transactional outbox, Debezium CDC via PostgreSQL write-ahead logs (WAL), and exactly-once event delivery."
+  }
+}

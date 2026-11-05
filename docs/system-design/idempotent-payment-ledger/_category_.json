@@ -1,0 +1,8 @@
+{
+  "label": "Idempotent Payment Ledger",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Double-entry bookkeeping, ACID financial transactions, idempotency key locking, and immutable append-only ledger architecture."
+  }
+}

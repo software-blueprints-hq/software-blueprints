@@ -95,9 +95,13 @@ Cost-effective, high-throughput model serving, parameter-efficient fine-tuning, 
 ---
 
 ## 7. 🛡️ System Design & Distributed Patterns
-Architectures for ultra-high availability, resilience, and multi-region scale.
+Architectures for ultra-high availability, financial consistency, resilient messaging, and distributed coordination.
 
-| Blueprint | Key Patterns | Status |
+| Blueprint | Key Patterns / Technologies | Status |
 | :--- | :--- | :--- |
-| **Distributed Rate Limiter** | Redis Cluster + Sliding Window Counter (Atomic Lua Script) | 🟢 Production |
-| **Idempotent Payment Ledger** | PostgreSQL + Double-Entry Bookkeeping + Distributed Locks | 🟡 Backlog |
+| **Distributed Rate Limiter & Token Bucket** | Redis Cluster + Sliding Window Counter (Atomic Lua Script) | 🟢 Production |
+| **Idempotent Payment Ledger** | Double-Entry Bookkeeping + Deterministic Row Locks + ACID | 🟢 Production |
+| **Transactional Outbox & CDC Pattern** | PostgreSQL Local ACID Outbox + Debezium WAL + SKIP LOCKED | 🟢 Production |
+| **Distributed Caching & Invalidation** | Multi-Tier (L1 LRU + L2 Redis) + Single-Flight + XFetch | 🟢 Production |
+| **Distributed Locks & Fencing Tokens** | Redis Watchdog Auto-Renewal + Redlock + Monotonic Tokens | 🟢 Production |
+| **CQRS & Event Sourcing Architecture** | Append-Only Event Store + Optimistic Concurrency + Read Projections | 🟢 Production |

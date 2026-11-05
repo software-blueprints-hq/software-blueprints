@@ -1,0 +1,8 @@
+{
+  "label": "Distributed Caching & Invalidation",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Multi-tier caching patterns: Cache-Aside, Write-Through, Single-Flight thundering herd mitigation, and XFetch probabilistic early expiration."
+  }
+}

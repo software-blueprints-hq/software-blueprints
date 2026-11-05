@@ -1,0 +1,8 @@
+{
+  "label": "Distributed Rate Limiter",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "High-scale distributed rate limiting: Sliding Window Counter via atomic Redis Lua scripts, Token Bucket, and multi-region gateway integration."
+  }
+}
