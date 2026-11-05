@@ -1,0 +1,8 @@
+{
+  "label": "Enterprise Auth & Sessions",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Production full-stack authentication: NextAuth/Auth.js, OAuth2/OIDC, database session sliding windows, CSRF, and Passkey/WebAuthn architecture."
+  }
+}

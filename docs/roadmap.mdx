@@ -43,11 +43,16 @@ High-concurrency backend services, messaging architectures, and containerized AP
 ---
 
 ## 3. ⚡ Full-Stack Web Architectures
-Pure web application architectures with end-to-end type safety, modern ORMs, and direct server rendering.
+Pure web application architectures with end-to-end type safety, multi-tenancy, and distributed full-stack systems.
 
-| Blueprint | Tech Stack | Status |
+| Blueprint | Tech Stack / Architecture | Status |
 | :--- | :--- | :--- |
 | **Next.js 15 & Drizzle ORM** | Next.js 15 (App Router) + React Server Components + Drizzle + PostgreSQL | 🟢 Production |
+| **Multi-Tenant B2B SaaS Architecture** | PostgreSQL Row-Level Security (RLS) + Next.js Wildcard Subdomains | 🟢 Production |
+| **Enterprise Authentication & Sessions** | Auth.js (NextAuth v5) + Database Sliding Sessions + `__Host-` Cookies | 🟢 Production |
+| **Stripe Subscriptions & Webhook Ledger** | Stripe Hosted Checkout + Idempotent Webhook Ledger + Dunning | 🟢 Production |
+| **Real-Time Collaboration & CRDTs** | Yjs CRDTs + WebSockets + Redis Pub/Sub Backplane + Presence Awareness | 🟢 Production |
+| **Full-Stack CI/CD & Ephemeral Previews** | GitHub Actions + Neon/Supabase DB Branching + Playwright E2E | 🟢 Production |
 
 ---
 

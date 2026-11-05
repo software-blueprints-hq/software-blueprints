@@ -1,0 +1,8 @@
+{
+  "label": "Multi-Tenant B2B SaaS Architecture",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Enterprise multi-tenancy: PostgreSQL Row-Level Security (RLS), custom domain routing, organization switching, and RBAC permission models."
+  }
+}
