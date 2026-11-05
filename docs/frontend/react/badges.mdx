@@ -1,0 +1,156 @@
+---
+sidebar_position: 13
+title: "Badges, Tags & Status Pills"
+description: "Accessible status badges, animated live activity dots, and dismissible filter tags."
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Badges, Tags & Status Pills
+
+Visual status indicators, numeric counter pills, and interactive filter tags with semantic contrast ratios complying with WCAG 2.1 AA requirements.
+
+---
+
+## 1. Live Status Indicator Badges
+
+<Tabs>
+  <TabItem value="preview" label="Preview" default>
+    <div style={{ padding: '24px', background: '#111827', borderRadius: '12px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+      <span style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '6px',
+        padding: '4px 10px',
+        borderRadius: '9999px',
+        fontSize: '12px',
+        fontWeight: '500',
+        background: 'rgba(16, 185, 129, 0.1)',
+        color: '#34d399',
+        border: '1px solid rgba(16, 185, 129, 0.2)'
+      }}>
+        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} />
+        Operational
+      </span>
+      <span style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '6px',
+        padding: '4px 10px',
+        borderRadius: '9999px',
+        fontSize: '12px',
+        fontWeight: '500',
+        background: 'rgba(245, 158, 11, 0.1)',
+        color: '#fbbf24',
+        border: '1px solid rgba(245, 158, 11, 0.2)'
+      }}>
+        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b' }} />
+        Degraded Performance
+      </span>
+      <span style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '6px',
+        padding: '4px 10px',
+        borderRadius: '9999px',
+        fontSize: '12px',
+        fontWeight: '500',
+        background: 'rgba(239, 68, 68, 0.1)',
+        color: '#f87171',
+        border: '1px solid rgba(239, 68, 68, 0.2)'
+      }}>
+        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ef4444' }} />
+        Major Outage
+      </span>
+    </div>
+  </TabItem>
+  <TabItem value="code" label="Code">
+
+```jsx
+import React from 'react';
+
+const STATUS_CONFIGS = {
+  success: { bg: 'bg-emerald-950/40', text: 'text-emerald-400', border: 'border-emerald-800', dot: 'bg-emerald-500' },
+  warning: { bg: 'bg-amber-950/40', text: 'text-amber-400', border: 'border-amber-800', dot: 'bg-amber-500' },
+  danger: { bg: 'bg-rose-950/40', text: 'text-rose-400', border: 'border-rose-800', dot: 'bg-rose-500' },
+};
+
+export default function StatusBadge({ status = 'success', label }) {
+  const config = STATUS_CONFIGS[status] || STATUS_CONFIGS.success;
+
+  return (
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${config.bg} ${config.text} ${config.border}`}>
+      <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
+      {label}
+    </span>
+  );
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 2. Dismissible Filter Tags
+
+<Tabs>
+  <TabItem value="preview" label="Preview" default>
+    <div style={{ padding: '24px', background: '#111827', borderRadius: '12px', display: 'flex', gap: '10px' }}>
+      <span style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '8px',
+        padding: '5px 12px',
+        borderRadius: '6px',
+        fontSize: '13px',
+        fontWeight: '500',
+        background: '#1f2937',
+        color: '#e5e7eb',
+        border: '1px solid #374151'
+      }}>
+        Environment: Production
+        <span style={{ cursor: 'pointer', color: '#9ca3af' }}>✕</span>
+      </span>
+      <span style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '8px',
+        padding: '5px 12px',
+        borderRadius: '6px',
+        fontSize: '13px',
+        fontWeight: '500',
+        background: '#1f2937',
+        color: '#e5e7eb',
+        border: '1px solid #374151'
+      }}>
+        Region: us-east-1
+        <span style={{ cursor: 'pointer', color: '#9ca3af' }}>✕</span>
+      </span>
+    </div>
+  </TabItem>
+  <TabItem value="code" label="Code">
+
+```jsx
+import React from 'react';
+
+export default function FilterTag({ label, onRemove }) {
+  return (
+    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-200 border border-slate-700">
+      {label}
+      <button
+        type="button"
+        onClick={onRemove}
+        aria-label={`Remove filter ${label}`}
+        className="text-slate-400 hover:text-slate-100 transition-colors"
+      >
+        ✕
+      </button>
+    </span>
+  );
+}
+```
+
+  </TabItem>
+</Tabs>

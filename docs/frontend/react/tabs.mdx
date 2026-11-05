@@ -1,0 +1,312 @@
+---
+sidebar_position: 12
+title: "Tabs & Segmented Controls"
+description: "Accessible navigation tabs, pill switches, and segmented controls with keyboard ArrowLeft/ArrowRight navigation."
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Tabs & Segmented Controls
+
+Enterprise navigation tabs and segmented switches featuring strict accessibility (`role="tablist"`, `role="tab"`, `role="tabpanel"`, `aria-selected`), keyboard navigation with automatic arrow key focus management, and responsive styling.
+
+---
+
+## 1. Underlined Navigation Tabs
+
+<Tabs>
+  <TabItem value="preview" label="Preview" default>
+    <div style={{ padding: '24px', background: '#111827', borderRadius: '12px' }}>
+      <div 
+        role="tablist" 
+        aria-label="Account Settings"
+        style={{ 
+          display: 'flex', 
+          borderBottom: '1px solid #374151', 
+          gap: '24px' 
+        }}
+      >
+        <button 
+          type="button" 
+          role="tab" 
+          aria-selected="true"
+          style={{
+            padding: '12px 4px',
+            border: 'none',
+            borderBottom: '2px solid #6366f1',
+            background: 'transparent',
+            color: '#6366f1',
+            fontWeight: '600',
+            fontSize: '14px',
+            cursor: 'pointer'
+          }}
+        >
+          General
+        </button>
+        <button 
+          type="button" 
+          role="tab" 
+          aria-selected="false"
+          style={{
+            padding: '12px 4px',
+            border: 'none',
+            borderBottom: '2px solid transparent',
+            background: 'transparent',
+            color: '#9ca3af',
+            fontWeight: '500',
+            fontSize: '14px',
+            cursor: 'pointer'
+          }}
+        >
+          Team Members
+        </button>
+        <button 
+          type="button" 
+          role="tab" 
+          aria-selected="false"
+          style={{
+            padding: '12px 4px',
+            border: 'none',
+            borderBottom: '2px solid transparent',
+            background: 'transparent',
+            color: '#9ca3af',
+            fontWeight: '500',
+            fontSize: '14px',
+            cursor: 'pointer'
+          }}
+        >
+          Billing & Invoices
+        </button>
+      </div>
+      <div role="tabpanel" style={{ padding: '20px 0 0 0', color: '#e5e7eb', fontSize: '14px' }}>
+        Configure your organization preferences and default project templates.
+      </div>
+    </div>
+  </TabItem>
+  <TabItem value="code" label="Code">
+
+```jsx
+import React, { useState } from 'react';
+
+export default function UnderlinedTabs({ tabs }) {
+  const [activeTab, setActiveTab] = useState(0);
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'ArrowRight') {
+      setActiveTab((prev) => (prev + 1) % tabs.length);
+    } else if (e.key === 'ArrowLeft') {
+      setActiveTab((prev) => (prev - 1 + tabs.length) % tabs.length);
+    }
+  };
+
+  return (
+    <div className="tabs-container">
+      <div role="tablist" aria-label="Settings Navigation" className="tab-list">
+        {tabs.map((tab, idx) => (
+          <button
+            key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === idx}
+            aria-controls={`panel-${tab.id}`}
+            id={`tab-${tab.id}`}
+            tabIndex={activeTab === idx ? 0 : -1}
+            onClick={() => setActiveTab(idx)}
+            onKeyDown={(e) => handleKeyDown(e, idx)}
+            className={`tab-trigger ${activeTab === idx ? 'active' : ''}`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+      <div
+        role="tabpanel"
+        id={`panel-${tabs[activeTab].id}`}
+        aria-labelledby={`tab-${tabs[activeTab].id}`}
+        className="tab-panel"
+      >
+        {tabs[activeTab].content}
+      </div>
+    </div>
+  );
+}
+```
+
+```css
+.tabs-container {
+  width: 100%;
+}
+
+.tab-list {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid #374151;
+}
+
+.tab-trigger {
+  padding: 12px 4px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-trigger:hover {
+  color: #f3f4f6;
+}
+
+.tab-trigger.active {
+  color: #6366f1;
+  border-bottom-color: #6366f1;
+  font-weight: 600;
+}
+
+.tab-panel {
+  padding-top: 20px;
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 2. Segmented Control Switch
+
+<Tabs>
+  <TabItem value="preview" label="Preview" default>
+    <div style={{ padding: '24px', background: '#111827', borderRadius: '12px', display: 'flex', justifyContent: 'center' }}>
+      <div 
+        role="tablist" 
+        aria-label="View Mode"
+        style={{
+          display: 'inline-flex',
+          padding: '4px',
+          background: '#1f2937',
+          borderRadius: '8px',
+          border: '1px solid #374151'
+        }}
+      >
+        <button 
+          type="button" 
+          role="tab" 
+          aria-selected="true"
+          style={{
+            padding: '6px 16px',
+            border: 'none',
+            borderRadius: '6px',
+            background: '#374151',
+            color: '#ffffff',
+            fontWeight: '600',
+            fontSize: '13px',
+            cursor: 'pointer',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.3)'
+          }}
+        >
+          Daily
+        </button>
+        <button 
+          type="button" 
+          role="tab" 
+          aria-selected="false"
+          style={{
+            padding: '6px 16px',
+            border: 'none',
+            borderRadius: '6px',
+            background: 'transparent',
+            color: '#9ca3af',
+            fontWeight: '500',
+            fontSize: '13px',
+            cursor: 'pointer'
+          }}
+        >
+          Weekly
+        </button>
+        <button 
+          type="button" 
+          role="tab" 
+          aria-selected="false"
+          style={{
+            padding: '6px 16px',
+            border: 'none',
+            borderRadius: '6px',
+            background: 'transparent',
+            color: '#9ca3af',
+            fontWeight: '500',
+            fontSize: '13px',
+            cursor: 'pointer'
+          }}
+        >
+          Monthly
+        </button>
+      </div>
+    </div>
+  </TabItem>
+  <TabItem value="code" label="Code">
+
+```jsx
+import React, { useState } from 'react';
+
+export default function SegmentedControl({ options, onChange }) {
+  const [selected, setSelected] = useState(options[0].value);
+
+  const handleSelect = (val) => {
+    setSelected(val);
+    if (onChange) onChange(val);
+  };
+
+  return (
+    <div className="segmented-control" role="tablist">
+      {options.map((opt) => (
+        <button
+          key={opt.value}
+          type="button"
+          role="tab"
+          aria-selected={selected === opt.value}
+          onClick={() => handleSelect(opt.value)}
+          className={`segmented-item ${selected === opt.value ? 'active' : ''}`}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+```
+
+```css
+.segmented-control {
+  display: inline-flex;
+  padding: 4px;
+  background-color: #1f2937;
+  border-radius: 8px;
+  border: 1px solid #374151;
+}
+
+.segmented-item {
+  padding: 6px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: #9ca3af;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.segmented-item.active {
+  background-color: #374151;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+```
+
+  </TabItem>
+</Tabs>

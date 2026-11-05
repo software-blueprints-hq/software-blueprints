@@ -1,0 +1,165 @@
+---
+sidebar_position: 14
+title: "Accordions & Expandable Disclosures"
+description: "Accessible collapsible accordions and animated disclosure widgets with strict ARIA states."
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Accordions & Expandable Disclosures
+
+Expandable panels for managing large blocks of technical documentation and FAQs, built with semantic `<button>` triggers, `aria-expanded` attributes, and CSS grid transitions.
+
+---
+
+## 1. Bordered Card Accordion
+
+<Tabs>
+  <TabItem value="preview" label="Preview" default>
+    <div style={{ padding: '24px', background: '#111827', borderRadius: '12px', maxWidth: '640px', margin: '0 auto' }}>
+      <div style={{ borderRadius: '8px', border: '1px solid #374151', overflow: 'hidden', background: '#1f2937', marginBottom: '12px' }}>
+        <button 
+          type="button"
+          aria-expanded="true"
+          style={{
+            width: '100%',
+            padding: '16px 20px',
+            background: 'transparent',
+            border: 'none',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            color: '#f9fafb',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: 'pointer'
+          }}
+        >
+          What happens when a distributed rate limit is exceeded?
+          <span style={{ color: '#9ca3af' }}>▲</span>
+        </button>
+        <div style={{ padding: '0 20px 16px 20px', color: '#9ca3af', fontSize: '13px', lineHeight: '1.6' }}>
+          The API gateway returns an HTTP 429 Too Many Requests response with a standard Retry-After header and rate-limit metadata.
+        </div>
+      </div>
+
+      <div style={{ borderRadius: '8px', border: '1px solid #374151', overflow: 'hidden', background: '#1f2937' }}>
+        <button 
+          type="button"
+          aria-expanded="false"
+          style={{
+            width: '100%',
+            padding: '16px 20px',
+            background: 'transparent',
+            border: 'none',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            color: '#f9fafb',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: 'pointer'
+          }}
+        >
+          How does the Transactional Outbox guarantee atomicity?
+          <span style={{ color: '#9ca3af' }}>▼</span>
+        </button>
+      </div>
+    </div>
+  </TabItem>
+  <TabItem value="code" label="Code">
+
+```jsx
+import React, { useState } from 'react';
+
+export default function Accordion({ items }) {
+  const [openIndex, setOpenIndex] = useState(0);
+
+  const toggle = (idx) => {
+    setOpenIndex(openIndex === idx ? null : idx);
+  };
+
+  return (
+    <div className="accordion-root">
+      {items.map((item, idx) => {
+        const isOpen = openIndex === idx;
+        return (
+          <div key={item.id} className="accordion-item">
+            <h3>
+              <button
+                type="button"
+                id={`accordion-header-${item.id}`}
+                aria-expanded={isOpen}
+                aria-controls={`accordion-panel-${item.id}`}
+                onClick={() => toggle(idx)}
+                className="accordion-trigger"
+              >
+                <span>{item.title}</span>
+                <span className={`chevron ${isOpen ? 'rotated' : ''}`}>▼</span>
+              </button>
+            </h3>
+            <div
+              id={`accordion-panel-${item.id}`}
+              role="region"
+              aria-labelledby={`accordion-header-${item.id}`}
+              hidden={!isOpen}
+              className="accordion-content"
+            >
+              <div className="accordion-body">{item.content}</div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+```
+
+```css
+.accordion-root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.accordion-item {
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background-color: #1f2937;
+  overflow: hidden;
+}
+
+.accordion-trigger {
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #f9fafb;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chevron {
+  transition: transform 0.2s ease;
+  color: #9ca3af;
+}
+
+.chevron.rotated {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  padding: 0 20px 16px 20px;
+  color: #9ca3af;
+  font-size: 13px;
+  line-height: 1.6;
+}
+```
+
+  </TabItem>
+</Tabs>

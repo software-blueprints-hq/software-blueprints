@@ -1,0 +1,109 @@
+---
+sidebar_position: 15
+title: "Tooltips & Popovers"
+description: "Accessible hover tooltips and interactive popovers with arrow pointers and keyboard escape dismissals."
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Tooltips & Popovers
+
+Contextual floating tips and information popovers linked to trigger buttons via `aria-describedby` and `:focus-visible` states.
+
+---
+
+## 1. Arrow Tooltip
+
+<Tabs>
+  <TabItem value="preview" label="Preview" default>
+    <div style={{ padding: '60px 24px', background: '#111827', borderRadius: '12px', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ position: 'relative', display: 'inline-block' }}>
+        <button 
+          type="button"
+          style={{
+            padding: '9px 18px',
+            borderRadius: '6px',
+            background: '#1f2937',
+            border: '1px solid #374151',
+            color: '#f9fafb',
+            fontSize: '14px',
+            fontWeight: '500',
+            cursor: 'pointer'
+          }}
+        >
+          Hover over me
+        </button>
+        <div style={{
+          position: 'absolute',
+          bottom: '100%',
+          left: '50%',
+          transform: 'translateX(-50%) translateY(-8px)',
+          padding: '6px 12px',
+          background: '#030712',
+          border: '1px solid #374151',
+          color: '#e5e7eb',
+          borderRadius: '6px',
+          fontSize: '12px',
+          whiteSpace: 'nowrap',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.5)'
+        }}>
+          Copied to clipboard!
+        </div>
+      </div>
+    </div>
+  </TabItem>
+  <TabItem value="code" label="Code">
+
+```jsx
+import React, { useState } from 'react';
+
+export default function Tooltip({ children, text, position = 'top' }) {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <div
+      className="tooltip-wrapper"
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+      onFocus={() => setVisible(true)}
+      onBlur={() => setVisible(false)}
+    >
+      {children}
+      {visible && (
+        <div role="tooltip" className={`tooltip-bubble ${position}`}>
+          {text}
+          <div className="tooltip-arrow" />
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+```css
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-bubble {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  padding: 6px 12px;
+  background-color: #030712;
+  border: 1px solid #374151;
+  color: #e5e7eb;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  pointer-events: none;
+}
+```
+
+  </TabItem>
+</Tabs>

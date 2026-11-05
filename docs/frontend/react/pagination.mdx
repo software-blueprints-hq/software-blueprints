@@ -1,0 +1,289 @@
+---
+sidebar_position: 16
+title: "Pagination & Breadcrumbs"
+description: "Accessible multi-page navigation controls, ellipsis jump logic, and hierarchical breadcrumb trails."
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Pagination & Breadcrumbs
+
+Hierarchical navigation trails and numbered pagination controls with explicit semantic markers (`nav`, `aria-label="Breadcrumb"`, `aria-current="page"`).
+
+---
+
+## 1. Numbered Pagination Bar
+
+<Tabs>
+  <TabItem value="preview" label="Preview" default>
+    <div style={{ padding: '24px', background: '#111827', borderRadius: '12px', display: 'flex', justifyContent: 'center' }}>
+      <nav aria-label="Pagination Navigation" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+        <button 
+          type="button" 
+          disabled
+          style={{
+            padding: '8px 12px',
+            borderRadius: '6px',
+            border: '1px solid #374151',
+            background: '#1f2937',
+            color: '#6b7280',
+            fontSize: '13px',
+            cursor: 'not-allowed'
+          }}
+        >
+          Previous
+        </button>
+        <button 
+          type="button" 
+          aria-current="page"
+          style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '6px',
+            border: 'none',
+            background: '#6366f1',
+            color: '#ffffff',
+            fontWeight: '600',
+            fontSize: '13px',
+            cursor: 'pointer'
+          }}
+        >
+          1
+        </button>
+        <button 
+          type="button" 
+          style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '6px',
+            border: '1px solid #374151',
+            background: '#1f2937',
+            color: '#e5e7eb',
+            fontSize: '13px',
+            cursor: 'pointer'
+          }}
+        >
+          2
+        </button>
+        <button 
+          type="button" 
+          style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '6px',
+            border: '1px solid #374151',
+            background: '#1f2937',
+            color: '#e5e7eb',
+            fontSize: '13px',
+            cursor: 'pointer'
+          }}
+        >
+          3
+        </button>
+        <span style={{ color: '#6b7280', padding: '0 4px' }}>...</span>
+        <button 
+          type="button" 
+          style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '6px',
+            border: '1px solid #374151',
+            background: '#1f2937',
+            color: '#e5e7eb',
+            fontSize: '13px',
+            cursor: 'pointer'
+          }}
+        >
+          12
+        </button>
+        <button 
+          type="button" 
+          style={{
+            padding: '8px 12px',
+            borderRadius: '6px',
+            border: '1px solid #374151',
+            background: '#1f2937',
+            color: '#e5e7eb',
+            fontSize: '13px',
+            cursor: 'pointer'
+          }}
+        >
+          Next
+        </button>
+      </nav>
+    </div>
+  </TabItem>
+  <TabItem value="code" label="Code">
+
+```jsx
+import React from 'react';
+
+export default function Pagination({ currentPage, totalPages, onPageChange }) {
+  return (
+    <nav aria-label="Pagination" className="pagination-nav">
+      <button
+        type="button"
+        disabled={currentPage === 1}
+        onClick={() => onPageChange(currentPage - 1)}
+        className="page-button prev-next"
+      >
+        Previous
+      </button>
+
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <button
+          key={page}
+          type="button"
+          aria-current={currentPage === page ? 'page' : undefined}
+          onClick={() => onPageChange(page)}
+          className={`page-button ${currentPage === page ? 'active' : ''}`}
+        >
+          {page}
+        </button>
+      ))}
+
+      <button
+        type="button"
+        disabled={currentPage === totalPages}
+        onClick={() => onPageChange(currentPage + 1)}
+        className="page-button prev-next"
+      >
+        Next
+      </button>
+    </nav>
+  );
+}
+```
+
+```css
+.pagination-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.page-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid #374151;
+  background-color: #1f2937;
+  color: #e5e7eb;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.page-button.prev-next {
+  width: auto;
+  padding: 0 12px;
+}
+
+.page-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-button.active {
+  background-color: #6366f1;
+  border-color: #6366f1;
+  color: #ffffff;
+  font-weight: 600;
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 2. Hierarchical Breadcrumb Trail
+
+<Tabs>
+  <TabItem value="preview" label="Preview" default>
+    <div style={{ padding: '24px', background: '#111827', borderRadius: '12px' }}>
+      <nav aria-label="Breadcrumb">
+        <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
+          <li>
+            <a href="#home" style={{ color: '#9ca3af', textDecoration: 'none' }}>Home</a>
+          </li>
+          <li style={{ color: '#6b7280' }}>/</li>
+          <li>
+            <a href="#settings" style={{ color: '#9ca3af', textDecoration: 'none' }}>Settings</a>
+          </li>
+          <li style={{ color: '#6b7280' }}>/</li>
+          <li>
+            <span aria-current="page" style={{ color: '#f9fafb', fontWeight: '600' }}>Security Keys</span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </TabItem>
+  <TabItem value="code" label="Code">
+
+```jsx
+import React from 'react';
+
+export default function Breadcrumbs({ items }) {
+  return (
+    <nav aria-label="Breadcrumb">
+      <ol className="breadcrumb-list">
+        {items.map((item, index) => {
+          const isLast = index === items.length - 1;
+          return (
+            <React.Fragment key={item.href || index}>
+              <li>
+                {isLast ? (
+                  <span aria-current="page" className="breadcrumb-current">
+                    {item.label}
+                  </span>
+                ) : (
+                  <a href={item.href} className="breadcrumb-link">
+                    {item.label}
+                  </a>
+                )}
+              </li>
+              {!isLast && <li className="breadcrumb-separator" aria-hidden="true">/</li>}
+            </React.Fragment>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+```
+
+```css
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+}
+
+.breadcrumb-link {
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.breadcrumb-link:hover {
+  color: #f3f4f6;
+}
+
+.breadcrumb-separator {
+  color: #6b7280;
+}
+
+.breadcrumb-current {
+  color: #f9fafb;
+  font-weight: 600;
+}
+```
+
+  </TabItem>
+</Tabs>

@@ -1,0 +1,8 @@
+{
+  "label": "React UI Components",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Enterprise-grade React component library with strict accessibility (WCAG 2.1 AA), semantic markup, and zero unnecessary dependencies."
+  }
+}
