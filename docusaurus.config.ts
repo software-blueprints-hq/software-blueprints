@@ -41,6 +41,8 @@ const config: Config = {
 
   themes: ['@docusaurus/theme-live-codeblock', '@docusaurus/theme-mermaid'],
 
+  clientModules: ['./src/clientModules/d3-polyfill.ts'],
+
   presets: [
     [
       'classic',

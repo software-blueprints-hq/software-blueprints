@@ -217,6 +217,26 @@ export const ARCHITECTURAL_EXPLANATIONS: ConceptExplanation[] = [
     targetBlueprintId: 'backend-go-fiber',
   },
   {
+    keywords: ['clean architecture', 'go ddd', 'domain driven design', 'hexagonal', 'ports and adapters', 'go architecture'],
+    explanation: 'Clean Architecture enforces strict inward dependency flow: pure Go domain aggregates and invariants have zero dependencies on frameworks or ORMs. Use case interactors communicate through repository port interfaces backed by pgxpool PostgreSQL.',
+    targetBlueprintId: 'backend-go-clean-ddd',
+  },
+  {
+    keywords: ['worker pool', 'go worker pool', 'goroutine pool', 'backpressure', 'bounded channel', 'concurrency pool'],
+    explanation: 'Spawning unmetered goroutines causes OOM under traffic surges. Bounded worker pools utilize fixed worker fleets over buffered channels with non-blocking backpressure rejection (HTTP 429) and panic isolation to protect host memory.',
+    targetBlueprintId: 'backend-go-worker-pool',
+  },
+  {
+    keywords: ['fastapi', 'asyncpg', 'python async', 'uvloop', 'pydantic v2', 'async microservice'],
+    explanation: 'Blocking asyncio event loops with synchronous ORMs destroys Python concurrency. Production FastAPI architectures utilize asyncpg binary protocol connection pooling, compiled Pydantic v2 Rust schemas, and uvloop for sub-2ms p99 latencies.',
+    targetBlueprintId: 'backend-python-fastapi-async',
+  },
+  {
+    keywords: ['temporal', 'temporalio', 'durable execution', 'saga pattern', 'compensations', 'resilient workflows'],
+    explanation: 'Durable execution replaces fragile database state machines with event-sourced workflow history. If worker servers crash mid-flight, Temporal replays past events and resumes execution, triggering automated LIFO Saga compensations if downstream APIs fail.',
+    targetBlueprintId: 'backend-python-temporal',
+  },
+  {
     keywords: ['django', 'celery', 'drf', 'pgbouncer', 'gunicorn', 'django rest'],
     explanation: 'Scaling Django requires offloading synchronous I/O to Celery background task workers (dispatched safely via transaction.on_commit()) and multiplexing connection spikes through PgBouncer in transaction pooling mode.',
     targetBlueprintId: 'backend-django',
@@ -622,6 +642,38 @@ export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
     url: '/docs/backend/grpc-microservices/overview',
     description: 'Protocol Buffers (proto3), HTTP/2 connection multiplexing, interceptors, and deadlines.',
     tags: ['grpc', 'protobuf', 'proto3', 'http2', 'ipc', 'rpc', 'microservices'],
+  },
+  {
+    id: 'backend-go-clean-ddd',
+    title: 'Go Clean Architecture & Domain-Driven Design (DDD)',
+    pillar: 'Backend & Services',
+    url: '/docs/backend/golang-clean-architecture/overview',
+    description: 'Enterprise Go domain isolation, ports and adapters, use-case interactors, and pgxpool PostgreSQL.',
+    tags: ['go', 'golang', 'clean-architecture', 'ddd', 'domain-driven-design', 'hexagonal', 'pgx', 'ports-and-adapters'],
+  },
+  {
+    id: 'backend-go-worker-pool',
+    title: 'Go High-Concurrency Bounded Worker Pool',
+    pillar: 'Backend & Services',
+    url: '/docs/backend/golang-worker-pool/overview',
+    description: 'Generic typed worker fleet, bounded channel backpressure rejection, panic isolation, and graceful SIGTERM drain.',
+    tags: ['go', 'golang', 'worker-pool', 'concurrency', 'generics', 'channels', 'backpressure', 'goroutines'],
+  },
+  {
+    id: 'backend-python-fastapi-async',
+    title: 'Async FastAPI Microservice: asyncpg & Pydantic v2',
+    pillar: 'Backend & Services',
+    url: '/docs/backend/python-fastapi-async/overview',
+    description: 'High-throughput async Python with uvloop, asyncpg connection pooling, Pydantic v2, and Redis cache-aside.',
+    tags: ['python', 'fastapi', 'asyncpg', 'pydantic', 'async', 'uvloop', 'redis', 'postgres'],
+  },
+  {
+    id: 'backend-python-temporal',
+    title: 'Temporal.io Resilient Distributed Workflows (Python SDK)',
+    pillar: 'Backend & Services',
+    url: '/docs/backend/python-temporal-workflows/overview',
+    description: 'Durable execution state machine, activities with exponential backoff retries, and automated Saga compensation rollbacks.',
+    tags: ['python', 'temporal', 'workflows', 'saga', 'durable-execution', 'resilience', 'compensations', 'microservices'],
   },
 
   // 3. Full-Stack Web Architectures (6 blueprints)
