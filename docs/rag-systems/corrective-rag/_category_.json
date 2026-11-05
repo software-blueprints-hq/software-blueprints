@@ -1,0 +1,8 @@
+{
+  "label": "Corrective RAG & Self-Reflection",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Adaptive RAG loops: Document relevance grading, query rewriting, fallback web search, and hallucination verification."
+  }
+}

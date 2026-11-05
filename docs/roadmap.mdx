@@ -67,12 +67,16 @@ Multi-step reasoning engines, tool-use harnesses, agent memory, and multi-tenant
 ---
 
 ## 5. 🧠 RAG Systems & Vector Search
-Advanced document ingestion, semantic chunking, and low-latency hybrid retrieval.
+Advanced document ingestion, semantic chunking, graph modeling, and low-latency hybrid retrieval.
 
 | Blueprint | Techniques / Technologies | Status |
 | :--- | :--- | :--- |
-| **Production RAG Pipeline** | Parent-Child Chunking + pgvector HNSW + BM25 + Cross-Encoder Reranker | 🟢 Production |
-| **GraphRAG & Knowledge Graphs** | Neo4j + Vector Indexing + Entity Extraction | 🟡 Backlog |
+| **Hybrid Search & Reranking** | pgvector HNSW + BM25 + Reciprocal Rank Fusion + Cross-Encoder | 🟢 Production |
+| **Advanced Chunking Strategies** | Semantic Boundary Inflection + Parent-Child + AST Table Preservation | 🟢 Production |
+| **GraphRAG & Knowledge Graphs** | Neo4j Graph Modeling + Entity Extraction + Multi-Hop Cypher Traversal | 🟢 Production |
+| **Corrective RAG & Self-Reflection** | Document Grading + Query Transformation + Fallback Search + Hallucination Check | 🟢 Production |
+| **RAG Evaluation & Benchmarking** | RAG Triad (Context Relevance, Faithfulness, Answer Relevance) + MRR | 🟢 Production |
+| **Multi-Modal RAG & Vision Parsing** | Vision LLM Extraction + ColPali Visual Page Retrieval + Image Context | 🟢 Production |
 
 ---
 

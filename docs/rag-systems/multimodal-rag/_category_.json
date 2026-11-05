@@ -1,0 +1,8 @@
+{
+  "label": "Multi-Modal RAG & Vision Parsing",
+  "position": 6,
+  "link": {
+    "type": "generated-index",
+    "description": "Multi-modal retrieval architectures: ColPali / CLIP vision embeddings, PDF layout analysis, chart/table vision summarization, and unified cross-modal indexes."
+  }
+}

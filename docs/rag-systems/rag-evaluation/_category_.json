@@ -1,0 +1,8 @@
+{
+  "label": "RAG Evaluation & Benchmarking",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "RAG Triad metrics: Context Relevance, Groundedness (Faithfulness), Answer Relevance, synthetic test generation, and automated CI pipelines."
+  }
+}

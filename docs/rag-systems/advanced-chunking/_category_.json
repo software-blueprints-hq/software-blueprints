@@ -1,0 +1,8 @@
+{
+  "label": "Advanced Chunking & Ingestion",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Production chunking strategies: Fixed vs Semantic boundary splitting, Parent-Child hierarchical indexing, and structure-aware Markdown/HTML AST parsers."
+  }
+}

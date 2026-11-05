@@ -1,0 +1,8 @@
+{
+  "label": "Hybrid Search & Reranking",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Production hybrid retrieval combining dense vector search (pgvector HNSW) and sparse keyword search (BM25/tsvector) with Reciprocal Rank Fusion (RRF) and Cross-Encoder reranking."
+  }
+}
