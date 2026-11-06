@@ -116,7 +116,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout
       title="Master Architecture Vault"
-      description="63 production software architecture blueprints, distributed system designs, AI agent harnesses, and accessible React components.">
+      description="67 production software architecture blueprints, distributed system designs, AI agent harnesses, and accessible React components.">
       <div className={styles.homeContainer}>
         {/* Ambient Glow Elements */}
         <div className={styles.ambientAuraTop} />
@@ -126,7 +126,7 @@ export default function Home(): JSX.Element {
         <header className={styles.heroSection}>
           <div className={styles.pillBadge}>
             <span>✨</span>
-            <span>63 Production Blueprints • 7 Core Pillars • Zero API Costs</span>
+            <span>67 Production Blueprints • 7 Core Pillars • Zero API Costs</span>
           </div>
 
           <Heading as="h1" className={styles.heroTitle}>
@@ -161,7 +161,7 @@ export default function Home(): JSX.Element {
         <section className={styles.statsContainer}>
           <div className={styles.statsGrid}>
             <div className={styles.statCard}>
-              <div className={styles.statNumber}>63</div>
+              <div className={styles.statNumber}>67</div>
               <div className={styles.statLabel}>Production Blueprints</div>
               <p className={styles.statSub}>Zero placeholder stubs. Complete diagrams & code.</p>
             </div>

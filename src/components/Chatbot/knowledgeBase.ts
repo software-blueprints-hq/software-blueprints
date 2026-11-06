@@ -219,6 +219,38 @@ export const ARCHITECTURAL_COMPARISONS: ArchitecturalComparison[] = [
     verdict: 'Use an Edge API Gateway for all external client traffic. Only introduce a Service Mesh when East-West microservices exceed 50+ services with zero-trust mTLS requirements.',
     relatedBlueprintIds: ['sys-api-gateway'],
   },
+  {
+    id: 'tokio-actor-vs-mutex',
+    keywords: ['actor vs mutex', 'tokio actor vs arc mutex', 'rust concurrency patterns', 'actor pattern in rust'],
+    title: 'Rust Tokio Actor Model vs Shared-State Arc<Mutex<T>>',
+    summary: 'Shared-memory mutexes suffer from lock contention and potential deadlocks under scale; Tokio Actors own their state privately and communicate via bounded async channels.',
+    optionAName: 'Tokio Actor Model (mpsc channels)',
+    optionBName: 'Shared State (Arc<Mutex<T>>)',
+    dimensions: [
+      { dimension: 'Lock Contention', optionA: 'Zero (Private local memory per actor)', optionB: 'High (Threads serialize on lock acquisition)' },
+      { dimension: 'Deadlock Safety', optionA: 'Compile-time guaranteed impossible', optionB: 'Possible if locks are acquired out of order' },
+      { dimension: 'Backpressure', optionA: 'Native via bounded channel .send().await', optionB: 'Requires custom condition variables & queues' },
+      { dimension: 'Failure Boundary', optionA: 'Isolated task restart via supervisor', optionB: 'Poisoned lock can crash or corrupt process' },
+    ],
+    verdict: 'Use Tokio Actors for high-throughput streaming pipelines and stateful coordination. Reserve Arc<Mutex> for simple, low-frequency configuration state.',
+    relatedBlueprintIds: ['backend-rust-actor', 'backend-rust-axum'],
+  },
+  {
+    id: 'wasm-vs-docker',
+    keywords: ['wasm vs docker', 'webassembly vs containers', 'wasi vs docker', 'wasm microservices'],
+    title: 'WebAssembly (WASI) vs Linux Containers (Docker)',
+    summary: 'Docker provides full OS virtualization with 300ms+ cold starts; WebAssembly executes portable bytecode in sub-1ms with 10,000+ instances per GB RAM.',
+    optionAName: 'WebAssembly (WASI + Rust)',
+    optionBName: 'Linux Containers (Docker / OCI)',
+    dimensions: [
+      { dimension: 'Cold Start Latency', optionA: 'Sub-millisecond (< 1ms)', optionB: '300ms to 2,000ms' },
+      { dimension: 'Idle Memory Overhead', optionA: '< 30KB per guest instance', optionB: '40MB to 120MB per container' },
+      { dimension: 'Instance Density', optionA: '10,000+ instances per 8GB host', optionB: '~100 to 200 containers per host' },
+      { dimension: 'Security Boundary', optionA: 'Hardware-enforced linear memory sandbox', optionB: 'OS-level cgroups, namespaces, seccomp' },
+    ],
+    verdict: 'Use WebAssembly for high-density multi-tenant compute, edge transforms, and user plugins. Use Docker for legacy software and full OS system services.',
+    relatedBlueprintIds: ['backend-rust-wasm'],
+  },
 ];
 
 export const ARCHITECTURAL_EXPLANATIONS: ConceptExplanation[] = [
@@ -537,6 +569,26 @@ export const ARCHITECTURAL_EXPLANATIONS: ConceptExplanation[] = [
     explanation: 'Cloud-native API Gateways terminate TLS at the perimeter, validate cryptographic JWT signatures at the edge in < 0.2ms without database lookups, enforce Redis Token Bucket rate limiting, and stream reverse-proxied traffic with zero-copy buffer pooling in Go.',
     targetBlueprintId: 'sys-api-gateway',
   },
+  {
+    keywords: ['rust actor', 'tokio actor', 'actor pipeline', 'mpsc channels', 'zero copy bytes', 'backpressure'],
+    explanation: 'Rust high-throughput event processing uses Tokio Actors communicating via bounded mpsc channels. By eliminating shared-state mutexes, actors achieve lock-free linear CPU scaling with zero-copy bytes::Bytes buffers and panic isolation.',
+    targetBlueprintId: 'backend-rust-actor',
+  },
+  {
+    keywords: ['wasm edge', 'webassembly microservices', 'wasi', 'wasmtime', 'fuel metering', 'sandbox'],
+    explanation: 'WebAssembly (WASI) enables ultra-high density multi-tenant microservices with sub-1ms cold starts and 10,000+ isolated sandboxes per GB RAM, protected by hardware-enforced linear memory limits and CPU fuel metering.',
+    targetBlueprintId: 'backend-rust-wasm',
+  },
+  {
+    keywords: ['kafka dlq', 'dead letter queue', 'non blocking retry', 'spring kafka', 'poison pill'],
+    explanation: 'Resilient Kafka consumers prevent head-of-line partition blocking by routing failing messages to progressive retry topics with exponential backoff delays (retry-1s, retry-5s, retry-30s), finally quarantining poison pills in a dedicated DLQ.',
+    targetBlueprintId: 'backend-java-kafka-dlq',
+  },
+  {
+    keywords: ['nestjs clean architecture', 'nestjs ddd', 'nestjs cqrs', 'command bus', 'domain events'],
+    explanation: 'Enterprise NestJS applications use Clean Architecture with CQRS to decouple pure domain entities from framework decorators. Command handlers mutate aggregate roots while read queries execute fast projections, coordinated via an in-memory Domain Event Bus.',
+    targetBlueprintId: 'backend-nestjs-clean',
+  },
 ];
 
 export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
@@ -758,6 +810,38 @@ export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
     url: '/docs/backend/python-temporal-workflows/overview',
     description: 'Durable execution state machine, activities with exponential backoff retries, and automated Saga compensation rollbacks.',
     tags: ['python', 'temporal', 'workflows', 'saga', 'durable-execution', 'resilience', 'compensations', 'microservices'],
+  },
+  {
+    id: 'backend-rust-actor',
+    title: 'Rust Tokio Actor Pipeline & Zero-Allocation Queues',
+    pillar: 'Backend & Services',
+    url: '/docs/backend/rust-tokio-actor-pipeline/overview',
+    description: 'Lock-free async message passing with bounded mpsc channels, zero-copy bytes::Bytes buffers, and supervisor health heartbeats.',
+    tags: ['rust', 'actor', 'tokio', 'concurrency', 'mpsc', 'zero-copy', 'bytes', 'streaming'],
+  },
+  {
+    id: 'backend-rust-wasm',
+    title: 'Rust WebAssembly (Wasm) Edge Microservices',
+    pillar: 'Backend & Services',
+    url: '/docs/backend/rust-wasm-edge/overview',
+    description: 'Sub-millisecond cold start serverless compute with WASI, 10,000+ instances per GB RAM, fuel metering, and linear memory sandboxes.',
+    tags: ['rust', 'wasm', 'webassembly', 'wasi', 'wasmtime', 'edge', 'serverless', 'sandbox'],
+  },
+  {
+    id: 'backend-java-kafka-dlq',
+    title: 'Spring Boot & Kafka Resilient Consumer with DLQ',
+    pillar: 'Backend & Services',
+    url: '/docs/backend/java-kafka-consumer-dlq/overview',
+    description: 'Non-blocking retry topic progression with exponential backoff, manual immediate offset commits, and poison pill DLQ isolation.',
+    tags: ['java', 'spring-boot', 'kafka', 'dlq', 'dead-letter-queue', 'retryable-topic', 'event-driven'],
+  },
+  {
+    id: 'backend-nestjs-clean',
+    title: 'NestJS Enterprise Clean Architecture & CQRS',
+    pillar: 'Backend & Services',
+    url: '/docs/backend/nestjs-enterprise-clean-architecture/overview',
+    description: 'Domain-Driven Design (DDD) in TypeScript, Command/Query Handlers, Domain Event Bus dispatching, and Prisma ORM repository adapters.',
+    tags: ['nestjs', 'typescript', 'clean-architecture', 'ddd', 'cqrs', 'domain-events', 'prisma'],
   },
 
   // 3. Full-Stack Web Architectures (6 blueprints)
