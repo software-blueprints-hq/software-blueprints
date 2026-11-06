@@ -5,7 +5,7 @@
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Docusaurus](https://img.shields.io/badge/Framework-Docusaurus%20v3-green.svg)
 ![Pillars](https://img.shields.io/badge/Architecture-7%20Pillars-indigo.svg)
-![Blueprints](https://img.shields.io/badge/Total%20Blueprints-59%20Production%20Ready-emerald.svg)
+![Blueprints](https://img.shields.io/badge/Total%20Blueprints-63%20Production%20Ready-emerald.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict%20Mode-blue.svg)
 
 **The definitive production architecture vault, system design catalog, and accessible UI component reference.**
@@ -31,7 +31,7 @@
 Scaffold production-tested architectures, schemas, and components directly into your project:
 
 ```bash
-# List all 59 available blueprints
+# List all 63 available blueprints
 npx software-blueprints list
 
 # Scaffold Distributed Rate Limiter & Token Bucket
