@@ -100,6 +100,10 @@ const config: Config = {
           position: 'left',
         },
         {
+          type: 'search',
+          position: 'right',
+        },
+        {
           href: 'https://github.com/software-blueprints-hq/software-blueprints',
           label: 'GitHub ⭐',
           position: 'right',

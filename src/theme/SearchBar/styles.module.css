@@ -1,0 +1,43 @@
+.searchBarButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(13, 17, 23, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 5px 12px;
+  color: #94a3b8;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.searchBarButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #f8fafc;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.2);
+}
+
+.searchIcon {
+  width: 14px;
+  height: 14px;
+  stroke: #818cf8;
+}
+
+.searchText {
+  font-weight: 400;
+}
+
+.kbdBadge {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-family: monospace;
+  color: #cbd5e1;
+  letter-spacing: 0.5px;
+}
