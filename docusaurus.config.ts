@@ -105,6 +105,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/docs/case-studies/payment-processing-platform/overview',
+          label: 'Case Studies 🏗️',
+          position: 'left',
+        },
+        {
           to: '/docs/docker-quickstarts',
           label: 'Docker Stacks 🐳',
           position: 'left',

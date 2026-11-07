@@ -714,6 +714,27 @@ export const ARCHITECTURAL_EXPLANATIONS: ConceptExplanation[] = [
     explanation: 'Software Blueprints adheres to a rigorous 12-section technical standard: 1. Overview, 2. Architecture & Lifecycle, 3. Technology Decisions & Tradeoffs, 4. Database Design & DDL, 5. Production Implementation, 6. Scalability & Sizing, 7. Failure Engineering, 8. Security & Auth, 9. Observability & SLOs, 10. Deployment & CI/CD, 11. Testing & Load Verification, 12. Engineering Decisions (ADRs).',
     targetBlueprintId: 'sys-rate-limiter',
   },
+  // --- Case Studies Explanations ---
+  {
+    keywords: ['case study', 'case studies', 'production case studies', 'system design case study'],
+    explanation: 'Our Production Case Studies synthesize multiple standalone blueprints into end-to-end architectures: 1. Global Payment Processing Platform (Gateway + 50k RPS Rate Limiting + ACID Ledger + Outbox CDC), 2. Multi-Tenant GenAI Agent Platform (FastAPI + pgvector RRF + vLLM + RLS), and 3. Event-Driven E-Commerce Platform (Flash-sale Redis reservation + Go Clean Architecture + Kafka + Sharded Postgres).',
+    targetBlueprintId: 'case-study-payments',
+  },
+  {
+    keywords: ['payment system design', 'payment processing platform', 'how to design stripe', 'payment architecture', 'adyen architecture'],
+    explanation: 'Designing a global payment platform requires 5 coordinated layers: 1. Edge API Gateway with TLS 1.3, 2. Two-tier distributed rate limiter to block carding attacks, 3. Idempotent double-entry PostgreSQL ledger with deterministic lock ordering (ORDER BY id ASC) and engine immutability triggers, 4. Transactional Outbox CDC via Debezium, and 5. Non-blocking Kafka progressive retry topics and DLQ.',
+    targetBlueprintId: 'case-study-payments',
+  },
+  {
+    keywords: ['ai platform design', 'genai platform architecture', 'how to build enterprise rag', 'multi-tenant ai agent architecture'],
+    explanation: 'Enterprise GenAI agent platforms require sub-800ms Time-to-First-Token (TTFT) and zero cross-tenant leakage. This is achieved by combining Next.js 15, FastAPI async generators with socket disconnect cancellation, PostgreSQL 16 pgvector HNSW + BM25 Reciprocal Rank Fusion, kernel-level Row-Level Security (RLS), and vLLM GPU inference clusters with FP8 PagedAttention.',
+    targetBlueprintId: 'case-study-ai-agents',
+  },
+  {
+    keywords: ['ecommerce system design', 'flash sale architecture', 'how to design amazon', 'inventory reservation system', 'black friday architecture'],
+    explanation: 'Flash sales (100k RPS against 5,000 items) must avoid database row locking on inventory rows. Instead, stock is atomically reserved in an in-memory Redis cluster via atomic Lua scripts with lease TTLs, while orders are processed asynchronously through Go Clean Architecture, distributed Saga orchestrators with compensating transactions, and sharded PostgreSQL rings.',
+    targetBlueprintId: 'case-study-ecommerce',
+  },
 ];
 
 export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
@@ -1314,5 +1335,30 @@ export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
     url: '/docs/docker-quickstarts',
     description: '1-click runnable Docker Compose environments configured with production health checks, persistent volumes, and Prometheus metrics.',
     tags: ['docker', 'docker-compose', 'stacks', 'containers', 'local-dev', 'redis', 'postgres', 'kafka', 'qdrant'],
+  },
+  // --- Production Engineering Case Studies ---
+  {
+    id: 'case-study-payments',
+    title: 'Case Study: Resilient Global Payment Processing Platform',
+    pillar: 'Case Studies',
+    url: '/docs/case-studies/payment-processing-platform/overview',
+    description: 'End-to-end payment platform: API Gateway, 50k RPS Rate Limiting, Idempotent ACID Ledger, Outbox CDC, and Kafka DLQ for Stripe/Adyen scale.',
+    tags: ['case-study', 'case-studies', 'payment', 'payments', 'stripe', 'ledger', 'outbox', 'cdc', 'kafka', 'rate-limit', 'banking'],
+  },
+  {
+    id: 'case-study-ai-agents',
+    title: 'Case Study: Multi-Tenant GenAI Agent & Streaming RAG Platform',
+    pillar: 'Case Studies',
+    url: '/docs/case-studies/multitenant-ai-agent-platform/overview',
+    description: 'Production AI platform: Next.js 15, FastAPI async generator, pgvector RRF hybrid search, vLLM GPU inference cluster, and kernel RLS.',
+    tags: ['case-study', 'case-studies', 'ai-agent', 'rag', 'vllm', 'pgvector', 'fastapi', 'nextjs', 'multi-tenant', 'streaming', 'tokens'],
+  },
+  {
+    id: 'case-study-ecommerce',
+    title: 'Case Study: Ultra-Scale Event-Driven E-Commerce Platform',
+    pillar: 'Case Studies',
+    url: '/docs/case-studies/scalable-ecommerce-engine/overview',
+    description: 'Flash-sale infrastructure: 100k RPS inventory reservation in Redis, Go 1.23 Clean Architecture, Kafka KRaft, and sharded PostgreSQL order ring.',
+    tags: ['case-study', 'case-studies', 'ecommerce', 'flash-sale', 'inventory', 'saga', 'sharding', 'kafka', 'order', 'clean-architecture'],
   },
 ];

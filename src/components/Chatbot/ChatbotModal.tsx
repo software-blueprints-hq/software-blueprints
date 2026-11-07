@@ -297,6 +297,12 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
               <button
                 type="button"
                 className={styles.chipBtn}
+                onClick={() => handleQuickChip('Show me the production case studies')}>
+                🏗️ Case Studies
+              </button>
+              <button
+                type="button"
+                className={styles.chipBtn}
                 onClick={() => handleQuickChip('Compare DPO vs PPO')}>
                 ⚖️ DPO vs PPO
               </button>
