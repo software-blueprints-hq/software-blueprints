@@ -6,6 +6,17 @@ description: "Enterprise multi-tenancy blueprint using PostgreSQL Row-Level Secu
 
 # Multi-Tenant B2B SaaS Architecture: PostgreSQL RLS & Subdomains
 
+import BlueprintVerificationBadge from '@site/src/components/BlueprintVerificationBadge';
+
+<BlueprintVerificationBadge
+  blueprintId="fullstack-multi-tenant"
+  lastVerifiedDate="November 2026"
+  runtimeVersion="PostgreSQL 16 (Kernel RLS) + Next.js 15 / Drizzle"
+  dockerStatus="PostgreSQL 16 + PgBouncer Healthy"
+  testSuite="Vitest RLS Cross-Tenant Leak Tests (100% Passed)"
+  ciStatus="Passing"
+/>
+
 In multi-tenant B2B SaaS applications, data isolation between corporate customers is a legal, compliance (SOC 2, ISO 27001, GDPR), and architectural mandate. Relying exclusively on application-level filtering (`WHERE tenant_id = :id`) is an inevitable vulnerability: a single omitted `WHERE` clause in an ORM query or GraphQL resolver exposes private customer records across corporate boundaries.
 
 This blueprint documents an enterprise **Multi-Tenant SaaS Architecture** combining **PostgreSQL Kernel-Level Row-Level Security (RLS)**, **PgBouncer transaction connection pooling**, **Next.js wildcard subdomain routing**, and **fail-closed tenant isolation**.

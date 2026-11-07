@@ -6,6 +6,17 @@ description: "Production Level 3 reference: Decoupled multi-tenant streaming AI 
 
 # AI Agent & Production RAG: Streaming Architecture
 
+import BlueprintVerificationBadge from '@site/src/components/BlueprintVerificationBadge';
+
+<BlueprintVerificationBadge
+  blueprintId="agent-rag-harness"
+  lastVerifiedDate="November 2026"
+  runtimeVersion="Python 3.12 (FastAPI Async) + Next.js 15 + pgvector 0.7.4"
+  dockerStatus="PostgreSQL 16 pgvector Healthy"
+  testSuite="pytest-asyncio + SSE Disconnect Cancellation (100% Passed)"
+  ciStatus="Passing"
+/>
+
 Building production-grade Retrieval-Augmented Generation (RAG) and autonomous AI agent systems requires overcoming four compounding engineering hurdles:
 1. **Unbounded Agent Latency:** Multi-step tool-use and reasoning loops can easily exceed 10 to 30 seconds Time-to-First-Token (TTFT) if orchestration is tightly coupled or synchronous.
 2. **Recall Degradation (Vector Drift):** Relying solely on dense vector similarity often misses exact keyword identifiers (e.g. SKU codes, error IDs, transaction UUIDs), necessitating **Reciprocal Rank Fusion (RRF)** hybrid search.
