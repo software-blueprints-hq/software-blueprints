@@ -90,6 +90,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/explorer',
+          label: 'System Explorer ⚡',
+          position: 'left',
+        },
+        {
           to: '/docs/docker-quickstarts',
           label: 'Docker Stacks 🐳',
           position: 'left',

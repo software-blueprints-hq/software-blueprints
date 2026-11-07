@@ -38,6 +38,8 @@ Deliver an ultra-resilient Kafka event consumer capable of sustaining 10,000+ ev
 
 ## 02. High-Level Architecture & Progressive Retry Topology
 
+<ArchitectureExplorer initialSystemId="kafka-dlq" />
+
 ```mermaid
 sequenceDiagram
     autonumber

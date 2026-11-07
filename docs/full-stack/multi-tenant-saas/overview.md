@@ -35,6 +35,8 @@ Deliver complete, cryptographically isolated data boundaries for thousands of B2
 
 ## 02. High-Level Architecture & Tenant Request Lifecycle
 
+<ArchitectureExplorer initialSystemId="multi-tenant-saas" />
+
 ```mermaid
 sequenceDiagram
     autonumber

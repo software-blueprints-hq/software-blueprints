@@ -35,6 +35,8 @@ Protect mission-critical core microservices (e.g., checkout engines, billing led
 
 ## 02. High-Level Architecture & Request Lifecycle
 
+<ArchitectureExplorer initialSystemId="rate-limiter" />
+
 ```mermaid
 sequenceDiagram
     autonumber

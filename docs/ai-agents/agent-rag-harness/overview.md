@@ -41,6 +41,8 @@ Deliver an ultra-low latency, multi-tenant RAG agent capable of streaming real-t
 
 ## 02. End-to-End Architecture & Streaming Request Lifecycle
 
+<ArchitectureExplorer initialSystemId="ai-rag-agent" />
+
 ```mermaid
 sequenceDiagram
     autonumber
