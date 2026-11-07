@@ -873,6 +873,8 @@ volumes:
 
 ## 11. Testing & Verification Suite
 
+<BenchmarkRepository initialReportId="go-clean-architecture-25k" />
+
 ### 1. Pure Domain Unit Test (Zero Mocks, 0ms Execution)
 
 ```go

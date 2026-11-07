@@ -393,6 +393,8 @@ volumes:
 
 ## 11. Testing & Tenant Isolation Chaos Suite
 
+<BenchmarkRepository initialReportId="postgres-rls-100k-tenants" />
+
 Save this automated integration test under `tests/tenant-isolation.test.ts`. It mathematically proves zero data leaks:
 
 ```typescript

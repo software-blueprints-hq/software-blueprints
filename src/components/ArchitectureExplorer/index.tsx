@@ -143,6 +143,37 @@ export default function ArchitectureExplorer({ initialSystemId }: ArchitectureEx
               <code style={{ fontSize: '0.75rem', color: '#c084fc' }}>{activeSimulation.recoveryProcedure}</code>
             </div>
           </div>
+
+          {/* Production Failure Laboratory Timeline */}
+          {activeSimulation.timelineSteps && activeSimulation.timelineSteps.length > 0 && (
+            <div className={styles.timelineLaboratory}>
+              <h4 className={styles.timelineLabTitle}>
+                🔬 Incident Laboratory: Real-Time State Transition Timeline
+              </h4>
+              <div className={styles.timelineStepper}>
+                {activeSimulation.timelineSteps.map((step, idx) => (
+                  <div key={idx} className={styles.timelineStepCard}>
+                    <div className={styles.timelineStepTop}>
+                      <span className={styles.timelineOffsetBadge}>{step.timeOffset}</span>
+                      <span className={`${styles.timelinePhaseBadge} ${styles['phase_' + step.phase]}`}>
+                        {step.phase.replace('_', ' ')}
+                      </span>
+                    </div>
+                    <h5 className={styles.timelineStepTitle}>{step.eventTitle}</h5>
+                    <p className={styles.timelineStepAction}>{step.systemAction}</p>
+                    <div className={styles.timelineStepTelemetry}>
+                      <span className={styles.telemetryLabel}>Telemetry:</span> {step.activeTelemetry}
+                    </div>
+                    {step.residualRisk && (
+                      <div className={styles.timelineStepRisk}>
+                        <span className={styles.riskLabel}>Residual Risk:</span> {step.residualRisk}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 

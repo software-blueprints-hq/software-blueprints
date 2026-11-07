@@ -100,6 +100,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/benchmarks',
+          label: 'Benchmarks 📊',
+          position: 'left',
+        },
+        {
           to: '/docs/docker-quickstarts',
           label: 'Docker Stacks 🐳',
           position: 'left',

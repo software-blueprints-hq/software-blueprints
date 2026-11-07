@@ -37,6 +37,15 @@ export interface ArchitectureComponent {
   blueprintTitle: string;
 }
 
+export interface TimelineStep {
+  timeOffset: string;
+  phase: 'DETECTION' | 'CONTAINMENT' | 'STATE_TRANSITION' | 'RECOVERY' | 'POST_INCIDENT';
+  eventTitle: string;
+  systemAction: string;
+  activeTelemetry: string;
+  residualRisk: string;
+}
+
 export interface FailureSimulation {
   id: string;
   label: string;
@@ -48,6 +57,7 @@ export interface FailureSimulation {
   prometheusAlert: string;
   resilienceMechanism: string;
   recoveryProcedure: string;
+  timelineSteps: TimelineStep[];
 }
 
 export interface SystemArchitecture {
@@ -258,7 +268,49 @@ export const SYSTEM_ARCHITECTURES: SystemArchitecture[] = [
         impactSummary: 'Gateway engages fail-open circuit breaker with local negative cache protection. Upstream fleet remains safe; healthy replica promotes to master in 1.2 seconds.',
         prometheusAlert: 'alert: RedisClusterMasterUnavailable (severity: critical)',
         resilienceMechanism: 'Dual-tier fallback: Envoy switches to local 100 RPS emergency token bucket while Sentinel/Cluster gossip auto-promotes replica.',
-        recoveryProcedure: 'redis-cli -p 7001 CLUSTER FAILOVER TAKEOVER && redis-cli cluster check localhost:7000'
+        recoveryProcedure: 'redis-cli -p 7001 CLUSTER FAILOVER TAKEOVER && redis-cli cluster check localhost:7000',
+        timelineSteps: [
+          {
+            timeOffset: 'T+0ms',
+            phase: 'DETECTION',
+            eventTitle: 'Primary Redis Node SIGKILL / OOM Crash',
+            systemAction: 'Master Redis node handling hash slots 0-5460 abruptly closes TCP socket.',
+            activeTelemetry: 'Envoy upstream_cx_connect_fail spikes; healthchecks time out.',
+            residualRisk: 'Active in-flight token increments in socket buffer dropped.'
+          },
+          {
+            timeOffset: 'T+15ms',
+            phase: 'CONTAINMENT',
+            eventTitle: 'Envoy Circuit Breaker & Negative Cache Activated',
+            systemAction: 'Envoy rate limit filter trips circuit breaker to fail-open mode; tier-1 in-memory negative cache shields backend.',
+            activeTelemetry: 'Prometheus: ratelimit_circuit_breaker_opened_total counter incremented.',
+            residualRisk: 'Unblocked new IPs permitted temporarily at local 100 RPS fallback limit.'
+          },
+          {
+            timeOffset: 'T+800ms',
+            phase: 'STATE_TRANSITION',
+            eventTitle: 'Cluster Gossip Quorum & Failover Election',
+            systemAction: 'Remaining 5 Redis nodes detect master timeout (NODE_TIMEOUT=1000ms); replica node initiates election takeover.',
+            activeTelemetry: 'Redis Cluster logs: FAIL state broadcasted; CLUSTERMSG_TYPE_FAILOVER_AUTH_REQUEST received.',
+            residualRisk: 'Hash slots 0-5460 in read-only transition state.'
+          },
+          {
+            timeOffset: 'T+1800ms',
+            phase: 'RECOVERY',
+            eventTitle: 'Replica Promoted to Primary Master',
+            systemAction: 'Replica completes promotion, claims slot range 0-5460, and broadcasts new cluster topology to Envoy.',
+            activeTelemetry: 'Envoy redis cluster client receives MOVED redirection and updates slot routing table.',
+            residualRisk: 'Asynchronous replication lag may permit ~5-10 duplicate token allowances.'
+          },
+          {
+            timeOffset: 'T+6000ms',
+            phase: 'POST_INCIDENT',
+            eventTitle: 'Normal 50,000 RPS Line Speed Resumed',
+            systemAction: 'Circuit breaker resets to CLOSED; all 16,384 hash slots serving live traffic with P99 < 2ms.',
+            activeTelemetry: 'Prometheus alert RedisClusterMasterUnavailable automatically resolves.',
+            residualRisk: 'Need to spin up replacement replica to restore high-availability redundancy.'
+          }
+        ]
       },
       {
         id: 'botnet-attack',
@@ -270,7 +322,33 @@ export const SYSTEM_ARCHITECTURES: SystemArchitecture[] = [
         impactSummary: 'Tier-1 local negative cache absorbs 82% of repeats without Redis traffic. Redis atomic Lua rejects remainder. Upstream services see 0 extra load.',
         prometheusAlert: 'alert: RateLimitDropsHighSurge (severity: warning)',
         resilienceMechanism: 'Tier-1 local LRU negative cache stores blocked hashes for 2s, short-circuiting network round-trips.',
-        recoveryProcedure: 'Inspect Grafana RateLimiter dashboard; dynamically push IP CIDR ban to Cloudflare edge WAF.'
+        recoveryProcedure: 'Inspect Grafana RateLimiter dashboard; dynamically push IP CIDR ban to Cloudflare edge WAF.',
+        timelineSteps: [
+          {
+            timeOffset: 'T+0ms',
+            phase: 'DETECTION',
+            eventTitle: 'Botnet Ingress Surge (100,000 RPS)',
+            systemAction: 'Attacker launches credential stuffing across 50,000 distributed IP addresses.',
+            activeTelemetry: 'Ingress bandwidth surges from 18 MB/s to 42 MB/s.',
+            residualRisk: 'Threat of Gateway CPU saturation.'
+          },
+          {
+            timeOffset: 'T+50ms',
+            phase: 'CONTAINMENT',
+            eventTitle: 'Tier-1 Local LRU Negative Cache Shielding',
+            systemAction: 'Gateway local cache rejects 82% of repeat queries in < 10μs without network round-trips.',
+            activeTelemetry: 'Prometheus: local_cache_hit_ratio rises to 82.4%; Redis QPS capped at 18k.',
+            residualRisk: 'First-time unique IPs still reach Redis.'
+          },
+          {
+            timeOffset: 'T+500ms',
+            phase: 'RECOVERY',
+            eventTitle: 'Atomic Lua Script Quota Enforcement',
+            systemAction: 'Redis ZSET atomic script evaluates remaining requests, returning HTTP 429 Too Many Requests.',
+            activeTelemetry: 'Zero requests beyond quota reach upstream microservice fleet.',
+            residualRisk: 'None. Backend latency stays flat at P95 < 25ms.'
+          }
+        ]
       }
     ]
   },
@@ -472,7 +550,49 @@ export const SYSTEM_ARCHITECTURES: SystemArchitecture[] = [
         impactSummary: 'ErrorHandlingDeserializer intercepts poison pill. Message bypasses all retries and routes to DLQ in 4ms. Partition 3 advances immediately; zero HoL blocking!',
         prometheusAlert: 'alert: KafkaDlqPoisonPillsDetected (severity: warning)',
         resilienceMechanism: 'Spring Kafka ErrorHandlingDeserializer passes DeserializationException header to @RetryableTopic, which excludes fatal errors.',
-        recoveryProcedure: 'Inspect PostgreSQL kafka_dlq_quarantine table; fix producer serialization bug; replay using CLI runbook.'
+        recoveryProcedure: 'Inspect PostgreSQL kafka_dlq_quarantine table; fix producer serialization bug; replay using CLI runbook.',
+        timelineSteps: [
+          {
+            timeOffset: 'T+0ms',
+            phase: 'DETECTION',
+            eventTitle: 'Malformed Poison Pill Ingested into Partition 3',
+            systemAction: 'Producer publishes malformed byte array with invalid JSON syntax into orders.events partition 3.',
+            activeTelemetry: 'Consumer poll returns batch of 250 records containing poison pill at offset 891,204.',
+            residualRisk: 'In naive consumers, partition 3 is now completely blocked.'
+          },
+          {
+            timeOffset: 'T+4ms',
+            phase: 'CONTAINMENT',
+            eventTitle: 'ErrorHandlingDeserializer Interception',
+            systemAction: 'ErrorHandlingDeserializer intercepts byte parse exception, attaches DeserializationException header, and delegates to @RetryableTopic.',
+            activeTelemetry: 'Spring Kafka logs: Fatal payload detected, bypassing progressive delay topics.',
+            residualRisk: 'None. Worker thread never halts.'
+          },
+          {
+            timeOffset: 'T+12ms',
+            phase: 'STATE_TRANSITION',
+            eventTitle: 'Terminal Quarantine to orders.events-dlq',
+            systemAction: 'DeadLetterPublishingRecoverer publishes poisoned payload with full stack trace and original partition/offset to orders.events-dlq.',
+            activeTelemetry: 'Prometheus: kafka_dlq_messages_quarantined_total counter incremented.',
+            residualRisk: 'Poison payload safely isolated; awaiting SRE triage.'
+          },
+          {
+            timeOffset: 'T+25ms',
+            phase: 'RECOVERY',
+            eventTitle: 'Immediate Partition Offset Advancement',
+            systemAction: 'Consumer fleet invokes ack.acknowledge(), committing offset 891,204 and continuing with remaining 249 valid records at line speed.',
+            activeTelemetry: 'Consumer lag on partition 3 stays < 20 records. Zero Head-of-Line blocking.',
+            residualRisk: 'Zero. Main order pipeline unaffected.'
+          },
+          {
+            timeOffset: 'T+100ms',
+            phase: 'POST_INCIDENT',
+            eventTitle: 'Quarantine Audit Persisted & PagerDuty Alert Fired',
+            systemAction: 'DLQ listener persists payload and headers to PostgreSQL kafka_dlq_quarantine table; PagerDuty alert fires for on-call SRE.',
+            activeTelemetry: 'Prometheus alert: KafkaDlqPoisonPillsDetected active.',
+            residualRisk: 'Requires upstream producer bugfix before replaying record.'
+          }
+        ]
       },
       {
         id: 'db-timeout',
@@ -484,7 +604,33 @@ export const SYSTEM_ARCHITECTURES: SystemArchitecture[] = [
         impactSummary: 'Failing records are forwarded to orders.events-retry-1000. Offsets on orders.events commit immediately. Partition throughput stays at 10,000 eps!',
         prometheusAlert: 'alert: KafkaConsumerLagWarning (severity: info)',
         resilienceMechanism: 'Non-blocking progressive retry pipeline offloads failed records to delayed topics with exponential backoff.',
-        recoveryProcedure: 'Investigate DB locks via pg_stat_activity; retry listener clears events once lock clears.'
+        recoveryProcedure: 'Investigate DB locks via pg_stat_activity; retry listener clears events once lock clears.',
+        timelineSteps: [
+          {
+            timeOffset: 'T+0ms',
+            phase: 'DETECTION',
+            eventTitle: 'PostgreSQL Transient Lock Timeout (503)',
+            systemAction: 'Main consumer worker throws TransientDataAccessException during SQL INSERT into orders table.',
+            activeTelemetry: 'Spring Kafka detects retryable exception matching @RetryableTopic include list.',
+            residualRisk: 'Risk of stalling partition if retried in-place.'
+          },
+          {
+            timeOffset: 'T+8ms',
+            phase: 'CONTAINMENT',
+            eventTitle: 'Non-Blocking Progressive Forwarding',
+            systemAction: 'Record republished to orders.events-retry-1000 with backoff headers; main partition offset committed immediately.',
+            activeTelemetry: 'Main topic consumer advances to next record with 0ms stall.',
+            residualRisk: 'Temporary lag accumulation on retry topic.'
+          },
+          {
+            timeOffset: 'T+1000ms',
+            phase: 'RECOVERY',
+            eventTitle: 'First Delayed Retry Attempt Clears',
+            systemAction: 'Retry listener polls record after 1,000ms delay header expires; database lock cleared, transaction succeeds.',
+            activeTelemetry: 'Retry offset committed; message resolved without reaching DLQ.',
+            residualRisk: 'None. Order processed successfully.'
+          }
+        ]
       }
     ]
   },
@@ -613,7 +759,33 @@ export const SYSTEM_ARCHITECTURES: SystemArchitecture[] = [
         impactSummary: 'PostgreSQL kernel evaluates `NULLIF(\'\', \'\')` -> evaluates to NULL. RLS policy returns 0 rows. Absolute fail-closed safety!',
         prometheusAlert: 'alert: EmptyTenantContextQuery (severity: warning)',
         resilienceMechanism: 'Fail-closed RLS design: empty setting returns NULL; condition `organization_id = NULL` evaluates to FALSE.',
-        recoveryProcedure: 'Audit application query wrapper; ensure withTenantContext surrounds all database calls.'
+        recoveryProcedure: 'Audit application query wrapper; ensure withTenantContext surrounds all database calls.',
+        timelineSteps: [
+          {
+            timeOffset: 'T+0ms',
+            phase: 'DETECTION',
+            eventTitle: 'Buggy Query Execution Without Context',
+            systemAction: 'Application issues SELECT * FROM projects without scoping transaction session variable.',
+            activeTelemetry: 'PgBouncer checks out pooled connection with empty transaction session variable.',
+            residualRisk: 'Potential cross-tenant leakage in naive database designs.'
+          },
+          {
+            timeOffset: 'T+2ms',
+            phase: 'CONTAINMENT',
+            eventTitle: 'Kernel-Level RLS Policy Evaluation',
+            systemAction: 'PostgreSQL kernel evaluates NULLIF(current_setting(\'app.current_tenant_id\', true), \'\') -> evaluates to NULL.',
+            activeTelemetry: 'PostgreSQL query plan: Filter: (organization_id = NULL) evaluates to FALSE for all rows.',
+            residualRisk: 'Zero rows returned; fail-closed guarantee mathematically holds.'
+          },
+          {
+            timeOffset: 'T+8ms',
+            phase: 'RECOVERY',
+            eventTitle: 'Fail-Closed Empty Result Returned',
+            systemAction: 'Query returns HTTP 200 with empty array [] or HTTP 403 Forbidden; zero cross-tenant records exposed.',
+            activeTelemetry: 'Security log records query without tenant context.',
+            residualRisk: 'Zero security exposure; developer bug contained.'
+          }
+        ]
       }
     ]
   },
@@ -743,7 +915,33 @@ export const SYSTEM_ARCHITECTURES: SystemArchitecture[] = [
         impactSummary: 'FastAPI circuit breaker trips in < 150ms and seamlessly switches inference stream to Anthropic Claude 3.5 Sonnet. Client stream never disconnects.',
         prometheusAlert: 'alert: LLMProviderErrorRateCritical (severity: page)',
         resilienceMechanism: 'Multi-provider fallback executor in async agent pipeline.',
-        recoveryProcedure: 'Verify OpenAI status page; automatic reset occurs after 60s probe.'
+        recoveryProcedure: 'Verify OpenAI status page; automatic reset occurs after 60s probe.',
+        timelineSteps: [
+          {
+            timeOffset: 'T+0ms',
+            phase: 'DETECTION',
+            eventTitle: 'Primary LLM API Returns HTTP 503 Overloaded',
+            systemAction: 'FastAPI async streaming client receives HTTP 503 Service Unavailable on POST /chat/completions.',
+            activeTelemetry: 'Circuit breaker detects consecutive provider failures (failure_count=3).',
+            residualRisk: 'Active client SSE connection waiting for first token.'
+          },
+          {
+            timeOffset: 'T+120ms',
+            phase: 'CONTAINMENT',
+            eventTitle: 'Circuit Breaker Trips & Routes to Secondary Provider',
+            systemAction: 'FastAPI orchestrator trips circuit breaker to Claude 3.5 Sonnet fallback route with formatted prompt and context.',
+            activeTelemetry: 'Prometheus: llm_provider_fallback_triggered_total incremented.',
+            residualRisk: 'Slight latency increase (+120ms) for first token delivery.'
+          },
+          {
+            timeOffset: 'T+450ms',
+            phase: 'RECOVERY',
+            eventTitle: 'Streaming First Token Delivered to Client UI',
+            systemAction: 'Fallback stream emits first chunk data: {"type":"token","delta":"The system "} over SSE; useChat() renders smoothly.',
+            activeTelemetry: 'Client connection stays open; zero dropped user queries.',
+            residualRisk: 'Different token pricing and model nuance on secondary provider.'
+          }
+        ]
       }
     ]
   }

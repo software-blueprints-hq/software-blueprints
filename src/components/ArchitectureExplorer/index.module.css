@@ -600,3 +600,134 @@
   margin-bottom: 0.5rem;
   font-family: var(--ifm-font-family-sans);
 }
+
+/* Production Failure Laboratory Timeline */
+.timelineLaboratory {
+  margin-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1rem;
+}
+
+.timelineLabTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fda4af;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timelineStepper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem;
+}
+
+.timelineStepCard {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  position: relative;
+}
+
+.timelineStepTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timelineOffsetBadge {
+  font-family: var(--ifm-font-family-monospace);
+  font-weight: 800;
+  font-size: 0.75rem;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.timelinePhaseBadge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.phase_DETECTION {
+  background: rgba(244, 63, 94, 0.2);
+  color: #f43f5e;
+  border: 1px solid rgba(244, 63, 94, 0.4);
+}
+
+.phase_CONTAINMENT {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.phase_STATE_TRANSITION {
+  background: rgba(139, 92, 246, 0.2);
+  color: #c084fc;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+}
+
+.phase_RECOVERY {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.phase_POST_INCIDENT {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.timelineStepTitle {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.timelineStepAction {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.timelineStepTelemetry {
+  font-size: 0.72rem;
+  color: #cbd5e1;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 4px 6px;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+}
+
+.telemetryLabel {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.timelineStepRisk {
+  font-size: 0.7rem;
+  color: #fca5a5;
+  background: rgba(244, 63, 94, 0.08);
+  padding: 4px 6px;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+}
+
+.riskLabel {
+  font-weight: 700;
+  color: #f87171;
+}

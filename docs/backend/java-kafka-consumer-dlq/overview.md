@@ -836,6 +836,8 @@ spec:
 
 ## 11. Testing & Chaos Verification Suite (Testcontainers)
 
+<BenchmarkRepository initialReportId="kafka-consumer-10k-eps" />
+
 The following runnable integration test spins up a containerized KRaft Kafka instance, emits both valid events, transient error payloads, and poison pills, asserting that the poison pill is successfully quarantined to `orders.events-dlq` within 3 seconds without stalling subsequent valid messages.
 
 ```java
