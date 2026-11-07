@@ -653,6 +653,67 @@ export const ARCHITECTURAL_EXPLANATIONS: ConceptExplanation[] = [
     explanation: 'Enterprise NestJS applications use Clean Architecture with CQRS to decouple pure domain entities from framework decorators. Command handlers mutate aggregate roots while read queries execute fast projections, coordinated via an in-memory Domain Event Bus.',
     targetBlueprintId: 'backend-nestjs-clean',
   },
+  // --- Platform Capabilities, Sizing Suite, Incident Lab & Readiness ---
+  {
+    keywords: ['calculator', 'calculators', 'capacity planning', 'sizing suite', 'sizing', 'hardware sizing'],
+    explanation: 'Our 5-Pillar Architecture Sizing Suite provides production capacity calculators: vLLM GPU VRAM & KV-Cache Sizer, Distributed Rate Limiter Sizer, pgvector HNSW RAM Sizer, Kafka Partition & Storage Sizer, and Database Sharding Ring Sizer.',
+    targetBlueprintId: 'tool-calculators',
+  },
+  {
+    keywords: ['kafka sizing', 'partition sizing', 'kafka capacity', 'kafka storage calculation', 'how many partitions'],
+    explanation: 'Kafka topic partitions are sized using Partitions = ceil(Throughput_MBps / 5MBps). Sizing must account for replication factor (typically 3x), 25% safety headroom for log indexes/compaction, and consumer group count for network egress. Never exceed 2,000 partitions per broker to avoid rebalance stalls during rolling restarts.',
+    targetBlueprintId: 'tool-calculators',
+  },
+  {
+    keywords: ['vllm sizing', 'vram sizing', 'gpu sizing', 'kv cache sizing', 'pagedattention memory', 'how much vram'],
+    explanation: 'LLM inference memory consists of Model Weights (params * precision bytes) + KV-Cache (2 * layers * kv_heads * head_dim * precision * tokens * concurrency) + CUDA/PagedAttention runtime overhead (15% or min 2GB). fp8 weights cut VRAM by ~50% compared to fp16, allowing larger batch concurrency without OOM.',
+    targetBlueprintId: 'tool-calculators',
+  },
+  {
+    keywords: ['pgvector sizing', 'hnsw ram sizing', 'hnsw memory', 'shared_buffers pgvector', 'vector database ram'],
+    explanation: 'For high recall (> 95%) and sub-10ms queries, the entire HNSW index graph must fit inside PostgreSQL shared_buffers / Linux page cache. Sizing formula: HNSW_Bytes = Vector_Count * (Vector_Bytes + 2 * M * 4 + 32) * 1.15. For 1M 1536-dim OpenAI vectors with M=16, the graph requires ~7.68 GB of dedicated RAM.',
+    targetBlueprintId: 'tool-calculators',
+  },
+  {
+    keywords: ['rate limit sizing', 'redis memory sizing', 'rate limiter ram', 'rate limit calculation'],
+    explanation: 'Redis rate limiting memory depends on algorithm choice: Sliding Window (Sorted Sets) requires ~120-400 bytes per active user key, while Token Bucket (Hashes) requires ~64 bytes per user key. Adding a 2-tier local Go/Node LRU negative cache filters up to 80% of read traffic, protecting Redis from hot-key saturation.',
+    targetBlueprintId: 'tool-calculators',
+  },
+  {
+    keywords: ['database sharding sizing', 'shard count', 'ketama vnodes', 'how many shards'],
+    explanation: 'Database sharding should only be adopted once single-node datasets exceed 500GB. Keep physical shards between 100GB to 250GB to ensure autovacuum completes in minutes and point-in-time recovery remains under 30 minutes. Use Ketama consistent hashing with 150-250 virtual nodes per shard to achieve < 2.5% partition distribution variance.',
+    targetBlueprintId: 'tool-calculators',
+  },
+  {
+    keywords: ['system explorer', 'architecture explorer', 'failure simulation', 'incident lab', 'fault injection', 'explorer'],
+    explanation: 'The Interactive Architecture Explorer allows you to inspect deep component internals (I/O contracts, latency budgets, failure modes, code snippets) and simulate real-world failure transitions: Redis Primary Crash, Kafka Broker Eviction, Poison-Pill DLQ Divert, and Multi-Region Split-Brain Isolation.',
+    targetBlueprintId: 'tool-explorer',
+  },
+  {
+    keywords: ['redis failure', 'redis crash', 'what happens when redis goes down', 'redis sentinel failover', 'redis down'],
+    explanation: 'When Redis fails: (T+0ms) API instances detect socket timeout (> 50ms) -> (T+15ms) Fallback to local 100-req/s emergency rate limit or cache pass-through -> (T+800ms) Sentinel quorum votes and promotes replica to master -> (T+1800ms) Service mesh updates DNS/endpoints -> (T+6000ms) Full cluster synchronization recovers with 0 lost client transactions.',
+    targetBlueprintId: 'tool-explorer',
+  },
+  {
+    keywords: ['poison pill', 'kafka poison pill', 'dlq simulation', 'consumer crash'],
+    explanation: 'When a deserialization poison pill hits a Kafka consumer: (T+0ms) JSON schema violation throws DeserializationException -> (T+15ms) Custom Spring/Go error handler catches error without acknowledging offset -> (T+800ms) Non-blocking router diverts payload to dead-letter queue (DLQ) -> (T+1800ms) Consumer group continues processing without head-of-line blocking.',
+    targetBlueprintId: 'tool-explorer',
+  },
+  {
+    keywords: ['readiness audit', 'production readiness', 'scorecard', 'p0 blockers', 'readiness checklist', 'audit'],
+    explanation: 'The Production Readiness Audit Suite evaluates architectures across 8 core engineering dimensions: Architecture & Scalability, Resiliency & Failure Modes, Data Integrity & Consistency, Security & Authentication, Observability & SLOs, Deployment & IaC, Testing & Verification, and Operational Runbooks with weighted scoring and exportable GitHub PR sign-off markdown.',
+    targetBlueprintId: 'tool-readiness',
+  },
+  {
+    keywords: ['benchmarks', 'benchmark repository', 'empirical evidence', 'latency proof', 'performance claims', 'k6 results'],
+    explanation: 'The Engineering Evidence & Benchmark Repository provides empirical proof for performance claims with explicit hardware specs (vCPUs, RAM, storage), exact software versions, reproducible CLI test scripts (k6, wrk, pgbench), and measured P50/P90/P95/P99 latency distribution percentiles.',
+    targetBlueprintId: 'tool-benchmarks',
+  },
+  {
+    keywords: ['12 sections', 'blueprint standard', 'level 3 standard', 'production standard', 'standard structure'],
+    explanation: 'Software Blueprints adheres to a rigorous 12-section technical standard: 1. Overview, 2. Architecture & Lifecycle, 3. Technology Decisions & Tradeoffs, 4. Database Design & DDL, 5. Production Implementation, 6. Scalability & Sizing, 7. Failure Engineering, 8. Security & Auth, 9. Observability & SLOs, 10. Deployment & CI/CD, 11. Testing & Load Verification, 12. Engineering Decisions (ADRs).',
+    targetBlueprintId: 'sys-rate-limiter',
+  },
 ];
 
 export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
@@ -1212,5 +1273,46 @@ export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
     url: '/docs/system-design/api-gateway-reverse-proxy/overview',
     description: 'Zero-copy streaming reverse proxy in Go, edge cryptographic JWT validation, Redis Token Bucket rate limiting, and request sanitization.',
     tags: ['api-gateway', 'reverse-proxy', 'edge', 'jwt', 'token-bucket', 'rate-limit', 'httputil', 'ingress', 'tls-termination'],
+  },
+  // --- Platform Interactive Tools ---
+  {
+    id: 'tool-calculators',
+    title: 'System Sizing & Capacity Calculators Suite',
+    pillar: 'Platform Suite',
+    url: '/calculators',
+    description: '5 interactive calculators for vLLM GPU VRAM, Redis rate limiters, pgvector HNSW RAM, Kafka cluster partitions, and database sharding.',
+    tags: ['calculator', 'calculators', 'sizing', 'capacity', 'vram', 'ram', 'vllm', 'kafka', 'pgvector', 'sharding', 'redis'],
+  },
+  {
+    id: 'tool-explorer',
+    title: 'Interactive System Explorer & Failure Laboratory',
+    pillar: 'Platform Suite',
+    url: '/explorer',
+    description: 'Deep component-level inspector and live incident simulator for Redis failovers, poison-pill DLQ routing, and split-brain recovery.',
+    tags: ['explorer', 'system-explorer', 'failure', 'simulation', 'fault-injection', 'incident', 'failover', 'dlq', 'split-brain', 'timeline'],
+  },
+  {
+    id: 'tool-readiness',
+    title: 'Production Readiness Audit Suite',
+    pillar: 'Platform Suite',
+    url: '/readiness',
+    description: 'Comprehensive 8-dimension production evaluation with weighted scoring, P0 blocker checks, presets, and GitHub PR sign-off export.',
+    tags: ['readiness', 'audit', 'checklist', 'p0', 'scorecard', 'production-readiness', 'sign-off', 'slo', 'hardening'],
+  },
+  {
+    id: 'tool-benchmarks',
+    title: 'Engineering Evidence & Benchmark Repository',
+    pillar: 'Platform Suite',
+    url: '/benchmarks',
+    description: 'Empirical benchmark reports with hardware specifications, exact software versions, reproducible CLI scripts, and measured P50/P95/P99 latency.',
+    tags: ['benchmarks', 'benchmark', 'evidence', 'latency', 'p99', 'p95', 'throughput', 'rps', 'k6', 'wrk', 'proof'],
+  },
+  {
+    id: 'tool-docker',
+    title: 'Production Docker Stacks Catalog',
+    pillar: 'Platform Suite',
+    url: '/docs/docker-quickstarts',
+    description: '1-click runnable Docker Compose environments configured with production health checks, persistent volumes, and Prometheus metrics.',
+    tags: ['docker', 'docker-compose', 'stacks', 'containers', 'local-dev', 'redis', 'postgres', 'kafka', 'qdrant'],
   },
 ];

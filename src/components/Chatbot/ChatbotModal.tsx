@@ -16,7 +16,7 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
     {
       id: 'init-1',
       sender: 'bot',
-      text: '👋 Welcome to Software Blueprints! I can guide you through our 55 production architecture blueprints across 7 pillars, or save your requests for new blueprints you want built. What are you working on?',
+      text: '👋 Welcome to Software Blueprints! I can guide you through our 68 production architecture blueprints, 5 capacity calculators (/calculators), interactive failure simulator (/explorer), readiness audits (/readiness), and empirical benchmarks (/benchmarks). What system are you designing today?',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
@@ -122,7 +122,7 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
           <span className={styles.headerIcon}>🏛️</span>
           <div className={styles.headerText}>
             <h3>Blueprint Assistant</h3>
-            <span>Online • 55 Blueprints Indexed</span>
+            <span>Online • 68 Blueprints & Tools</span>
           </div>
         </div>
         <div className={styles.headerActions}>
@@ -273,6 +273,30 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
               <button
                 type="button"
                 className={styles.chipBtn}
+                onClick={() => handleQuickChip('Tell me about the capacity calculators')}>
+                🧮 Sizing Calculators
+              </button>
+              <button
+                type="button"
+                className={styles.chipBtn}
+                onClick={() => handleQuickChip('How does the architecture explorer simulate failures?')}>
+                ⚡ System Explorer
+              </button>
+              <button
+                type="button"
+                className={styles.chipBtn}
+                onClick={() => handleQuickChip('What is the production readiness audit checklist?')}>
+                ✅ Readiness Audit
+              </button>
+              <button
+                type="button"
+                className={styles.chipBtn}
+                onClick={() => handleQuickChip('Show me engineering benchmarks')}>
+                📊 Benchmarks
+              </button>
+              <button
+                type="button"
+                className={styles.chipBtn}
                 onClick={() => handleQuickChip('Compare DPO vs PPO')}>
                 ⚖️ DPO vs PPO
               </button>
@@ -285,26 +309,14 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
               <button
                 type="button"
                 className={styles.chipBtn}
-                onClick={() => handleQuickChip('How to build an AI agent?')}>
-                🤖 AI Agents
-              </button>
-              <button
-                type="button"
-                className={styles.chipBtn}
                 onClick={() => handleQuickChip('Explain distributed rate limiting')}>
                 🛡️ Rate Limiting
               </button>
               <button
                 type="button"
                 className={styles.chipBtn}
-                onClick={() => handleQuickChip('Show hybrid search with pgvector')}>
-                🧠 Hybrid RAG
-              </button>
-              <button
-                type="button"
-                className={styles.chipBtn}
-                onClick={() => handleQuickChip('Show accessible React modals')}>
-                🎨 UI Components
+                onClick={() => handleQuickChip('Explain kafka dlq')}>
+                📨 Kafka DLQ
               </button>
               <button
                 type="button"
@@ -313,7 +325,7 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
                   setShowRequestForm(true);
                   setReqTopic('');
                 }}>
-                💡 Request New Blueprint
+                💡 Request Blueprint
               </button>
             </div>
 

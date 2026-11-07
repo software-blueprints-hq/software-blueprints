@@ -105,6 +105,13 @@
   color: #e2e8f0;
 }
 
+.inputHint {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.35;
+}
+
 .currentValue {
   font-family: var(--ifm-font-family-monospace, monospace);
   font-size: 0.84rem;
@@ -317,6 +324,12 @@
   font-family: var(--ifm-font-family-monospace, monospace);
 }
 
+.detailSub {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-top: 4px;
+}
+
 /* Hardware Recommendation */
 .hardwareBox {
   background: rgba(15, 23, 42, 0.8);
@@ -343,4 +356,200 @@
   font-size: 0.95rem;
   font-weight: 700;
   color: #ffffff;
+}
+
+/* ==========================================================================
+   Obsidian Light Mode Overrides
+   ========================================================================== */
+:global(html[data-theme='light']) .calcContainer {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 0 15px rgba(6, 182, 212, 0.08);
+}
+
+:global(html[data-theme='light']) .calcHeader {
+  border-bottom-color: #f1f5f9;
+}
+
+:global(html[data-theme='light']) .titleArea h3 {
+  color: #0f172a;
+}
+
+:global(html[data-theme='light']) .titleArea p {
+  color: #64748b;
+}
+
+:global(html[data-theme='light']) .labelRow label {
+  color: #1e293b;
+}
+
+:global(html[data-theme='light']) .inputHint {
+  color: #64748b;
+}
+
+:global(html[data-theme='light']) .currentValue {
+  background: #e0f2fe;
+  color: #0284c7;
+  border-color: #bae6fd;
+}
+
+:global(html[data-theme='light']) .selectInput {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+:global(html[data-theme='light']) .rangeInput {
+  background: #e2e8f0;
+}
+
+:global(html[data-theme='light']) .radioBtn {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+:global(html[data-theme='light']) .radioBtn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+:global(html[data-theme='light']) .radioBtnActive {
+  background: #e0f2fe !important;
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+}
+
+:global(html[data-theme='light']) .resultsSection {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+:global(html[data-theme='light']) .mainMetric {
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.06) 0%, transparent 80%);
+  border-color: rgba(6, 182, 212, 0.25);
+}
+
+:global(html[data-theme='light']) .mainMetricLabel {
+  color: #475569;
+}
+
+:global(html[data-theme='light']) .mainMetricValue {
+  color: #0891b2;
+  text-shadow: none;
+}
+
+:global(html[data-theme='light']) .mainMetricSub {
+  color: #64748b;
+}
+
+:global(html[data-theme='light']) .detailCard {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+:global(html[data-theme='light']) .detailLabel {
+  color: #64748b;
+}
+
+:global(html[data-theme='light']) .detailValue {
+  color: #0f172a;
+}
+
+:global(html[data-theme='light']) .detailSub {
+  color: #94a3b8;
+}
+
+:global(html[data-theme='light']) .hardwareBox {
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+}
+
+:global(html[data-theme='light']) .hardwareTitle {
+  color: #7c3aed;
+}
+
+:global(html[data-theme='light']) .hardwareText {
+  color: #1e1b4b;
+}
+
+.tabContainer {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 2.5rem;
+}
+
+@media (max-width: 992px) {
+  .tabContainer {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+.tabButton {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: #cbd5e1;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.86rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.tabButton:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.tabButtonActive {
+  background: rgba(6, 182, 212, 0.18) !important;
+  border-color: #00f0ff !important;
+  color: #00f0ff !important;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+}
+
+.tabLabel {
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.tabDesc {
+  font-size: 0.72rem;
+  opacity: 0.75;
+  font-weight: 500;
+}
+
+:global(html[data-theme='light']) .tabButton {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #334155;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+:global(html[data-theme='light']) .tabButton:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+:global(html[data-theme='light']) .tabButtonActive {
+  background: #e0f2fe !important;
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15) !important;
+}
+
+:global(html[data-theme='light']) .calcIcon {
+  background: #ecfeff;
+  border-color: #a5f3fc;
 }

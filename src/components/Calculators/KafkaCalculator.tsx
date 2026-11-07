@@ -26,25 +26,27 @@ export default function KafkaCalculator() {
   const storagePerBrokerTB = totalDiskWithHeadroomTB / recommendedBrokers;
 
   return (
-    <div className={styles.calculatorCard}>
+    <div className={styles.calcContainer}>
       <div className={styles.calcHeader}>
-        <div className={styles.calcTitle}>
-          <span className={styles.calcIcon}>⚡</span>
+        <div className={styles.titleArea}>
+          <div className={styles.calcIcon}>📨</div>
           <div>
             <h3>Kafka Cluster & Partition Sizing Calculator</h3>
-            <p>Calculate topic partitions, disk storage capacity with replication, and broker count.</p>
+            <p>Calculate topic partitions, disk storage capacity with replication, and broker count</p>
           </div>
         </div>
+        <span className={styles.calcTag}>Event Streaming</span>
       </div>
 
       <div className={styles.calcGrid}>
-        {/* Inputs */}
-        <div className={styles.inputSection}>
-          <div className={styles.inputGroup}>
-            <label>
-              Ingress Data Throughput: <strong>{ingressRateMBps} MB/s</strong>
-              <span className={styles.inputHint}>Peak incoming message volume across topic</span>
-            </label>
+        {/* Controls */}
+        <div className={styles.controlsSection}>
+          <div className={styles.formGroup}>
+            <div className={styles.labelRow}>
+              <label>Ingress Data Throughput</label>
+              <span className={styles.currentValue}>{ingressRateMBps} MB/s</span>
+            </div>
+            <p className={styles.inputHint}>Peak incoming message volume across topic</p>
             <input
               type="range"
               min="1"
@@ -52,14 +54,16 @@ export default function KafkaCalculator() {
               step="5"
               value={ingressRateMBps}
               onChange={(e) => setIngressRateMBps(Number(e.target.value))}
+              className={styles.rangeInput}
             />
           </div>
 
-          <div className={styles.inputGroup}>
-            <label>
-              Message Retention: <strong>{retentionDays} Days</strong>
-              <span className={styles.inputHint}>Log segment retention window before deletion</span>
-            </label>
+          <div className={styles.formGroup}>
+            <div className={styles.labelRow}>
+              <label>Message Retention Window</label>
+              <span className={styles.currentValue}>{retentionDays} Days</span>
+            </div>
+            <p className={styles.inputHint}>Log segment retention window before segment deletion</p>
             <input
               type="range"
               min="1"
@@ -67,28 +71,32 @@ export default function KafkaCalculator() {
               step="1"
               value={retentionDays}
               onChange={(e) => setRetentionDays(Number(e.target.value))}
+              className={styles.rangeInput}
             />
           </div>
 
-          <div className={styles.inputGroup}>
-            <label>
-              Replication Factor (RF): <strong>{replicationFactor}x</strong>
-              <span className={styles.inputHint}>Standard production is 3 (1 leader + 2 ISR followers)</span>
-            </label>
+          <div className={styles.formGroup}>
+            <div className={styles.labelRow}>
+              <label>Replication Factor (RF)</label>
+              <span className={styles.currentValue}>{replicationFactor}x Replicas</span>
+            </div>
+            <p className={styles.inputHint}>Standard production is 3 (1 leader + 2 ISR followers)</p>
             <select
               value={replicationFactor}
-              onChange={(e) => setReplicationFactor(Number(e.target.value))}>
+              onChange={(e) => setReplicationFactor(Number(e.target.value))}
+              className={styles.selectInput}>
               <option value={1}>1x (No fault tolerance - Dev only)</option>
               <option value={2}>2x (Single broker loss tolerance)</option>
               <option value={3}>3x (Production Gold Standard)</option>
             </select>
           </div>
 
-          <div className={styles.inputGroup}>
-            <label>
-              Active Downstream Consumer Groups: <strong>{consumerGroups} Groups</strong>
-              <span className={styles.inputHint}>Each group reads a complete copy of the topic stream</span>
-            </label>
+          <div className={styles.formGroup}>
+            <div className={styles.labelRow}>
+              <label>Active Consumer Groups</label>
+              <span className={styles.currentValue}>{consumerGroups} Groups</span>
+            </div>
+            <p className={styles.inputHint}>Each consumer group reads a full copy of the topic stream</p>
             <input
               type="range"
               min="1"
@@ -96,50 +104,55 @@ export default function KafkaCalculator() {
               step="1"
               value={consumerGroups}
               onChange={(e) => setConsumerGroups(Number(e.target.value))}
+              className={styles.rangeInput}
             />
           </div>
         </div>
 
         {/* Results */}
-        <div className={styles.resultSection}>
-          <div className={styles.mainStat}>
-            <span className={styles.statLabel}>Total Cluster Storage (+25% Headroom)</span>
-            <div className={styles.statValue}>
-              {totalDiskWithHeadroomTB.toFixed(2)} <span className={styles.unit}>TB</span>
-            </div>
-            <span className={styles.statSub}>
-              ~{(totalDiskWithHeadroomTB * 1024).toFixed(0)} GB across {retentionDays} days retention
-            </span>
-          </div>
-
-          <div className={styles.statGrid}>
-            <div className={styles.subStat}>
-              <span className={styles.subLabel}>Recommended Partitions</span>
-              <span className={styles.subValue}>{recommendedPartitions}</span>
-              <span className={styles.subHint}>Based on max 5 MB/s per partition</span>
-            </div>
-
-            <div className={styles.subStat}>
-              <span className={styles.subLabel}>Recommended Brokers</span>
-              <span className={styles.subValue}>{recommendedBrokers}</span>
-              <span className={styles.subHint}>Brokers &ge; RF {replicationFactor}</span>
-            </div>
-
-            <div className={styles.subStat}>
-              <span className={styles.subLabel}>Peak Network Egress</span>
-              <span className={styles.subValue}>{egressNetworkMBps} MB/s</span>
-              <span className={styles.subHint}>{(egressNetworkMBps * 8).toFixed(0)} Mbps network load</span>
-            </div>
-
-            <div className={styles.subStat}>
-              <span className={styles.subLabel}>Disk Storage Per Broker</span>
-              <span className={styles.subValue}>{storagePerBrokerTB.toFixed(2)} TB</span>
-              <span className={styles.subHint}>NVMe SSD recommended</span>
+        <div className={styles.resultsSection}>
+          <div className={styles.mainMetric}>
+            <div className={styles.mainMetricLabel}>Total Cluster Storage (+25% Headroom)</div>
+            <div className={styles.mainMetricValue}>{totalDiskWithHeadroomTB.toFixed(2)} TB</div>
+            <div className={styles.mainMetricSub}>
+              ~{(totalDiskWithHeadroomTB * 1024).toLocaleString(undefined, { maximumFractionDigits: 0 })} GB across {retentionDays} days retention
             </div>
           </div>
 
-          <div className={styles.formulaBox}>
-            <strong>Sizing Rule:</strong> Partitions = <code>ceil(Throughput / 5MBps)</code>. Never over-partition beyond 2,000 partitions per broker, or partition leader rebalance recovery will stall during broker restarts.
+          <div className={styles.detailGrid}>
+            <div className={styles.detailCard}>
+              <div className={styles.detailLabel}>Recommended Partitions</div>
+              <div className={styles.detailValue}>{recommendedPartitions}</div>
+              <div className={styles.detailSub}>Max 5 MB/s per partition</div>
+            </div>
+
+            <div className={styles.detailCard}>
+              <div className={styles.detailLabel}>Recommended Brokers</div>
+              <div className={styles.detailValue}>{recommendedBrokers}</div>
+              <div className={styles.detailSub}>Brokers &ge; RF {replicationFactor}</div>
+            </div>
+
+            <div className={styles.detailCard}>
+              <div className={styles.detailLabel}>Peak Network Egress</div>
+              <div className={styles.detailValue}>{egressNetworkMBps} MB/s</div>
+              <div className={styles.detailSub}>{(egressNetworkMBps * 8).toLocaleString()} Mbps egress load</div>
+            </div>
+
+            <div className={styles.detailCard}>
+              <div className={styles.detailLabel}>Disk Storage Per Broker</div>
+              <div className={styles.detailValue}>{storagePerBrokerTB.toFixed(2)} TB</div>
+              <div className={styles.detailSub}>NVMe SSD recommended</div>
+            </div>
+          </div>
+
+          <div className={styles.hardwareBox}>
+            <div className={styles.hardwareIcon}>⚙️</div>
+            <div>
+              <div className={styles.hardwareTitle}>Partition Sizing Rule</div>
+              <div className={styles.hardwareText}>
+                Partitions = ceil(Throughput / 5MBps). Keep under 2,000 partitions/broker to avoid leader rebalance stalls.
+              </div>
+            </div>
           </div>
         </div>
       </div>

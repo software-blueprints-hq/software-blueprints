@@ -65,7 +65,7 @@ export default function RoadmapSearch(): JSX.Element {
         <span style={{ fontSize: '1.2rem', color: '#64748b' }}>🔍</span>
         <input
           type="text"
-          placeholder="Search 55 blueprints by name, tech stack, or architecture pattern..."
+          placeholder="Search 68 blueprints & tools by name, tech stack, or architecture pattern..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           style={{

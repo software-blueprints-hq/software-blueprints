@@ -31,25 +31,27 @@ export default function ShardingCalculator() {
   const totalClusterDiskTB = (projectedYear1GB * replicationFactor * 1.3) / 1024; // 30% OS/WAL buffer
 
   return (
-    <div className={styles.calculatorCard}>
+    <div className={styles.calcContainer}>
       <div className={styles.calcHeader}>
-        <div className={styles.calcTitle}>
-          <span className={styles.calcIcon}>🌐</span>
+        <div className={styles.titleArea}>
+          <div className={styles.calcIcon}>🌐</div>
           <div>
             <h3>Database Sharding & Ring Capacity Calculator</h3>
-            <p>Determine physical shard counts, Ketama virtual nodes, and working-set RAM buffers.</p>
+            <p>Determine physical shard counts, Ketama virtual nodes, and working-set RAM buffers</p>
           </div>
         </div>
+        <span className={styles.calcTag}>Data Architecture</span>
       </div>
 
       <div className={styles.calcGrid}>
-        {/* Inputs */}
-        <div className={styles.inputSection}>
-          <div className={styles.inputGroup}>
-            <label>
-              Total Records Target: <strong>{totalRecordsMillion} Million Rows</strong>
-              <span className={styles.inputHint}>Total row count across sharded entities (orders, users, invoices)</span>
-            </label>
+        {/* Controls */}
+        <div className={styles.controlsSection}>
+          <div className={styles.formGroup}>
+            <div className={styles.labelRow}>
+              <label>Total Records Target</label>
+              <span className={styles.currentValue}>{totalRecordsMillion} Million Rows</span>
+            </div>
+            <p className={styles.inputHint}>Total row count across sharded entities (orders, users, invoices)</p>
             <input
               type="range"
               min="10"
@@ -57,14 +59,16 @@ export default function ShardingCalculator() {
               step="10"
               value={totalRecordsMillion}
               onChange={(e) => setTotalRecordsMillion(Number(e.target.value))}
+              className={styles.rangeInput}
             />
           </div>
 
-          <div className={styles.inputGroup}>
-            <label>
-              Average Row Footprint: <strong>{rowSizeBytes} Bytes</strong>
-              <span className={styles.inputHint}>Payload size + primary keys (typically 500B to 2KB)</span>
-            </label>
+          <div className={styles.formGroup}>
+            <div className={styles.labelRow}>
+              <label>Average Row Footprint</label>
+              <span className={styles.currentValue}>{rowSizeBytes} Bytes</span>
+            </div>
+            <p className={styles.inputHint}>Payload size + primary keys (typically 500B to 2KB)</p>
             <input
               type="range"
               min="256"
@@ -72,14 +76,16 @@ export default function ShardingCalculator() {
               step="128"
               value={rowSizeBytes}
               onChange={(e) => setRowSizeBytes(Number(e.target.value))}
+              className={styles.rangeInput}
             />
           </div>
 
-          <div className={styles.inputGroup}>
-            <label>
-              Projected Annual Growth: <strong>+{annualGrowthPct}% / Year</strong>
-              <span className={styles.inputHint}>Anticipated organic write growth rate</span>
-            </label>
+          <div className={styles.formGroup}>
+            <div className={styles.labelRow}>
+              <label>Projected Annual Growth</label>
+              <span className={styles.currentValue}>+{annualGrowthPct}% / Year</span>
+            </div>
+            <p className={styles.inputHint}>Anticipated organic write growth rate</p>
             <input
               type="range"
               min="10"
@@ -87,14 +93,16 @@ export default function ShardingCalculator() {
               step="5"
               value={annualGrowthPct}
               onChange={(e) => setAnnualGrowthPct(Number(e.target.value))}
+              className={styles.rangeInput}
             />
           </div>
 
-          <div className={styles.inputGroup}>
-            <label>
-              Max Size Target Per Shard: <strong>{maxShardSizeGB} GB</strong>
-              <span className={styles.inputHint}>Keep under 200GB to ensure fast backups and VACUUM runs</span>
-            </label>
+          <div className={styles.formGroup}>
+            <div className={styles.labelRow}>
+              <label>Max Target Size Per Shard</label>
+              <span className={styles.currentValue}>{maxShardSizeGB} GB</span>
+            </div>
+            <p className={styles.inputHint}>Keep under 200GB to ensure fast backups and VACUUM runs</p>
             <input
               type="range"
               min="50"
@@ -102,50 +110,55 @@ export default function ShardingCalculator() {
               step="25"
               value={maxShardSizeGB}
               onChange={(e) => setMaxShardSizeGB(Number(e.target.value))}
+              className={styles.rangeInput}
             />
           </div>
         </div>
 
         {/* Results */}
-        <div className={styles.resultSection}>
-          <div className={styles.mainStat}>
-            <span className={styles.statLabel}>Recommended Physical Shards</span>
-            <div className={styles.statValue}>
-              {recommendedShards} <span className={styles.unit}>Nodes</span>
-            </div>
-            <span className={styles.statSub}>
+        <div className={styles.resultsSection}>
+          <div className={styles.mainMetric}>
+            <div className={styles.mainMetricLabel}>Recommended Physical Shards</div>
+            <div className={styles.mainMetricValue}>{recommendedShards} Shards</div>
+            <div className={styles.mainMetricSub}>
               Holds {projectedYear1GB.toFixed(0)} GB data + indexes across {totalRecordsMillion}M records
-            </span>
-          </div>
-
-          <div className={styles.statGrid}>
-            <div className={styles.subStat}>
-              <span className={styles.subLabel}>Total Hash Ring Vnodes</span>
-              <span className={styles.subValue}>{totalVnodes}</span>
-              <span className={styles.subHint}>{vnodesPerShard} vnodes/shard (&lt; 2.5% std dev)</span>
-            </div>
-
-            <div className={styles.subStat}>
-              <span className={styles.subLabel}>Recommended RAM / Shard</span>
-              <span className={styles.subValue}>{ramBufferPerShardGB} GB</span>
-              <span className={styles.subHint}>25% buffer pool for hot index cache</span>
-            </div>
-
-            <div className={styles.subStat}>
-              <span className={styles.subLabel}>Current Data + Indexes</span>
-              <span className={styles.subValue}>{totalWithIndexesGB.toFixed(0)} GB</span>
-              <span className={styles.subHint}>Raw: {rawDataGB.toFixed(0)} GB + 40% B-Tree indexes</span>
-            </div>
-
-            <div className={styles.subStat}>
-              <span className={styles.subLabel}>Total Cluster Storage (RF {replicationFactor})</span>
-              <span className={styles.subValue}>{totalClusterDiskTB.toFixed(2)} TB</span>
-              <span className={styles.subHint}>Includes replication + WAL logs</span>
             </div>
           </div>
 
-          <div className={styles.formulaBox}>
-            <strong>Engineering Rule:</strong> Sharding databases before vertical capacity hits 500GB is an anti-pattern. Keep individual shards between 100GB to 250GB for rapid point-in-time recovery and zero-lock index creation.
+          <div className={styles.detailGrid}>
+            <div className={styles.detailCard}>
+              <div className={styles.detailLabel}>Total Hash Ring Vnodes</div>
+              <div className={styles.detailValue}>{totalVnodes}</div>
+              <div className={styles.detailSub}>{vnodesPerShard} vnodes/shard (&lt; 2.5% variance)</div>
+            </div>
+
+            <div className={styles.detailCard}>
+              <div className={styles.detailLabel}>Recommended RAM / Shard</div>
+              <div className={styles.detailValue}>{ramBufferPerShardGB} GB</div>
+              <div className={styles.detailSub}>25% buffer pool for hot index cache</div>
+            </div>
+
+            <div className={styles.detailCard}>
+              <div className={styles.detailLabel}>Current Data + Indexes</div>
+              <div className={styles.detailValue}>{totalWithIndexesGB.toFixed(0)} GB</div>
+              <div className={styles.detailSub}>Raw: {rawDataGB.toFixed(0)} GB + 40% B-Tree indexes</div>
+            </div>
+
+            <div className={styles.detailCard}>
+              <div className={styles.detailLabel}>Cluster Storage (RF {replicationFactor})</div>
+              <div className={styles.detailValue}>{totalClusterDiskTB.toFixed(2)} TB</div>
+              <div className={styles.detailSub}>Includes replication + WAL logs</div>
+            </div>
+          </div>
+
+          <div className={styles.hardwareBox}>
+            <div className={styles.hardwareIcon}>💡</div>
+            <div>
+              <div className={styles.hardwareTitle}>Engineering Rule of Thumb</div>
+              <div className={styles.hardwareText}>
+                Sharding before vertical capacity hits 500GB is an anti-pattern. Keep individual shards between 100GB to 250GB for rapid point-in-time recovery and zero-lock index creation.
+              </div>
+            </div>
           </div>
         </div>
       </div>

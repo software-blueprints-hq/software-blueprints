@@ -224,11 +224,12 @@ export class ChatbotEngine {
       return {
         id: `bot-${Date.now()}`,
         sender: 'bot',
-        text: `Hello! I am your Software Blueprints Architecture Assistant. I can explain any of our 55 production patterns across all 7 pillars, point you directly to working implementations, or record new blueprint requests. What architecture or component are you designing?`,
+        text: `Hello! I am your Software Blueprints Architecture Assistant. I can help you design, scale, and debug production systems across our 68 production blueprints and 4 interactive suites: Capacity Calculators (/calculators), Architecture Explorer & Incident Lab (/explorer), Readiness Audits (/readiness), and Benchmark Repository (/benchmarks). What system are you architecting today?`,
         recommendations: [
-          BLUEPRINT_CATALOG.find((b) => b.id === 'agent-supervisor')!,
-          BLUEPRINT_CATALOG.find((b) => b.id === 'sys-rate-limiter')!,
-          BLUEPRINT_CATALOG.find((b) => b.id === 'fullstack-multi-tenant')!,
+          BLUEPRINT_CATALOG.find((b) => b.id === 'tool-calculators')!,
+          BLUEPRINT_CATALOG.find((b) => b.id === 'tool-explorer')!,
+          BLUEPRINT_CATALOG.find((b) => b.id === 'tool-readiness')!,
+          BLUEPRINT_CATALOG.find((b) => b.id === 'tool-benchmarks')!,
         ].filter(Boolean),
         timestamp: timeStr,
       };
@@ -258,16 +259,21 @@ export class ChatbotEngine {
     // 4. Exact Concept Explanation Match (Delivers real architectural answer!)
     const conceptMatch = this.findConceptMatch(trimmed);
     if (conceptMatch) {
+      const isTool = conceptMatch.entry.pillar === 'Platform Suite';
+      const followUpText = isTool
+        ? `\n\nLaunch the interactive tool directly below:`
+        : `\n\nExplore the complete 12-section blueprint with architecture diagrams, working code, and hardening checklists:`;
+
       return {
         id: `bot-${Date.now()}`,
         sender: 'bot',
-        text: `${greetingIntro}${conceptMatch.explanation}\n\nHere is the complete blueprint with architecture diagrams, working code, and hardening checklists:`,
+        text: `${greetingIntro}${conceptMatch.explanation}${followUpText}`,
         recommendations: [conceptMatch.entry],
         timestamp: timeStr,
       };
     }
 
-    // 4. Filtered Keyword Search across catalog
+    // 5. Filtered Keyword Search across catalog
     const matches = this.searchCatalog(trimmed);
 
     if (matches.length > 0) {
@@ -280,11 +286,11 @@ export class ChatbotEngine {
       };
     }
 
-    // 5. No match found -> Offer to record as new request!
+    // 6. No match found -> Offer to record as new request!
     return {
       id: `bot-${Date.now()}`,
       sender: 'bot',
-      text: `We don't currently have a dedicated blueprint for "${trimmed}" in our 55-blueprint catalog. Would you like to submit this as an architecture request so we can build and add it?`,
+      text: `We don't currently have a dedicated blueprint for "${trimmed}" in our 68-blueprint catalog. Would you like to submit this as an architecture request so we can build and add it?`,
       isRequestPrompt: true,
       timestamp: timeStr,
     };

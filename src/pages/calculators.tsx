@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import styles from '../components/Calculators/calculators.module.css';
 import VLLMCalculator from '../components/Calculators/VLLMCalculator';
 import RateLimiterCalculator from '../components/Calculators/RateLimiterCalculator';
 import PgVectorCalculator from '../components/Calculators/PgVectorCalculator';
@@ -43,41 +44,21 @@ export default function CalculatorsPage(): JSX.Element {
           </div>
 
           {/* Calculator Selector Tabs */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-              gap: '10px',
-              marginBottom: '2.5rem',
-            }}>
+          <div className={styles.tabContainer}>
             {[
-              { id: 'vllm', label: '⚡ vLLM GPU VRAM & KV-Cache', desc: 'LLM Cluster Sizing' },
-              { id: 'ratelimit', label: '🛡️ Distributed Rate Limiter', desc: 'Redis Memory & Throughput' },
-              { id: 'pgvector', label: '🧠 pgvector HNSW & RAM', desc: 'Vector Database Sizing' },
-              { id: 'kafka', label: '📨 Kafka Cluster & Partitions', desc: 'Throughput & Disk Sizing' },
-              { id: 'sharding', label: '🌐 Database Sharding Ring', desc: 'Ketama Vnodes & Nodes' },
+              { id: 'vllm', label: '⚡ vLLM GPU & KV-Cache', desc: 'LLM Cluster Sizing' },
+              { id: 'ratelimit', label: '🛡️ Rate Limiter Sizer', desc: 'Redis RAM & QPS' },
+              { id: 'pgvector', label: '🧠 pgvector HNSW RAM', desc: 'Vector DB Sizing' },
+              { id: 'kafka', label: '📨 Kafka Cluster Sizer', desc: 'Partitions & Storage' },
+              { id: 'sharding', label: '🌐 DB Sharding Ring', desc: 'Ketama Vnodes & Nodes' },
             ].map((tab) => (
               <button
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id as any)}
-                style={{
-                  background: activeTab === tab.id ? 'rgba(6, 182, 212, 0.18)' : 'rgba(15, 23, 42, 0.7)',
-                  border: activeTab === tab.id ? '1px solid #00f0ff' : '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '12px',
-                  padding: '10px 18px',
-                  color: activeTab === tab.id ? '#00f0ff' : '#cbd5e1',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  fontSize: '0.88rem',
-                  transition: 'all 0.2s ease',
-                  boxShadow: activeTab === tab.id ? '0 0 20px rgba(6, 182, 212, 0.25)' : 'none',
-                }}>
-                <div>{tab.label}</div>
-                <div style={{ fontSize: '0.72rem', opacity: 0.7, marginTop: '2px', fontWeight: 500 }}>
-                  {tab.desc}
-                </div>
+                className={`${styles.tabButton} ${activeTab === tab.id ? styles.tabButtonActive : ''}`}>
+                <div className={styles.tabLabel}>{tab.label}</div>
+                <div className={styles.tabDesc}>{tab.desc}</div>
               </button>
             ))}
           </div>
