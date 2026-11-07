@@ -496,6 +496,8 @@ export default function () {
 
 ## 12. Production Readiness Checklist
 
+<ReadinessChecklist initialPresetId="ratelimit" />
+
 | Category | Verification Item | Status |
 | :--- | :--- | :--- |
 | **Sizing** | Redis cluster RAM allocated for 2x anticipated peak key volume | [ ] Verified |

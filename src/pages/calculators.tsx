@@ -14,7 +14,7 @@ export default function CalculatorsPage(): JSX.Element {
     <Layout
       title="Architecture Sizing Calculators"
       description="Interactive sizing calculators for vLLM GPU VRAM, Redis Rate Limiters, PostgreSQL pgvector HNSW, Kafka Clusters, and Database Sharding.">
-      <main style={{ minHeight: '100vh', background: '#06080d', padding: '4rem 1rem 6rem 1rem' }}>
+      <main style={{ minHeight: '100vh', padding: '4rem 1rem 6rem 1rem' }}>
         <div className="container" style={{ maxWidth: '1080px' }}>
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
@@ -34,10 +34,10 @@ export default function CalculatorsPage(): JSX.Element {
               }}>
               🧮 5-Pillar Architecture Sizing Suite
             </div>
-            <Heading as="h1" style={{ fontSize: '2.8rem', fontWeight: 800, letterSpacing: '-0.03em', color: '#ffffff' }}>
+            <Heading as="h1" style={{ fontSize: '2.8rem', fontWeight: 800, letterSpacing: '-0.03em' }}>
               System Sizing & Capacity Calculators
             </Heading>
-            <p style={{ color: '#94a3b8', fontSize: '1.1rem', maxWidth: '720px', margin: '0 auto', lineHeight: 1.6 }}>
+            <p style={{ color: '#64748b', fontSize: '1.1rem', maxWidth: '720px', margin: '0 auto', lineHeight: 1.6 }}>
               Production infrastructure sizing tools. Model your VRAM requirements, calculate Redis cluster throughput, scale Kafka partition topologies, and compute database shard counts.
             </p>
           </div>

@@ -692,6 +692,8 @@ async def test_hybrid_search_tenant_isolation():
 
 ### Operational Readiness Checklist
 
+<ReadinessChecklist initialPresetId="rag" />
+
 | Category | Verification Item | Production Requirement | Status |
 | :--- | :--- | :--- | :--- |
 | **Vector Index** | HNSW Memory Sizing | Index size &lt; allocated `shared_buffers` (verified &lt; 7.68 GB) | PASSED |

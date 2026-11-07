@@ -458,6 +458,8 @@ describe('PostgreSQL Row-Level Security Isolation Gate', () => {
 
 ## 12. Production Readiness Checklist
 
+<ReadinessChecklist initialPresetId="saas" />
+
 | Category | Verification Item | Status |
 | :--- | :--- | :--- |
 | **Role Permissions** | Web app connects strictly via non-superuser `saas_app_user` | [ ] Verified |

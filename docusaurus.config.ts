@@ -95,6 +95,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/readiness',
+          label: 'Readiness Audit ✅',
+          position: 'left',
+        },
+        {
           to: '/docs/docker-quickstarts',
           label: 'Docker Stacks 🐳',
           position: 'left',

@@ -1022,6 +1022,8 @@ func TestPostgresOrderRepository_SaveAndFind(t *testing.T) {
 
 ### Operational Readiness Checklist
 
+<ReadinessChecklist initialPresetId="microservice" />
+
 | Category | Verification Item | Production Requirement | Status |
 | :--- | :--- | :--- | :--- |
 | **Domain Purity** | Zero Third-Party Imports | `internal/domain` imports standard library only | PASSED |

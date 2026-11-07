@@ -395,3 +395,95 @@
 .bentoCard:hover .arrowIcon {
   transform: translateX(4px);
 }
+
+/* ==========================================================================
+   LIGHT MODE OVERRIDES FOR HOMEPAGE
+   ========================================================================== */
+[data-theme='light'] .homeContainer {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+[data-theme='light'] .heroTitle {
+  background: linear-gradient(180deg, #0f172a 0%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme='light'] .heroSubtitle {
+  color: #475569;
+}
+
+[data-theme='light'] .bentoCard {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme='light'] .bentoCard:hover {
+  background: #ffffff;
+  border-color: rgba(2, 132, 199, 0.4);
+  box-shadow: 0 12px 30px rgba(2, 132, 199, 0.1);
+}
+
+[data-theme='light'] .cardTitle {
+  color: #0f172a;
+}
+
+[data-theme='light'] .cardDesc {
+  color: #475569;
+}
+
+[data-theme='light'] .highlightPill {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #334155;
+}
+
+[data-theme='light'] .cardAction {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  color: #0284c7;
+}
+
+[data-theme='light'] .statBox {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme='light'] .statNum {
+  color: #0f172a;
+}
+
+[data-theme='light'] .statLabel {
+  color: #64748b;
+}
+
+[data-theme='light'] .categoryFilterBtn {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #475569;
+}
+
+[data-theme='light'] .categoryFilterBtnActive {
+  background: rgba(2, 132, 199, 0.1);
+  border-color: #0284c7;
+  color: #0284c7;
+}
+
+[data-theme='light'] .terminalContainer {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme='light'] .terminalHeader {
+  background: #f1f5f9;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+[data-theme='light'] .terminalBody {
+  background: #ffffff;
+  color: #1e293b;
+}
+

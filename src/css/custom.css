@@ -306,6 +306,127 @@ tr:hover td {
 }
 
 /* ==========================================================================
+   LIGHT THEME OVERRIDES (CRISP & MODERN OBSIDIAN LIGHT)
+   ========================================================================== */
+[data-theme='light'] {
+  --ifm-color-primary: #0284c7;
+  --ifm-color-primary-dark: #0369a1;
+  --ifm-color-primary-darker: #075985;
+  --ifm-color-primary-darkest: #0c4a6e;
+  --ifm-color-primary-light: #38bdf8;
+  --ifm-color-primary-lighter: #7dd3fc;
+  --ifm-color-primary-lightest: #bae6fd;
+
+  --ifm-background-color: #f8fafc;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.88);
+  --ifm-card-background-color: #ffffff;
+  --ifm-toc-border-color: rgba(0, 0, 0, 0.08);
+  --ifm-font-color-base: #0f172a;
+  --ifm-heading-color: #0f172a;
+  --sb-border-subtle: rgba(0, 0, 0, 0.08);
+  --docusaurus-highlighted-code-line-bg: rgba(2, 132, 199, 0.1);
+}
+
+[data-theme='light'] body {
+  background-color: #f8fafc;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.05), transparent 45%),
+    radial-gradient(circle at 100% 25%, rgba(139, 92, 246, 0.03), transparent 40%);
+  color: #0f172a;
+}
+
+[data-theme='light'] .navbar {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme='light'] .navbar__title {
+  background: linear-gradient(135deg, #0f172a 40%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme='light'] .navbar__link {
+  color: #334155 !important;
+}
+
+[data-theme='light'] .navbar__link:hover,
+[data-theme='light'] .navbar__link--active {
+  color: #0284c7 !important;
+}
+
+[data-theme='light'] .theme-doc-sidebar-container {
+  border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background-color: #f8fafc !important;
+}
+
+[data-theme='light'] .theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link {
+  color: #64748b !important;
+}
+
+[data-theme='light'] .menu__link {
+  color: #334155;
+}
+
+[data-theme='light'] .menu__link:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #0284c7;
+}
+
+[data-theme='light'] .menu__link--active {
+  background: rgba(2, 132, 199, 0.08) !important;
+  color: #0284c7 !important;
+  border-left: 2px solid #0284c7;
+  box-shadow: none;
+}
+
+[data-theme='light'] ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+[data-theme='light'] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+[data-theme='light'] table {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+[data-theme='light'] th {
+  background: #f1f5f9;
+  color: #1e293b;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+[data-theme='light'] td {
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+[data-theme='light'] tr:hover td {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme='light'] .docusaurus-mermaid-container {
+  background: #ffffff;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme='light'] .docusaurus-mermaid-container::after {
+  color: #94a3b8;
+}
+
+[data-theme='light'] .alert {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================================
    EXECUTIVE PDF & PRINT EXPORT STYLESHEET
    ========================================================================== */
 @media print {

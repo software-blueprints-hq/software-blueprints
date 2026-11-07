@@ -947,6 +947,8 @@ class KafkaConsumerIntegrationTest {
 
 ### Operational Readiness Checklist
 
+<ReadinessChecklist initialPresetId="kafka" />
+
 | Category | Verification Item | Production Requirement | Status |
 | :--- | :--- | :--- | :--- |
 | **Topic Design** | Partition Sizing | 12 partitions configured with `min.insync.replicas=2` and `replication.factor=3` | PASSED |
