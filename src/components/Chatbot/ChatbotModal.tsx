@@ -16,7 +16,7 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
     {
       id: 'init-1',
       sender: 'bot',
-      text: '👋 Welcome to Software Blueprints! I can guide you through our 68 production architecture blueprints, 5 capacity calculators (/calculators), interactive failure simulator (/explorer), readiness audits (/readiness), and empirical benchmarks (/benchmarks). You can also use our 🧭 Architecture Wizard tab to generate tailored system recommendations. What system are you designing today?',
+      text: '👋 Welcome to Software Blueprints! I can guide you through our 69 production architecture blueprints, 5 capacity calculators (/calculators), interactive failure simulator (/explorer), readiness audits (/readiness), and empirical benchmarks (/benchmarks). You can also use our 🧭 Architecture Wizard tab to generate tailored system recommendations. What system are you designing today?',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
@@ -226,7 +226,7 @@ export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
           <span className={styles.headerIcon}>🏛️</span>
           <div className={styles.headerText}>
             <h3>Blueprint Assistant</h3>
-            <span>Online • 68 Blueprints & Tools</span>
+            <span>Online • 69 Blueprints & Tools</span>
           </div>
         </div>
         <div className={styles.headerActions}>

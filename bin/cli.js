@@ -502,6 +502,13 @@ const BLUEPRINT_MAP = {
     dependencies: [],
     defaultFilename: "main.go",
   },
+  'case-collaborative-editor': {
+    name: "Real-Time Collaborative Document Engine",
+    pillar: "Production Case Studies",
+    docPath: "docs/case-studies/realtime-collaborative-editor/overview.md",
+    dependencies: [],
+    defaultFilename: "main.go",
+  },
 };
 
 // Aliases for quick typing
@@ -527,6 +534,11 @@ const ALIASES = {
   'websocket-gateway': 'sys-websocket-gateway',
   'ws-gateway': 'sys-websocket-gateway',
   'websocket': 'sys-websocket-gateway',
+  'collab-editor': 'case-collaborative-editor',
+  'collaborative-editor': 'case-collaborative-editor',
+  'yjs-editor': 'case-collaborative-editor',
+  'realtime-editor': 'case-collaborative-editor',
+  'case-study-collaborative-editor': 'case-collaborative-editor',
   'supervisor': 'agent-supervisor',
   'agent': 'agent-supervisor',
   'react-loop': 'agent-react-loop',

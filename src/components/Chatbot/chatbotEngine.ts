@@ -276,7 +276,7 @@ export class ChatbotEngine {
       return {
         id: `bot-${Date.now()}`,
         sender: 'bot',
-        text: `Hey! 👋 I am your Software Blueprints Architecture Assistant. I can help you design, scale, and debug production systems across our 68 production blueprints, 5 sizing calculators (/calculators), and failure simulation laboratory (/explorer).\n\nWhat system or architecture pattern are you working on today?`,
+        text: `Hey! 👋 I am your Software Blueprints Architecture Assistant. I can help you design, scale, and debug production systems across our 69 production blueprints, 5 sizing calculators (/calculators), and failure simulation laboratory (/explorer).\n\nWhat system or architecture pattern are you working on today?`,
         recommendations: [
           BLUEPRINT_CATALOG.find((b) => b.id === 'sys-rate-limiter')!,
           BLUEPRINT_CATALOG.find((b) => b.id === 'agent-rag-harness')!,
@@ -357,7 +357,7 @@ export class ChatbotEngine {
     return {
       id: `bot-${Date.now()}`,
       sender: 'bot',
-      text: `I couldn't find an exact blueprint matching "${trimmed}" in our current 68-blueprint catalog.\n\n` +
+      text: `I couldn't find an exact blueprint matching "${trimmed}" in our current 69-blueprint catalog.\n\n` +
         `• Try searching for technical patterns like **Rate Limiter**, **Kafka DLQ**, **Saga Orchestrator**, **pgvector RAG**, **Sharding**, or **Circuit Breaker**.\n` +
         `• You can also use the **🧭 Wizard** tab above to configure your traffic and consistency constraints for a tailored recommendation.\n` +
         `• If you'd like our team to build and add a blueprint for "${trimmed}", you can submit it anytime in the **Requests** tab!`,

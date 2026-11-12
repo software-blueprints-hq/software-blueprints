@@ -745,6 +745,11 @@ export const ARCHITECTURAL_EXPLANATIONS: ConceptExplanation[] = [
     explanation: 'Flash sales (100k RPS against 5,000 items) must avoid database row locking on inventory rows. Instead, stock is atomically reserved in an in-memory Redis cluster via atomic Lua scripts with lease TTLs, while orders are processed asynchronously through Go Clean Architecture, distributed Saga orchestrators with compensating transactions, and sharded PostgreSQL rings.',
     targetBlueprintId: 'case-study-ecommerce',
   },
+  {
+    keywords: ['collaborative document engine', 'how to design google docs', 'collaborative editor architecture', 'realtime collaboration system design', 'yjs architecture', 'crdt system design'],
+    explanation: 'A production collaborative document engine combines Next.js 15 rich text (ProseMirror / BlockSuite), Yjs CRDTs for decentralized offline-first conflict-free convergence, Go 1.23 WebSocket gateways with 256-frame bounded channels, Redis 7.2 Pub/Sub backplane, and continuous PostgreSQL state vector snapshot compaction to achieve sub-45ms keystroke propagation without memory leaks.',
+    targetBlueprintId: 'case-study-collaborative-editor',
+  },
 ];
 
 export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
@@ -1386,5 +1391,13 @@ export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
     url: '/docs/case-studies/scalable-ecommerce-engine/overview',
     description: 'Flash-sale infrastructure: 100k RPS inventory reservation in Redis, Go 1.23 Clean Architecture, Kafka KRaft, and sharded PostgreSQL order ring.',
     tags: ['case-study', 'case-studies', 'ecommerce', 'flash-sale', 'inventory', 'saga', 'sharding', 'kafka', 'order', 'clean-architecture'],
+  },
+  {
+    id: 'case-study-collaborative-editor',
+    title: 'Case Study: Real-Time Collaborative Document Engine',
+    pillar: 'Case Studies',
+    url: '/docs/case-studies/realtime-collaborative-editor/overview',
+    description: 'Real-time collaborative workspace: Next.js 15, Yjs CRDTs, Go 1.23 WebSocket Gateway, Redis 7.2 Pub/Sub backplane, and PostgreSQL state vector snapshot compaction.',
+    tags: ['case-study', 'case-studies', 'collaborative-editor', 'yjs', 'crdt', 'websocket', 'redis-pubsub', 'google-docs', 'prosemirror', 'compaction'],
   },
 ];

@@ -40,7 +40,8 @@ const TEST_BLUEPRINTS = [
   'sys-consistent-hashing',
   'sys-saga-orchestrator',
   'sys-cqrs',
-  'sys-websocket-gateway'
+  'sys-websocket-gateway',
+  'case-collaborative-editor'
 ];
 
 try {

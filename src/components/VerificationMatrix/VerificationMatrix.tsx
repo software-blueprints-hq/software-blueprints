@@ -204,6 +204,17 @@ const VERIFIED_CATALOG: VerifiedItem[] = [
     ciStatus: 'Verified',
     lastVerified: 'November 2026',
   },
+  {
+    id: 'case-study-collaborative-editor',
+    name: 'Real-Time Collaborative Document Engine',
+    pillar: 'Case Studies',
+    url: '/docs/case-studies/realtime-collaborative-editor/overview',
+    runtime: 'Next.js 15 + Yjs 13.6 + Go 1.23 + Redis 7.2 + Postgres 16',
+    dockerStatus: 'Gateway + Redis PubSub + Postgres Compactor Healthy',
+    testSuite: 'k6 100 Concurrent Co-authors & CRDT Delta Compaction',
+    ciStatus: 'Verified',
+    lastVerified: 'November 2026',
+  },
 ];
 
 const PILLARS = ['All', 'System Design', 'Backend', 'Full-Stack', 'AI Agents', 'Case Studies'];
