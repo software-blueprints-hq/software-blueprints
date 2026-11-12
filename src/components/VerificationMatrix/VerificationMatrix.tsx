@@ -116,6 +116,17 @@ const VERIFIED_CATALOG: VerifiedItem[] = [
     lastVerified: 'November 2026',
   },
   {
+    id: 'sys-websocket-gateway',
+    name: 'WebSocket Gateway Architecture & Connection Lifecycle',
+    pillar: 'System Design',
+    url: '/docs/system-design/websocket-gateway/overview',
+    runtime: 'Go 1.23 + Redis 7.2 (Pub/Sub) + PostgreSQL 16',
+    dockerStatus: '2x WS Gateways + Redis Backplane Healthy',
+    testSuite: 'k6 10,000 WebSocket Concurrency & Heartbeat Reaping',
+    ciStatus: 'Passed',
+    lastVerified: 'November 2026',
+  },
+  {
     id: 'fullstack-multi-tenant',
     name: 'Multi-Tenant B2B SaaS: PostgreSQL RLS',
     pillar: 'Full-Stack',

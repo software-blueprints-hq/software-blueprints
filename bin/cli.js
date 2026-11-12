@@ -495,6 +495,13 @@ const BLUEPRINT_MAP = {
     dependencies: [],
     defaultFilename: "main.go",
   },
+  'sys-websocket-gateway': {
+    name: "WebSocket Gateway Architecture & Connection Lifecycle",
+    pillar: "System Design",
+    docPath: "docs/system-design/websocket-gateway/overview.md",
+    dependencies: [],
+    defaultFilename: "main.go",
+  },
 };
 
 // Aliases for quick typing
@@ -517,6 +524,9 @@ const ALIASES = {
   'api-gateway': 'sys-api-gateway',
   'gateway': 'sys-api-gateway',
   'reverse-proxy': 'sys-api-gateway',
+  'websocket-gateway': 'sys-websocket-gateway',
+  'ws-gateway': 'sys-websocket-gateway',
+  'websocket': 'sys-websocket-gateway',
   'supervisor': 'agent-supervisor',
   'agent': 'agent-supervisor',
   'react-loop': 'agent-react-loop',

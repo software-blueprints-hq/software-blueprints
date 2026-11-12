@@ -454,6 +454,11 @@ export const ARCHITECTURAL_EXPLANATIONS: ConceptExplanation[] = [
     targetBlueprintId: 'sys-cqrs',
   },
   {
+    keywords: ['websocket gateway', 'websocket', 'websockets', 'heartbeat ping', 'zombie connection', 'redis pub sub backplane', 'connection scaling', 'realtime messaging'],
+    explanation: 'A production WebSocket Gateway in Go 1.23 isolates client connections across lightweight goroutines with bounded channel buffers (256 items), enforces mandatory 30s ping/pong heartbeat reaping to eliminate zombie sockets, and synchronizes cross-node broadcasts via a sharded Redis 7.2 Pub/Sub backplane.',
+    targetBlueprintId: 'sys-websocket-gateway',
+  },
+  {
     keywords: ['rag', 'hybrid search', 'dense vector', 'sparse', 'bm25', 'rrf', 'reciprocal rank fusion', 'cross encoder', 'rerank'],
     explanation: 'Pure vector search struggles with exact keywords, SKUs, and acronyms, while pure BM25 fails on semantic synonyms. Production RAG uses Hybrid Search combining pgvector HNSW dense vectors and PostgreSQL BM25 tsvector, fused via in-database Reciprocal Rank Fusion (RRF) and scored with a Cross-Encoder reranker.',
     targetBlueprintId: 'rag-hybrid',
@@ -1299,6 +1304,14 @@ export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
     url: '/docs/system-design/api-gateway-reverse-proxy/overview',
     description: 'Zero-copy streaming reverse proxy in Go, edge cryptographic JWT validation, Redis Token Bucket rate limiting, and request sanitization.',
     tags: ['api-gateway', 'reverse-proxy', 'edge', 'jwt', 'token-bucket', 'rate-limit', 'httputil', 'ingress', 'tls-termination'],
+  },
+  {
+    id: 'sys-websocket-gateway',
+    title: 'WebSocket Gateway Architecture & Connection Lifecycle',
+    pillar: 'System Design',
+    url: '/docs/system-design/websocket-gateway/overview',
+    description: 'High-throughput Go 1.23 WebSocket gateway with Redis Pub/Sub backplane, heartbeat reaping, and bounded channel backpressure.',
+    tags: ['websocket', 'websockets', 'realtime', 'gateway', 'redis-pubsub', 'heartbeat', 'backpressure', 'goroutines', 'socket'],
   },
   // --- Platform Interactive Tools ---
   {

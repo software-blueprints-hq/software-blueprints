@@ -39,7 +39,8 @@ const TEST_BLUEPRINTS = [
   'sys-circuit-breaker',
   'sys-consistent-hashing',
   'sys-saga-orchestrator',
-  'sys-cqrs'
+  'sys-cqrs',
+  'sys-websocket-gateway'
 ];
 
 try {
