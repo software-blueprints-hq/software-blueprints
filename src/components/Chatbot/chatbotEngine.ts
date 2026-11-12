@@ -213,7 +213,41 @@ export class ChatbotEngine {
       };
     }
 
-    // 2. Pure Greetings (ONLY triggers if the user didn't ask an actual question!)
+    // 2. Capability & Overview Queries (e.g., "what can you do", "what else can you do", "capabilities", "features", "how to use")
+    const isCapabilityQuery =
+      lower.includes('what can you do') ||
+      lower.includes('what else can you do') ||
+      lower.includes('what do you do') ||
+      lower.includes('capabilities') ||
+      lower.includes('features') ||
+      lower.includes('what is this') ||
+      lower.includes('how can you help') ||
+      lower.includes('how does this work') ||
+      lower.includes('how do i use');
+
+    if (isCapabilityQuery) {
+      return {
+        id: `bot-${Date.now()}`,
+        sender: 'bot',
+        text: `Here is everything I can do to assist your system engineering workflow:\n\n` +
+          `• 🧭 **Architecture Decision Wizard**: Click the **Wizard** tab above to generate a tailored blueprint, infrastructure stack, and CLI scaffolding commands based on your traffic, consistency, and domain constraints.\n` +
+          `• 🧮 **Interactive Sizing Calculators**: Compute capacity requirements for vLLM GPU VRAM, Redis rate limiters, pgvector RAM, Kafka clusters, and database sharding rings (/calculators).\n` +
+          `• ⚡ **Production Incident Laboratory**: Walk through 5-stage failure and recovery simulations (Redis failover, Kafka consumer lag, connection exhaustion, network partitions) in /explorer.\n` +
+          `• ⚖️ **Architectural Tradeoff Comparisons**: Compare competing patterns like "Kafka vs RabbitMQ", "2PC vs Saga", "RLS vs Separate DBs", or "DPO vs PPO" with side-by-side matrices.\n` +
+          `• 📊 **Empirical Benchmarks & Verification**: Review real measured latency curves (P50/P95/P99) at /benchmarks and automated CI status at /verification.\n` +
+          `• 💻 **Production Code Scaffolding**: Generate runnable Docker Compose stacks and schemas with \`npx software-blueprints init <blueprint>\`.\n\n` +
+          `What system or architectural problem would you like to explore?`,
+        recommendations: [
+          BLUEPRINT_CATALOG.find((b) => b.id === 'tool-calculators')!,
+          BLUEPRINT_CATALOG.find((b) => b.id === 'tool-explorer')!,
+          BLUEPRINT_CATALOG.find((b) => b.id === 'tool-verification') || BLUEPRINT_CATALOG.find((b) => b.id === 'tool-readiness')!,
+          BLUEPRINT_CATALOG.find((b) => b.id === 'tool-benchmarks')!,
+        ].filter(Boolean),
+        timestamp: timeStr,
+      };
+    }
+
+    // 3. Pure Greetings (ONLY triggers if the user didn't ask an actual question!)
     const meaningfulTokens = this.extractMeaningfulTokens(trimmed);
     const greetingWords = ['hi', 'hello', 'hey', 'start', 'help', 'hey there', 'hello there', 'sup', 'yo', 'greetings'];
     const isPureGreeting =
@@ -286,7 +320,18 @@ export class ChatbotEngine {
       };
     }
 
-    // 6. No match found -> Offer to record as new request!
+    // 6. Conversational / Polite responses
+    const politeWords = ['thanks', 'thank you', 'ok', 'okay', 'cool', 'got it', 'great', 'awesome', 'nice', 'test', 'bye', 'goodbye'];
+    if (politeWords.includes(lower) || meaningfulTokens.length === 0) {
+      return {
+        id: `bot-${Date.now()}`,
+        sender: 'bot',
+        text: `You're welcome! Let me know if you need help sizing infrastructure capacity in /calculators, exploring failure recovery in /explorer, or choosing a system pattern with our 🧭 Wizard.`,
+        timestamp: timeStr,
+      };
+    }
+
+    // 7. No match found -> Offer to record as new request!
     return {
       id: `bot-${Date.now()}`,
       sender: 'bot',
