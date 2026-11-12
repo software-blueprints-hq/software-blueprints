@@ -33,7 +33,14 @@ const STOP_WORDS = new Set([
   'whom', 'why', 'with', 'would', 'you', 'your', 'yours', 'yourself', 'yourselves',
   'show', 'give', 'tell', 'want', 'need', 'implement', 'build', 'create', 'make', 'use', 'using',
   'please', 'pls', 'help', 'u', 'ur', 'got', 'get', 'see', 'look', 'looking', 'find', 'finding',
-  'hello', 'hi', 'hey', 'sup', 'yo', 'greetings', 'there', 'good', 'morning', 'evening', 'afternoon'
+  'hello', 'hi', 'hey', 'sup', 'yo', 'greetings', 'there', 'good', 'morning', 'evening', 'afternoon',
+  // Conversational & honorific additions
+  'bro', 'dude', 'mate', 'buddy', 'pal', 'man', 'sir', 'bot', 'ai', 'assistant', 'friend',
+  'else', 'anything', 'something', 'everything', 'nothing', 'much', 'many', 'way', 'ways',
+  'best', 'better', 'recommend', 'recommended', 'suggest', 'suggestion', 'suggestions',
+  'advice', 'work', 'works', 'working', 'system', 'systems', 'architecture', 'architectures',
+  'design', 'designs', 'pattern', 'patterns', 'blueprint', 'blueprints', 'stack', 'stacks',
+  'app', 'application', 'applications', 'know', 'think', 'explain', 'detail', 'details'
 ]);
 
 export class ChatbotEngine {
@@ -194,16 +201,18 @@ export class ChatbotEngine {
     const lower = trimmed.toLowerCase();
     const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    // 1. Check if user is asking to request a new blueprint/feature
-    const isRequestIntent =
-      lower.includes('request') ||
-      lower.includes('can you add') ||
-      lower.includes('add a blueprint') ||
-      lower.includes('new blueprint') ||
+    // 1. Explicit request submission intent ONLY
+    const isExplicitRequestIntent =
+      lower.includes('request a blueprint') ||
+      lower.includes('submit a request') ||
+      lower.includes('submit blueprint request') ||
+      lower.includes('new blueprint request') ||
+      lower.includes('request new blueprint') ||
       lower.includes('feature request') ||
-      lower.includes('submit request');
+      lower.includes('add a blueprint') ||
+      lower.includes('can you add a blueprint');
 
-    if (isRequestIntent) {
+    if (isExplicitRequestIntent) {
       return {
         id: `bot-${Date.now()}`,
         sender: 'bot',
@@ -247,24 +256,48 @@ export class ChatbotEngine {
       };
     }
 
-    // 3. Pure Greetings (ONLY triggers if the user didn't ask an actual question!)
+    // 3. Conversational Chit-Chat & Greetings (e.g. "hey bro", "hello", "how are you", "yo")
+    const cleanQuery = lower.replace(/[!?,.]/g, '').trim();
     const meaningfulTokens = this.extractMeaningfulTokens(trimmed);
-    const greetingWords = ['hi', 'hello', 'hey', 'start', 'help', 'hey there', 'hello there', 'sup', 'yo', 'greetings'];
-    const isPureGreeting =
-      greetingWords.includes(lower) ||
-      (meaningfulTokens.length === 0 && greetingWords.some((g) => lower.startsWith(g)));
 
-    if (isPureGreeting) {
+    const greetingWords = new Set([
+      'hi', 'hello', 'hey', 'start', 'help', 'hey there', 'hello there', 'sup', 'yo', 'greetings',
+      'howdy', 'bro', 'hey bro', 'hello bro', 'yo bro', 'good morning', 'good afternoon', 'good evening',
+      'how are you', 'how are you doing', 'hows it going', "how's it going",
+      'whats up', "what's up", 'wassup', 'who are you', 'what are you',
+      'nice to meet you', 'good day'
+    ]);
+
+    const isGreetingOrChitChat =
+      greetingWords.has(cleanQuery) ||
+      (meaningfulTokens.length === 0 && (cleanQuery.startsWith('hi') || cleanQuery.startsWith('hey') || cleanQuery.startsWith('hello') || cleanQuery.startsWith('good') || cleanQuery.startsWith('yo')));
+
+    if (isGreetingOrChitChat) {
       return {
         id: `bot-${Date.now()}`,
         sender: 'bot',
-        text: `Hello! I am your Software Blueprints Architecture Assistant. I can help you design, scale, and debug production systems across our 68 production blueprints and 4 interactive suites: Capacity Calculators (/calculators), Architecture Explorer & Incident Lab (/explorer), Readiness Audits (/readiness), and Benchmark Repository (/benchmarks). What system are you architecting today?`,
+        text: `Hey! 👋 I am your Software Blueprints Architecture Assistant. I can help you design, scale, and debug production systems across our 68 production blueprints, 5 sizing calculators (/calculators), and failure simulation laboratory (/explorer).\n\nWhat system or architecture pattern are you working on today?`,
         recommendations: [
+          BLUEPRINT_CATALOG.find((b) => b.id === 'sys-rate-limiter')!,
+          BLUEPRINT_CATALOG.find((b) => b.id === 'agent-rag-harness')!,
+          BLUEPRINT_CATALOG.find((b) => b.id === 'sys-saga-orchestrator')!,
           BLUEPRINT_CATALOG.find((b) => b.id === 'tool-calculators')!,
-          BLUEPRINT_CATALOG.find((b) => b.id === 'tool-explorer')!,
-          BLUEPRINT_CATALOG.find((b) => b.id === 'tool-readiness')!,
-          BLUEPRINT_CATALOG.find((b) => b.id === 'tool-benchmarks')!,
         ].filter(Boolean),
+        timestamp: timeStr,
+      };
+    }
+
+    // 4. Polite Acknowledgments (e.g. "thanks", "ok", "cool")
+    const politeWords = new Set([
+      'thanks', 'thank you', 'ok', 'okay', 'cool', 'got it', 'great', 'awesome', 'nice',
+      'test', 'bye', 'goodbye', 'alright', 'sure', 'perfect', 'understood', 'sounds good'
+    ]);
+
+    if (politeWords.has(cleanQuery) || (meaningfulTokens.length === 0 && politeWords.has(cleanQuery.split(' ')[0]))) {
+      return {
+        id: `bot-${Date.now()}`,
+        sender: 'bot',
+        text: `You're welcome! Let me know if you need help sizing infrastructure capacity in /calculators, exploring failure recovery in /explorer, or choosing a system pattern with our 🧭 Wizard.`,
         timestamp: timeStr,
       };
     }
@@ -273,7 +306,7 @@ export class ChatbotEngine {
     const hasGreetingPrefix = /^(hi|hello|hey|greetings|good\s+(?:morning|afternoon|evening))\b/i.test(trimmed);
     const greetingIntro = hasGreetingPrefix ? 'Hello! ' : '';
 
-    // 3. Architectural Comparison Match (Side-by-Side Tradeoff Matrix!)
+    // 5. Architectural Comparison Match (Side-by-Side Tradeoff Matrix!)
     const comparisonMatch = this.findComparisonMatch(trimmed);
     if (comparisonMatch) {
       const related = comparisonMatch.relatedBlueprintIds
@@ -290,7 +323,7 @@ export class ChatbotEngine {
       };
     }
 
-    // 4. Exact Concept Explanation Match (Delivers real architectural answer!)
+    // 6. Exact Concept Explanation Match (Delivers real architectural answer!)
     const conceptMatch = this.findConceptMatch(trimmed);
     if (conceptMatch) {
       const isTool = conceptMatch.entry.pillar === 'Platform Suite';
@@ -307,7 +340,7 @@ export class ChatbotEngine {
       };
     }
 
-    // 5. Filtered Keyword Search across catalog
+    // 7. Filtered Keyword Search across catalog
     const matches = this.searchCatalog(trimmed);
 
     if (matches.length > 0) {
@@ -320,23 +353,20 @@ export class ChatbotEngine {
       };
     }
 
-    // 6. Conversational / Polite responses
-    const politeWords = ['thanks', 'thank you', 'ok', 'okay', 'cool', 'got it', 'great', 'awesome', 'nice', 'test', 'bye', 'goodbye'];
-    if (politeWords.includes(lower) || meaningfulTokens.length === 0) {
-      return {
-        id: `bot-${Date.now()}`,
-        sender: 'bot',
-        text: `You're welcome! Let me know if you need help sizing infrastructure capacity in /calculators, exploring failure recovery in /explorer, or choosing a system pattern with our 🧭 Wizard.`,
-        timestamp: timeStr,
-      };
-    }
-
-    // 7. No match found -> Offer to record as new request!
+    // 8. Safe Fallback: NEVER auto-open request form!
     return {
       id: `bot-${Date.now()}`,
       sender: 'bot',
-      text: `We don't currently have a dedicated blueprint for "${trimmed}" in our 68-blueprint catalog. Would you like to submit this as an architecture request so we can build and add it?`,
-      isRequestPrompt: true,
+      text: `I couldn't find an exact blueprint matching "${trimmed}" in our current 68-blueprint catalog.\n\n` +
+        `• Try searching for technical patterns like **Rate Limiter**, **Kafka DLQ**, **Saga Orchestrator**, **pgvector RAG**, **Sharding**, or **Circuit Breaker**.\n` +
+        `• You can also use the **🧭 Wizard** tab above to configure your traffic and consistency constraints for a tailored recommendation.\n` +
+        `• If you'd like our team to build and add a blueprint for "${trimmed}", you can submit it anytime in the **Requests** tab!`,
+      recommendations: [
+        BLUEPRINT_CATALOG.find((b) => b.id === 'sys-rate-limiter')!,
+        BLUEPRINT_CATALOG.find((b) => b.id === 'agent-rag-harness')!,
+        BLUEPRINT_CATALOG.find((b) => b.id === 'sys-saga-orchestrator')!,
+      ].filter(Boolean),
+      isRequestPrompt: false, // Absolutely false on fallbacks
       timestamp: timeStr,
     };
   }
