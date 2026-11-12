@@ -710,6 +710,11 @@ export const ARCHITECTURAL_EXPLANATIONS: ConceptExplanation[] = [
     targetBlueprintId: 'tool-benchmarks',
   },
   {
+    keywords: ['verification matrix', 'test matrix', 'automated tests', 'ci status', 'container health', 'verification'],
+    explanation: 'The Architecture Verification Matrix (/verification) tracks real-time automated CI test passes, runtime environments (Go 1.23, Java 21, Python 3.12, Node 22, Postgres 16, Redis 7.2), Docker Compose health checks, and 1-click CLI scaffolding commands across all production blueprints.',
+    targetBlueprintId: 'tool-verification',
+  },
+  {
     keywords: ['12 sections', 'blueprint standard', 'level 3 standard', 'production standard', 'standard structure'],
     explanation: 'Software Blueprints adheres to a rigorous 12-section technical standard: 1. Overview, 2. Architecture & Lifecycle, 3. Technology Decisions & Tradeoffs, 4. Database Design & DDL, 5. Production Implementation, 6. Scalability & Sizing, 7. Failure Engineering, 8. Security & Auth, 9. Observability & SLOs, 10. Deployment & CI/CD, 11. Testing & Load Verification, 12. Engineering Decisions (ADRs).',
     targetBlueprintId: 'sys-rate-limiter',
@@ -1327,6 +1332,14 @@ export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
     url: '/benchmarks',
     description: 'Empirical benchmark reports with hardware specifications, exact software versions, reproducible CLI scripts, and measured P50/P95/P99 latency.',
     tags: ['benchmarks', 'benchmark', 'evidence', 'latency', 'p99', 'p95', 'throughput', 'rps', 'k6', 'wrk', 'proof'],
+  },
+  {
+    id: 'tool-verification',
+    title: 'Architecture Verification Matrix & CI Status',
+    pillar: 'Platform Suite',
+    url: '/verification',
+    description: 'Centralized continuous integration dashboard displaying container health, runtime compatibility, and test suite verification across all blueprints.',
+    tags: ['verification', 'matrix', 'ci', 'tests', 'status', 'docker', 'runtime', 'health', 'automated-tests'],
   },
   {
     id: 'tool-docker',

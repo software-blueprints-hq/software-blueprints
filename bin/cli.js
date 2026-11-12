@@ -650,31 +650,107 @@ function addBlueprint(blueprintId) {
 
   if (docContent) {
     const codeBlocks = extractCodeBlocks(docContent);
-    if (codeBlocks.length > 0) {
-      // Write primary code block
-      const primary = codeBlocks[0];
-      fs.writeFileSync(targetFile, primary.code, 'utf8');
+    const writtenFiles = [];
 
-      // If there is an SQL schema or second block, write that too
+    if (codeBlocks.length > 0) {
+      // 1. Write primary implementation file
+      // Find the block that best matches the defaultFilename extension, or take the first non-sql, non-yaml block
+      const ext = path.extname(meta.defaultFilename).replace('.', '');
+      let primaryBlock = codeBlocks.find((b) => {
+        if (ext === 'tsx' || ext === 'ts') return b.lang === 'tsx' || b.lang === 'typescript' || b.lang === 'ts';
+        if (ext === 'go') return b.lang === 'go' || b.lang === 'golang';
+        if (ext === 'py') return b.lang === 'python' || b.lang === 'py';
+        if (ext === 'java') return b.lang === 'java';
+        return false;
+      });
+
+      if (!primaryBlock) {
+        primaryBlock = codeBlocks.find((b) => b.lang !== 'sql' && b.lang !== 'yaml' && b.lang !== 'yml') || codeBlocks[0];
+      }
+
+      fs.writeFileSync(targetFile, primaryBlock.code, 'utf8');
+      writtenFiles.push(targetFile);
+
+      // 2. Write SQL Schema (if present)
       const sqlBlock = codeBlocks.find((b) => b.lang === 'sql');
       if (sqlBlock && meta.defaultFilename !== 'schema.sql') {
         const schemaFile = path.join(targetDir, 'schema.sql');
         fs.writeFileSync(schemaFile, sqlBlock.code, 'utf8');
+        writtenFiles.push(schemaFile);
       }
 
-      // Write companion README
+      // 3. Write Docker Compose Stack (if present)
+      const dockerBlock = codeBlocks.find(
+        (b) => (b.lang === 'yaml' || b.lang === 'yml') && (b.code.includes('services:') || b.code.includes('version:'))
+      );
+      if (dockerBlock) {
+        const composeFile = path.join(targetDir, 'docker-compose.yml');
+        fs.writeFileSync(composeFile, dockerBlock.code, 'utf8');
+        writtenFiles.push(composeFile);
+      }
+
+      // 4. Write Load Testing / Chaos Script (if present)
+      const k6Block = codeBlocks.find(
+        (b) => (b.lang === 'javascript' || b.lang === 'js') && b.code.includes('k6')
+      );
+      const chaosBlock = codeBlocks.find(
+        (b) => b.lang === 'bash' || b.lang === 'sh' || (b.lang === 'python' && b.code.includes('chaos'))
+      );
+
+      if (k6Block) {
+        const k6File = path.join(targetDir, 'load-test.js');
+        fs.writeFileSync(k6File, k6Block.code, 'utf8');
+        writtenFiles.push(k6File);
+      } else if (chaosBlock) {
+        const chaosFile = path.join(targetDir, chaosBlock.lang === 'python' ? 'chaos-test.py' : 'chaos-test.sh');
+        fs.writeFileSync(chaosFile, chaosBlock.code, 'utf8');
+        writtenFiles.push(chaosFile);
+      }
+
+      // 5. Write Companion Production README
       const readmePath = path.join(targetDir, 'README.md');
-      const readmeContent = `# ${meta.name}\n\n**Pillar:** ${meta.pillar}\n\n## Dependencies\n\`\`\`bash\n${meta.dependencies.length > 0 ? `npm install ${meta.dependencies.join(' ')}` : '# Zero external dependencies'}\n\`\`\`\n\n## Integration\nImport and configure \`${meta.defaultFilename}\` into your service.\n`;
+      let readmeContent = `# ${meta.name}\n\n`;
+      readmeContent += `> Production Blueprint Scaffolded by [Software Blueprints](https://github.com/software-blueprints-hq/software-blueprints)\n\n`;
+      readmeContent += `**Pillar:** ${meta.pillar}  \n`;
+      readmeContent += `**Blueprint ID:** \`${resolvedId}\`\n\n`;
+
+      readmeContent += `## 📦 Scaffolded Production Files\n`;
+      for (const wf of writtenFiles) {
+        readmeContent += `- \`${path.basename(wf)}\`\n`;
+      }
+
+      if (meta.dependencies.length > 0) {
+        readmeContent += `\n## 🔧 Dependencies\n\`\`\`bash\nnpm install ${meta.dependencies.join(' ')}\n\`\`\`\n`;
+      }
+
+      if (dockerBlock) {
+        readmeContent += `\n## 🐳 Start Infrastructure\n\`\`\`bash\ndocker compose up -d\n\`\`\`\n`;
+      }
+
+      if (sqlBlock) {
+        readmeContent += `\n## 🗄️ Run Database Migrations\n\`\`\`bash\npsql -h localhost -U postgres -d mydb -f schema.sql\n\`\`\`\n`;
+      }
+
+      if (k6Block) {
+        readmeContent += `\n## ⚡ Run Load & Concurrency Tests\n\`\`\`bash\nk6 run load-test.js\n\`\`\`\n`;
+      } else if (chaosBlock) {
+        readmeContent += `\n## 💥 Run Chaos & Fault-Injection Tests\n\`\`\`bash\nchmod +x ${path.basename(writtenFiles[writtenFiles.length - 1])} && ./${path.basename(writtenFiles[writtenFiles.length - 1])}\n\`\`\`\n`;
+      }
+
       fs.writeFileSync(readmePath, readmeContent, 'utf8');
+      writtenFiles.push(readmePath);
+    }
+
+    console.log(`\n${green('✔ Successfully scaffolded production suite:')}`);
+    for (const wf of writtenFiles) {
+      console.log(`  ${green('+')} ${path.relative(process.cwd(), wf)}`);
     }
   } else {
     // Fallback template
     fs.writeFileSync(targetFile, `// Production Blueprint: ${meta.name}\n// Generated by Software Blueprints CLI\n\nexport default {};\n`, 'utf8');
+    console.log(`\n${green('✔ Successfully scaffolded file:')}`);
+    console.log(`  ${green('+')} ${path.relative(process.cwd(), targetFile)}`);
   }
-
-  console.log(`\n${green('✔ Successfully scaffolded files:')}`);
-  console.log(`  ${green('+')} ${path.relative(process.cwd(), targetFile)}`);
-  console.log(`  ${green('+')} ${path.relative(process.cwd(), path.join(targetDir, 'README.md'))}`);
 
   if (meta.dependencies && meta.dependencies.length > 0) {
     console.log(`\n${bold('Next step:')} Install required dependencies:`);
