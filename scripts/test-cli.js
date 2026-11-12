@@ -38,7 +38,8 @@ const TEST_BLUEPRINTS = [
   'agent-rag-harness',
   'sys-circuit-breaker',
   'sys-consistent-hashing',
-  'sys-saga-orchestrator'
+  'sys-saga-orchestrator',
+  'sys-cqrs'
 ];
 
 try {

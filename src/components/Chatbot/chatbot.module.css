@@ -648,3 +648,210 @@
   color: #f1f5f9;
   line-height: 1.45;
 }
+
+
+/* ==========================================================================
+   GUIDED ARCHITECTURE RECOMMENDATION WIZARD
+   ========================================================================== */
+.wizardContainer {
+  padding: 16px 20px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wizardHeader {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 12px;
+}
+
+.wizardHeader h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wizardHeader p {
+  margin: 4px 0 0 0;
+  font-size: 0.78rem;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+.wizardSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wizardLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wizardPills {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.wizardPillBtn {
+  text-align: left;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wizardPillBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(6, 182, 212, 0.4);
+  color: #ffffff;
+}
+
+.wizardPillBtnActive {
+  background: rgba(6, 182, 212, 0.15) !important;
+  border-color: #00f0ff !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
+}
+
+.wizardPillTitle {
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.wizardPillDesc {
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.wizardResultBox {
+  background: rgba(11, 15, 25, 0.9);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: modalScaleIn 0.2s ease-out;
+}
+
+.wizardResultTitle {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #00f0ff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wizardResultSummary {
+  font-size: 0.78rem;
+  color: #e2e8f0;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.wizardResultGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.wizardResultItem {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 0.72rem;
+}
+
+.wizardResultItemLabel {
+  font-weight: 700;
+  color: #94a3b8;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+}
+
+.wizardResultItemVal {
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+.wizardCliBox {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: var(--ifm-font-family-monospace, monospace);
+  font-size: 0.72rem;
+  color: #38bdf8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wizardActionRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.wizardPrimaryBtn {
+  flex: 1;
+  background: linear-gradient(135deg, #00f0ff 0%, #0284c7 100%);
+  color: #020617;
+  font-weight: 700;
+  font-size: 0.78rem;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.wizardPrimaryBtn:hover {
+  opacity: 0.9;
+  color: #020617;
+}
+
+.wizardSecondaryBtn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f1f5f9;
+  font-weight: 600;
+  font-size: 0.78rem;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.wizardSecondaryBtn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}

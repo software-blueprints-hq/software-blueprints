@@ -105,6 +105,17 @@ const VERIFIED_CATALOG: VerifiedItem[] = [
     lastVerified: 'November 2026',
   },
   {
+    id: 'sys-cqrs',
+    name: 'CQRS & Event Sourcing Architecture',
+    pillar: 'System Design',
+    url: '/docs/system-design/cqrs-event-sourcing/overview',
+    runtime: 'Python 3.12 + PostgreSQL 16 (Append-Only Event Store)',
+    dockerStatus: 'PostgreSQL 16 Event Store + Projectors Healthy',
+    testSuite: 'Optimistic Concurrency Control + Snapshotting Verification',
+    ciStatus: 'Passed',
+    lastVerified: 'November 2026',
+  },
+  {
     id: 'fullstack-multi-tenant',
     name: 'Multi-Tenant B2B SaaS: PostgreSQL RLS',
     pillar: 'Full-Stack',
