@@ -35,7 +35,10 @@ const TEST_BLUEPRINTS = [
   'sys-rate-limiter',
   'fullstack-multi-tenant',
   'backend-java-kafka-dlq',
-  'agent-rag-harness'
+  'agent-rag-harness',
+  'sys-circuit-breaker',
+  'sys-consistent-hashing',
+  'sys-saga-orchestrator'
 ];
 
 try {
