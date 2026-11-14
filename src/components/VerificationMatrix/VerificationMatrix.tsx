@@ -160,6 +160,17 @@ const VERIFIED_CATALOG: VerifiedItem[] = [
     lastVerified: 'November 2026',
   },
   {
+    id: 'agent-supervisor',
+    name: 'Multi-Agent Supervisor-Worker Architecture',
+    pillar: 'AI Agents',
+    url: '/docs/ai-agents/multi-agent-supervisor/overview',
+    runtime: 'Python 3.12 + LangGraph 0.2.20 + PostgreSQL 16',
+    dockerStatus: 'FastAPI Agent + Postgres Checkpointer Healthy',
+    testSuite: 'LangGraph Cycle Breaker + HITL Approval Gate',
+    ciStatus: 'Passed',
+    lastVerified: 'November 2026',
+  },
+  {
     id: 'backend-go-clean-ddd',
     name: 'Go Clean Architecture & Domain-Driven Design',
     pillar: 'Backend',

@@ -36,6 +36,7 @@ const TEST_BLUEPRINTS = [
   'fullstack-multi-tenant',
   'backend-java-kafka-dlq',
   'agent-rag-harness',
+  'agent-supervisor',
   'sys-circuit-breaker',
   'sys-consistent-hashing',
   'sys-saga-orchestrator',

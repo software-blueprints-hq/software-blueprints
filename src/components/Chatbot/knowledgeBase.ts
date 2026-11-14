@@ -1066,11 +1066,11 @@ export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
   },
   {
     id: 'agent-supervisor',
-    title: 'Multi-Agent Supervisor Pattern',
+    title: 'Multi-Agent Supervisor-Worker Architecture',
     pillar: 'AI Agents',
     url: '/docs/ai-agents/multi-agent-supervisor/overview',
-    description: 'LangGraph Supervisor-Worker architecture, typed routing, circuit breakers, and subagents.',
-    tags: ['multi-agent', 'langgraph', 'supervisor', 'subagents', 'ai-team', 'subagent'],
+    description: 'Level 3 LangGraph DAG: Pydantic structured routing, PostgreSQL AsyncPostgresSaver checkpointing, cycle breaker, and HITL gate.',
+    tags: ['multi-agent', 'langgraph', 'supervisor', 'subagents', 'ai-team', 'subagent', 'hitl', 'checkpointing'],
   },
   {
     id: 'agent-react-loop',

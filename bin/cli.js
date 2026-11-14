@@ -290,7 +290,7 @@ const BLUEPRINT_MAP = {
     pillar: "AI Agents",
     docPath: "docs/ai-agents/multi-agent-supervisor/overview.md",
     dependencies: [],
-    defaultFilename: "index.ts",
+    defaultFilename: "main.py",
   },
   'agent-react-loop': {
     name: "ReAct Tool-Calling Engine",
