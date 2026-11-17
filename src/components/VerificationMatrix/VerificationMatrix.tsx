@@ -127,6 +127,17 @@ const VERIFIED_CATALOG: VerifiedItem[] = [
     lastVerified: 'November 2026',
   },
   {
+    id: 'sys-api-gateway',
+    name: 'Cloud-Native API Gateway & Reverse Proxy',
+    pillar: 'System Design',
+    url: '/docs/system-design/api-gateway-reverse-proxy/overview',
+    runtime: 'Go 1.23 + Redis 7.2 + PostgreSQL 16',
+    dockerStatus: 'API Gateway + 3x Upstream Services Healthy',
+    testSuite: 'k6 10k RPS Proxy Throughput + Edge JWT Validation',
+    ciStatus: 'Passed',
+    lastVerified: 'November 2026',
+  },
+  {
     id: 'fullstack-multi-tenant',
     name: 'Multi-Tenant B2B SaaS: PostgreSQL RLS',
     pillar: 'Full-Stack',

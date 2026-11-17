@@ -38,6 +38,7 @@ const TEST_BLUEPRINTS = [
   'agent-rag-harness',
   'agent-supervisor',
   'sys-circuit-breaker',
+  'sys-api-gateway',
   'sys-consistent-hashing',
   'sys-saga-orchestrator',
   'sys-cqrs',
