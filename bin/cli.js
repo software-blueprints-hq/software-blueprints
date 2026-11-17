@@ -297,7 +297,7 @@ const BLUEPRINT_MAP = {
     pillar: "AI Agents",
     docPath: "docs/ai-agents/react-tool-calling/overview.md",
     dependencies: [],
-    defaultFilename: "index.ts",
+    defaultFilename: "main.py",
   },
   'agent-hitl': {
     name: "Human-in-the-Loop Approval State",
@@ -542,6 +542,9 @@ const ALIASES = {
   'supervisor': 'agent-supervisor',
   'agent': 'agent-supervisor',
   'react-loop': 'agent-react-loop',
+  'react': 'agent-react-loop',
+  'tool-calling': 'agent-react-loop',
+  'react-engine': 'agent-react-loop',
   'memory': 'agent-memory',
   'hitl': 'agent-hitl',
   'hybrid-search': 'rag-hybrid',

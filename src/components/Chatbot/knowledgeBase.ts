@@ -1074,11 +1074,11 @@ export const BLUEPRINT_CATALOG: BlueprintEntry[] = [
   },
   {
     id: 'agent-react-loop',
-    title: 'ReAct Tool-Calling Engine',
+    title: 'ReAct Tool-Calling & Execution Engine',
     pillar: 'AI Agents',
     url: '/docs/ai-agents/react-tool-calling/overview',
-    description: 'Pure Python typed ReAct loop, step budgets, tool error feedback, and execution traces.',
-    tags: ['react-loop', 'react', 'tools', 'tool-calling', 'function-calling', 'reasoning'],
+    description: 'Level 3 ReAct loop: parallel async execution, Pydantic v2 schemas, per-tool timeout watchdogs, error-to-context recovery, and hard step budgets.',
+    tags: ['react-loop', 'react', 'tools', 'tool-calling', 'function-calling', 'reasoning', 'watchdogs', 'step-budget'],
   },
   {
     id: 'agent-hitl',

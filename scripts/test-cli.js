@@ -37,6 +37,7 @@ const TEST_BLUEPRINTS = [
   'backend-java-kafka-dlq',
   'agent-rag-harness',
   'agent-supervisor',
+  'agent-react-loop',
   'sys-circuit-breaker',
   'sys-api-gateway',
   'sys-consistent-hashing',

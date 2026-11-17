@@ -182,6 +182,17 @@ const VERIFIED_CATALOG: VerifiedItem[] = [
     lastVerified: 'November 2026',
   },
   {
+    id: 'agent-react-loop',
+    name: 'ReAct Tool-Calling & Execution Engine',
+    pillar: 'AI Agents',
+    url: '/docs/ai-agents/react-tool-calling/overview',
+    runtime: 'Python 3.12 + Pydantic v2 + PostgreSQL 16',
+    dockerStatus: 'FastAPI Agent + Mock Tools Healthy',
+    testSuite: 'Timeout Watchdogs + Schema Self-Correction',
+    ciStatus: 'Passed',
+    lastVerified: 'November 2026',
+  },
+  {
     id: 'backend-go-clean-ddd',
     name: 'Go Clean Architecture & Domain-Driven Design',
     pillar: 'Backend',
